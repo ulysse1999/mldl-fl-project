@@ -101,6 +101,7 @@ class ResNet(nn.Module):
         # average pool
         # linear FC 1000
         # NO NEED of softmax as it is already included in CrossEntropyLoss which we will use as loss
+        # https://stackoverflow.com/questions/64519911/do-i-have-to-add-softmax-in-def-forward-when-i-use-torch-nn-crossentropyloss
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(1<<11, 10)
