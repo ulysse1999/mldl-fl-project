@@ -1,0 +1,3 @@
+Use torchinfo instead of torchsummary + documentation
+check thanks to these moduls if ResNet50 is correct
+add a functionality to use both BN and GN (just use partial)
