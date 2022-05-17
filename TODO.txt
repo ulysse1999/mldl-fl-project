@@ -1,3 +1,5 @@
 Use torchinfo instead of torchsummary + documentation
 check thanks to these moduls if ResNet50 is correct
 add a functionality to use both BN and GN (just use partial)
+
+https://github.com/FedML-AI/FedML/blob/master/doc/en/simulation/examples/sp_fedavg_mnist_lr_example.md
