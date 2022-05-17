@@ -5,9 +5,6 @@ from earlystopping import EarlyStopping
 import ray
 import numpy as np
 
-
-# tune : learning rate, weight decay, momentum, optimizer
-
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
 def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
@@ -74,8 +71,14 @@ def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
 
         
         
-    #model.load_state_dict(torch.load(early_stopping.path))
+    
     return model
+
+
+def test_accuracy():
+
+    # TODO
+    print("TODO")
 
 
 

@@ -1,8 +1,19 @@
-Use torchinfo instead of torchsummary + documentation
-check thanks to these moduls if ResNet50 is correct
-add a functionality to use both BN and GN (just use partial)
-
-https://github.com/FedML-AI/FedML/blob/master/doc/en/simulation/examples/sp_fedavg_mnist_lr_example.md
+FIRST PART, centralized training + model tuning + model evaluation :
+Use torchinfo instead of torchsummary + documentation -> DONE
+check thanks to these moduls if ResNet50 is correct -> DONE
+add a functionality to use both BN and GN (just use partial) -> TODO
 
 use this : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 for parameter tuning
+                                          ^
+adapt train.py for hyperparameter tuning  |
+(learning rate, weight decay, optimizer, momentum in SGD...)
+write test_accuracy function
+train with best found parameters (after param search)
+evaluate accuracy for both BN and GN
+
+SECOND PART, FL baseline :
+
+use fedml
+https://github.com/FedML-AI/FedML/blob/master/doc/en/simulation/examples/sp_fedavg_mnist_lr_example.md
+
