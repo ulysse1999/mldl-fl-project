@@ -3,3 +3,4 @@ torchsummary
 torchinfo
 torchvision
 fedml
+ray

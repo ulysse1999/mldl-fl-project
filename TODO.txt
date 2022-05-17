@@ -3,3 +3,6 @@ check thanks to these moduls if ResNet50 is correct
 add a functionality to use both BN and GN (just use partial)
 
 https://github.com/FedML-AI/FedML/blob/master/doc/en/simulation/examples/sp_fedavg_mnist_lr_example.md
+
+use this : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
+for parameter tuning
