@@ -15,7 +15,7 @@ def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE
     train_abs = int(len(dataset) * train_proportion)
 
     train_subset, val_subset = random_split(
-        dataset, [train_abs, len(trainset) - train_abs])
+        dataset, [train_abs, len(dataset) - train_abs])
 
     trainloader = torch.utils.data.DataLoader(
         train_subset,
