@@ -20,12 +20,13 @@ def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
     model.cuda()
 
     criterion = CrossEntropyLoss()
+    criterion.cuda()
 
     optimizer = optimizer(model.params())
     # criterrion
     # optimizer
     for i_epoch in range(n_epochs):
-        losses=list()
+        
         for i, data in enumerate(dataloader):
             imgs, labels = data
             imgs, labels = imgs.cuda(), labels.cuda()
