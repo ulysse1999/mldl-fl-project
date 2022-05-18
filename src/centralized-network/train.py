@@ -42,6 +42,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
             loss.backward()
             optimizer.step()
 
+        print("LALALALA")
         
         
         val_loss = 0.
