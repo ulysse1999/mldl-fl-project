@@ -1,8 +1,13 @@
 from ray import tune
+from functools import partial
 from train import train, test_accuracy
 from resnet50 import ResNet
 from data.provider import get_train_validation_data
 from data.augmentation import get_transform
+from ray.tune.schedulers import ASHAScheduler
+import torch, torch.nn as nn
+from ray.tune import CLIReporter
+import os
 
 # we will see later for momentum as it requires more advanced config space
 
