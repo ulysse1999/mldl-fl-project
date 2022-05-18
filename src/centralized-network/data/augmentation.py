@@ -4,7 +4,7 @@ from torchvision.transforms import Compose, ToTensor, Normalize, RandomHorizonta
 def get_transform(p_flip=0.5):
     transform = Compose(
         [   
-            RandomCrop(size=32)
+            RandomCrop(size=32),
             RandomHorizontalFlip(p_flip),
             ToTensor(),
             Normalize(mean=[0.485, 0.456, 0.406],
