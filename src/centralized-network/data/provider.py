@@ -11,7 +11,6 @@ def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE
     dataset = torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
             transform=transform,
-            num_workers=n_worker
         )
     train_abs = int(len(dataset) * train_proportion)
 
@@ -22,12 +21,12 @@ def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE
         train_subset,
         batch_size=int(config["batch_size"]),
         shuffle=True,
-        num_workers=8)
+        num_workers=n_worker)
     valloader = torch.utils.data.DataLoader(
         val_subset,
         batch_size=int(config["batch_size"]),
         shuffle=True,
-        num_workers=8)
+        num_workers=n_worker)
 
     return trainloader, valloader
 
