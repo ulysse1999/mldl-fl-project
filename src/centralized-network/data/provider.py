@@ -19,12 +19,12 @@ def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE
 
     trainloader = torch.utils.data.DataLoader(
         train_subset,
-        batch_size=int(config["batch_size"]),
+        batch_size=int(BATCH_SIZE),
         shuffle=True,
         num_workers=n_worker)
     valloader = torch.utils.data.DataLoader(
         val_subset,
-        batch_size=int(config["batch_size"]),
+        batch_size=int(BATCH_SIZE),
         shuffle=True,
         num_workers=n_worker)
 
