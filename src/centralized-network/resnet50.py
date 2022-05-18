@@ -1,4 +1,5 @@
 import torch, torch.nn as nn
+from functools import partial
 
 # inspired from pytorch implementation : https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py
 
@@ -17,7 +18,7 @@ EXPANSION_RATIO=4
 class BottleneckBlock(nn.Module):
     # single bottleneck block for large resnets (>= 50 layers)
 
-    def __init__(self, input_channel_s, output_channel_s, downsample):
+    def __init__(self, input_channel_s, output_channel_s, downsample, norm):
         super().__init__()
 
         self.downsample = downsample
@@ -31,12 +32,12 @@ class BottleneckBlock(nn.Module):
         if downsample or input_channel_s != output_channel_s * EXPANSION_RATIO :
             self.shortcut = nn.Sequential(
                 nn.Conv2d(input_channel_s, output_channel_s*EXPANSION_RATIO, kernel_size=1, stride=2 if self.downsample else 1),
-                nn.BatchNorm2d(output_channel_s*EXPANSION_RATIO)
+                norm(output_channel_s*EXPANSION_RATIO)
             )
 
-        self.n1 = nn.BatchNorm2d(output_channel_s)
-        self.n2 = nn.BatchNorm2d(output_channel_s)
-        self.n3 = nn.BatchNorm2d(output_channel_s*EXPANSION_RATIO)
+        self.n1 = norm(output_channel_s)
+        self.n2 = norm(output_channel_s)
+        self.n3 = norm(output_channel_s*EXPANSION_RATIO)
 
 
     def forward(self, x):
@@ -52,8 +53,13 @@ class BottleneckBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self):
+    def __init__(self, normalization="batch"):
         super().__init__()
+
+        if normalization=="batch":
+            norm = nn.BatchNorm2d
+        elif normalization=="group":
+            norm = partial(nn.GroupNorm, num_groups=2)
         
         self.input_channel_s = 64
 
@@ -61,7 +67,7 @@ class ResNet(nn.Module):
         # MAXPOOL, kernel=3, stride=2
 
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3)
-        self.norm = nn.BatchNorm2d(64)
+        self.norm = norm(64)
         self.relu = nn.ReLU()
         self.maxpool = nn.MaxPool2d(kernel_size = 3, stride=2, padding=1)
 
