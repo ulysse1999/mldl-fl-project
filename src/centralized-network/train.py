@@ -80,7 +80,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
 
 def test_accuracy(model, transform=None, device='cpu'):
 
-    testset = get_testing_data(transform)
+    testloader = get_testing_data(transform)
 
     correct = 0
     total = 0

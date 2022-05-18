@@ -11,7 +11,7 @@ import os
 
 # we will see later for momentum as it requires more advanced config space
 
-def main(max_num_epochs = 15, num_samples=8):
+def main(max_num_epochs = 15, num_samples=7):
 
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
