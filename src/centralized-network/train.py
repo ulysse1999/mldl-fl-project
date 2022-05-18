@@ -6,6 +6,7 @@ import ray
 from ray import tune
 import numpy as np
 from data.provider import get_testing_data
+import os
 
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
