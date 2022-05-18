@@ -62,7 +62,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-                loss = criterion(outputs, labels)
+                loss = criterion(predicted, labels)
                 val_loss += loss.cpu().numpy()
                 val_steps += 1
 
