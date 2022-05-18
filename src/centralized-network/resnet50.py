@@ -59,7 +59,12 @@ class ResNet(nn.Module):
         if normalization=="batch":
             norm = nn.BatchNorm2d
         elif normalization=="group":
-            norm = partial(nn.GroupNorm, num_groups=2)
+
+            def group_norm(num_channels):
+                gn = nn.GroupNorm(num_groups=2, num_channels=num_channels)
+                return gn
+
+            norm = group_norm
         
         self.input_channel_s = 64
 
