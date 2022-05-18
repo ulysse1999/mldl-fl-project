@@ -19,6 +19,7 @@ def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
     model = ResNet()
     model.cuda()
 
+
     criterion = CrossEntropyLoss()
     criterion.cuda()
 
@@ -27,6 +28,7 @@ def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
                 else Adam(model.parameters, lr=config["lr"], weight_decay = config["weightdecay"])
 
     for i_epoch in range(n_epochs):
+        model.train()
         
         for i, data in enumerate(trainloader):
             imgs, labels = data
@@ -46,6 +48,8 @@ def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
         val_steps = 0
         total = 0
         correct = 0
+
+        model.eval()
 
         for i,data in enumerate(valloader):
             with torch.no_grad():
@@ -71,9 +75,9 @@ def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
     return model
 
 
-def test_accuracy(model, device='cpu'):
+def test_accuracy(model, transform=None, device='cpu'):
 
-    testset = get_testing_data()
+    testset = get_testing_data(transform)
 
     correct = 0
     total = 0

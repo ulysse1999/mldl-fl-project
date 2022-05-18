@@ -2,6 +2,7 @@ from ray import tune
 from train import train, test_accuracy
 from resnet50 import ResNet
 from data.provider import get_train_validation_data
+from data.augmentation import get_transform
 
 # we will see later for momentum as it requires more advanced config space
 
@@ -25,7 +26,9 @@ def main(max_num_epochs = 10, num_samples=5):
     reporter = CLIReporter(
         metric_columns=["loss", "accuracy", "training_iteration"])
 
-    trainloader, valloader = get_train_validation_data() # change parameters when data augmentation pipeline will be done
+    transform = get_transform()
+
+    trainloader, valloader = get_train_validation_data(transform=transform) # change parameters when data augmentation pipeline will be done
 
     result = tune.run(
         partial(train, trainloader=trainloader, valloader = valloader),
@@ -50,5 +53,8 @@ def main(max_num_epochs = 10, num_samples=5):
         best_checkpoint_dir, "checkpoint"))
     best_trained_model.load_state_dict(model_state)
 
-    test_acc = test_accuracy(best_trained_model)
+    test_acc = test_accuracy(best_trained_model, transform=transform)
     print("Best trial test set accuracy: {}".format(test_acc))
+
+if __name__=='__main__':
+    main()

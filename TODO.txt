@@ -21,3 +21,5 @@ SECOND PART, FL baseline :
 use fedml
 https://github.com/FedML-AI/FedML/blob/master/doc/en/simulation/examples/sp_fedavg_mnist_lr_example.md
 
+or rather reimplement it : https://github.com/FedML-AI/FedML/tree/master/python/fedml/simulation/single_process/fedavg 
+
