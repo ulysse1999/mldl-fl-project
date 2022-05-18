@@ -3,6 +3,7 @@ from torch.nn import CrossEntropyLoss
 from torch.optim import SGD, Adam
 from resnet50 import ResNet
 import ray
+from ray import tune
 import numpy as np
 from data.provider import get_testing_data
 
