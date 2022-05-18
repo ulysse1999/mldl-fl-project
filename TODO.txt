@@ -5,8 +5,12 @@ add a functionality to use both BN and GN (just use partial) -> TODO
 
 use this : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 for parameter tuning
+                       
                                           ^
 adapt train.py for hyperparameter tuning  |
+
+training : validation at each epoch ? if yes -> change data repartition in data/provider.py
+else, change train function
 (learning rate, weight decay, optimizer, momentum in SGD...)
 write test_accuracy function
 train with best found parameters (after param search)

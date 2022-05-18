@@ -6,6 +6,7 @@ import torch
 DATAPATH = '.cifar10'
 
 def get_train_validation_data(transform, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=8):
+    
     dataset = torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
             transform=transform,
