@@ -143,7 +143,7 @@ class ResNet(nn.Module):
         self.input_channel_s = planes * EXPANSION_RATIO
 
         for _ in range(n_blocks-1):
-            layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=False, norm=self.norm_f)))
+            layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=False, norm=self.norm_f))
 
         return nn.Sequential(*layers)
 
