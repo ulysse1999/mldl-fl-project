@@ -1,3 +1,4 @@
+import torch
 from torch.nn import CrossEntropyLoss
 from torch.optim import SGD, Adam
 from resnet50 import ResNet
