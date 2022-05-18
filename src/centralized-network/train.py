@@ -27,7 +27,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
 
 
     optimizer = SGD(model.parameters(), lr=config["lr"], weight_decay = config["weightdecay"], momentum=0.9) if config["optimizer"]=="SGD" \
-                else Adam(model.parameters, lr=config["lr"], weight_decay = config["weightdecay"])
+                else Adam(model.parameters(), lr=config["lr"], weight_decay = config["weightdecay"])
 
     for i_epoch in range(n_epochs):
         model.train()
