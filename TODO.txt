@@ -9,7 +9,7 @@ for parameter tuning
                                           ^
 adapt train.py for hyperparameter tuning  |
 
-training : validation at each epoch ? if yes -> change data repartition in data/provider.py
+training : validation at each epoch ? if yes -> change data repartition in data/provider.py (this option is better for HP tuning)
 else, change train function
 (learning rate, weight decay, optimizer, momentum in SGD...)
 write test_accuracy function

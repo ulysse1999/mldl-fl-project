@@ -4,15 +4,15 @@ from resnet50 import ResNet
 from earlystopping import EarlyStopping
 import ray
 import numpy as np
+from data.provider import get_testing_data
 
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
-def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
+def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
     """
     training of the global, centralized model
 
-    if the loss seems stagnant : early stopping
-    validation accuracy at each epoch
+    validation accuracy at each epoch for raytune early stopping
     
     """
 
@@ -22,12 +22,13 @@ def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
     criterion = CrossEntropyLoss()
     criterion.cuda()
 
-    optimizer = optimizer(model.params())
-    # criterrion
-    # optimizer
+
+    optimizer = SGD(model.parameters(), lr=config["lr"], weight_decay = config["weightdecay"], momentum=0.9) if config["optimizer"]=="SGD" \
+                else Adam(model.parameters, lr=config["lr"], weight_decay = config["weightdecay"])
+
     for i_epoch in range(n_epochs):
         
-        for i, data in enumerate(dataloader):
+        for i, data in enumerate(trainloader):
             imgs, labels = data
             imgs, labels = imgs.cuda(), labels.cuda()
 
@@ -36,9 +37,6 @@ def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
             pred = pred.cuda()
             
             loss = criterion(pred, labels)
-
-            losses.append(loss.item())
-
             loss.backward()
             optimizer.step()
 
@@ -70,16 +68,27 @@ def train(model, trainloader, valloader, n_epochs=10, batch_size=256):
 
         tune.report(loss=(val_loss / val_steps), accuracy=correct / total)
 
-        
-        
-    
     return model
 
 
-def test_accuracy():
+def test_accuracy(model, device='cpu'):
 
-    # TODO
-    print("TODO")
+    testset = get_testing_data()
+
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for data in testloader:
+            images, labels = data
+            images, labels = images.to(device), labels.to(device)
+            outputs = net(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    
+    return correct / total
+
 
 
 
