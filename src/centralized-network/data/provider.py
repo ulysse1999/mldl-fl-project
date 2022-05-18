@@ -6,7 +6,7 @@ from torch.utils.data import random_split
 
 DATAPATH = '.cifar10'
 
-def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=4):
+def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=2):
     
     dataset = torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
@@ -31,7 +31,7 @@ def get_train_validation_data(transform=None, train_proportion = 0.8, BATCH_SIZE
     return trainloader, valloader
 
 
-def get_training_data(transform=None, BATCH_SIZE=256,shuffle=True, n_worker=4):
+def get_training_data(transform=None, BATCH_SIZE=256,shuffle=True, n_worker=2):
     """
     get DataLoader for training data
     """
