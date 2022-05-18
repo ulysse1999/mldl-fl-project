@@ -65,6 +65,8 @@ class ResNet(nn.Module):
                 return gn
 
             norm = group_norm
+
+        self.norm_f = norm
         
         self.input_channel_s = 64
 
@@ -72,7 +74,7 @@ class ResNet(nn.Module):
         # MAXPOOL, kernel=3, stride=2
 
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3)
-        self.norm = norm(64)
+        self.n = norm(64)
         self.relu = nn.ReLU()
         self.maxpool = nn.MaxPool2d(kernel_size = 3, stride=2, padding=1)
 
@@ -119,7 +121,7 @@ class ResNet(nn.Module):
         
     def forward(self, x):
         x = self.conv1(x)
-        x = self.norm(x)
+        x = self.n(x)
         x = self.relu(x)
         x = self.maxpool(x)
         x = self.conv2x(x)
@@ -137,11 +139,11 @@ class ResNet(nn.Module):
 
         layers = list()
 
-        layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=downsample_first_layer))
+        layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=downsample_first_layer, norm=self.norm_f))
         self.input_channel_s = planes * EXPANSION_RATIO
 
         for _ in range(n_blocks-1):
-            layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=False))
+            layers.append(BottleneckBlock(self.input_channel_s, planes, downsample=False, norm=self.norm_f)))
 
         return nn.Sequential(*layers)
 
