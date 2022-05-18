@@ -59,8 +59,9 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
 
                 out = model(imgs)
                 _, predicted = torch.max(out.data, 1) # out : probabilities, we ignore the values
-                #predicted = predicted.to(torch.float)
-                labels = labels.to(torch.long)
+                
+                print(predicted)
+                print(labels)
 
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
