@@ -56,7 +56,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
                 imgs, labels = data
                 imgs, labels = imgs.cuda(), labels.cuda()
 
-                out = model(img)
+                out = model(imgs)
                 _, predicted = torch.max(out.data, 1) # out : probabilities, we ignore the indexes
 
                 total += labels.size(0)
@@ -85,7 +85,7 @@ def test_accuracy(model, transform=None, device='cpu'):
         for data in testloader:
             images, labels = data
             images, labels = images.to(device), labels.to(device)
-            outputs = net(images)
+            outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
