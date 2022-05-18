@@ -8,7 +8,7 @@ from data.provider import get_testing_data
 
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
-def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
+def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
     """
     training of the global, centralized model
 
@@ -66,7 +66,7 @@ def train(config, , trainloader, valloader, checkpoint_dir = "", n_epochs=10):
                 val_loss += loss.cpu().numpy()
                 val_steps += 1
 
-        with tune.checkpoint_dir(epoch) as checkpoint_dir:
+        with tune.checkpoint_dir(i_epoch) as checkpoint_dir:
             path = os.path.join(checkpoint_dir, "checkpoint")
             torch.save((model.state_dict(), optimizer.state_dict()), path)
 
