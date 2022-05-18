@@ -59,14 +59,11 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
 
                 out = model(imgs)
                 _, predicted = torch.max(out.data, 1) # out : probabilities, we ignore the values
-                
-                print(predicted)
-                print(labels)
 
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
-                loss = criterion(predicted, labels)
+                loss = criterion(out, labels)
                 val_loss += loss.cpu().numpy()
                 val_steps += 1
 
