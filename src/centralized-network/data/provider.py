@@ -38,10 +38,10 @@ def get_training_data(transform=None, BATCH_SIZE=256,shuffle=True, n_worker=2):
     trainloader = torch.utils.data.DataLoader(
         torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
-            transform=transform,
-            num_workers=n_worker
+            transform=transform
         ),
-        batch_size=BATCH_SIZE, shuffle=shuffle
+        batch_size=BATCH_SIZE, shuffle=shuffle,
+            num_workers=n_worker
     )
     return trainloader
 
@@ -53,9 +53,9 @@ def get_testing_data(transform=None, BATCH_SIZE=256, shuffle=True, n_worker=2):
     testloader = torch.utils.data.DataLoader(
         torchvision.datasets.CIFAR10(
             DATAPATH, train=False, download=True, 
+            transform=transform,
         ),
         batch_size=BATCH_SIZE, shuffle=shuffle,
-        transform=transform,
         num_workers = n_worker
     )
 
