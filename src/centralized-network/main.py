@@ -36,7 +36,7 @@ def main(max_num_epochs = 10, num_samples=5):
     trainloader, valloader = get_train_validation_data(transform=transform) # change parameters when data augmentation pipeline will be done
 
     result = tune.run(
-        partial(train, trainloader=trainloader, valloader = valloader),
+        tune.with_parameters(train, trainloader=trainloader, valloader=valloader),
         resources_per_trial={"cpu": 2, "gpu": 1},
         num_samples=num_samples,
         config=config,
