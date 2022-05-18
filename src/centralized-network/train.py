@@ -18,7 +18,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
     
     """
 
-    model = ResNet(norm="group")
+    model = ResNet(normalization="group")
     model.cuda()
 
 
