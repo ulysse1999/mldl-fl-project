@@ -52,7 +52,7 @@ def main(max_num_epochs = 12, num_samples=7):
     print("Best trial final validation accuracy: {}".format(
             best_trial.last_result["accuracy"]))
 
-    best_trained_model = ResNet()
+    best_trained_model = ResNet(normalization="group")
     best_checkpoint_dir = best_trial.checkpoint.value
     model_state, optimizer_state = torch.load(os.path.join(
         best_checkpoint_dir, "checkpoint"))
