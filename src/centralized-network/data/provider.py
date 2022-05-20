@@ -8,7 +8,9 @@ DATAPATH = '.cifar10'
 
 base_transform = transforms.Compose([
     # you can add other transformations in this list
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                     std=[0.229, 0.224, 0.225])
 ])
 
 def get_train_validation_data(transform=base_transform, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=2):

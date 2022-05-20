@@ -56,31 +56,6 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
     print("Model saved")
     
 
-    best_trained_model = ResNet(normalization)
-
-    model_state, _optimizer_state = torch.load(path)
-    best_trained_model.load_state_dict(model_state)
-    print("Model loaded")
-
-    best_trained_model.eval()
-    
-    testloader = get_testing_data()
-
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for data in testloader:
-            images, labels = data
-            images, labels = images.to('cpu'), labels.to('cpu')
-            outputs = best_trained_model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-    
-    print(f"Test set accuracy : {correct/total}")
-
-
 
 if __name__=='__main__':
     # BN : Adam, lr=0.00035, weightdecay = 0.0225
