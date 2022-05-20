@@ -43,7 +43,7 @@ def test(normalization):
     print(f"Test set accuracy : {correct/total}")
 
 
-def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=None):
+def train(optimizer, lr, weightdecay, normalization, n_epochs=50, model_path=None):
 
     assert optimizer in {"SGD", "Adam"}, "optimizer must be in \{SGD, Adam\}"
     assert normalization in {"group", "batch"}, "normalization must be in \{batch, group\}"
