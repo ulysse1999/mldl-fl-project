@@ -11,7 +11,7 @@ import os
 
 
 
-def main(max_num_epochs = 15, num_samples=10):
+def main(max_num_epochs = 15, num_samples=9):
     """
     train / eval loop for HP tuning
     using transform on eval / test sets 
@@ -21,7 +21,7 @@ def main(max_num_epochs = 15, num_samples=10):
     # we will see later for momentum as it requires more advanced config space and I'm not super familiar with raytune grid search
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
-        "lr" : tune.loguniform(1e-5, 1e-2),
+        "lr" : tune.loguniform(1e-4, 1e-2),
         "weightdecay" : tune.uniform(0, 0.1)
     } # maybe change some things here
 
@@ -60,7 +60,7 @@ def main(max_num_epochs = 15, num_samples=10):
     print("Best trial final validation accuracy: {}".format(
             best_trial.last_result["accuracy"]))
 
-    best_trained_model = ResNet(normalization="batch")
+    best_trained_model = ResNet(normalization=normalization)
     best_checkpoint_dir = best_trial.checkpoint.value
     model_state, optimizer_state = torch.load(os.path.join(
         best_checkpoint_dir, "checkpoint"))
