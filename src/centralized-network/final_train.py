@@ -7,6 +7,8 @@ import numpy as np
 from torch.optim import SGD, Adam
 from torch.nn import CrossEntropyLoss
 from final_test import test
+import torch
+import torch.optim as optim
 
 # for now we choose not to save the model
 
@@ -34,6 +36,10 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
 
     # model training
     for epoch in range(n_epochs):
+        if epoch==50:
+            optim.param_groups[0]['lr'] /=10
+        if epoch==75:
+            optim.param_groups[0]['lr'] /=10
         print(f"epoch : {epoch}")
         losses = list()
         for i, data in enumerate(trainloader):
@@ -61,6 +67,6 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
 if __name__=='__main__':
     # BN : Adam, lr=0.00035, weightdecay = 0.0225
     # GN : SGD, lr=0.00095, weightdecay = 0.0762
-    main(optimizer='SGD', lr=0.00095, weightdecay=0.0762, normalization="group")
+    main(optimizer='SGD', lr=0.1, weightdecay=0.0001, normalization="batch")
     test("group")
 
