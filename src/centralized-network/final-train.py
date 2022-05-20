@@ -51,7 +51,7 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=50):
         print(f"Loss : {epoch_loss}")
 
     model.eval()
-    
+    model.to('cpu')
     testloader = get_testing_data()
 
     correct = 0
@@ -59,7 +59,7 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=50):
     with torch.no_grad():
         for data in testloader:
             images, labels = data
-            images, labels = images.cuda(), labels.cuda()
+            images, labels = images.to('cpu'), labels.to('cpu')
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
