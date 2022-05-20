@@ -9,10 +9,16 @@ import torch, torch.nn as nn
 from ray.tune import CLIReporter
 import os
 
-# we will see later for momentum as it requires more advanced config space
+
 
 def main(max_num_epochs = 12, num_samples=7):
+    """
+    train / eval loop for HP tuning
+    using transform on eval / test sets 
+    an other module will take care of the network training loop
+    """
 
+    # we will see later for momentum as it requires more advanced config space and I'm not super familiar with raytune grid search
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
         "lr" : tune.uniform(1e-7, 1e-3),
