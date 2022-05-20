@@ -22,7 +22,7 @@ def main(max_num_epochs = 15, num_samples=10):
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
         "lr" : tune.loguniform(1e-5, 1e-2),
-        "weightdecay" : tune.loguniform(1e-5, 0.1)
+        "weightdecay" : tune.uniform(0, 0.1)
     } # maybe change some things here
 
 
