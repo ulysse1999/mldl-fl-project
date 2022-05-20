@@ -15,6 +15,7 @@ import argparse
 CHECKPOINT_PATH = "checkpoint.pt"
 path = CHECKPOINT_PATH
 
+
 def test(normalization):
 
     best_trained_model = ResNet(normalization)
@@ -42,7 +43,7 @@ def test(normalization):
     print(f"Test set accuracy : {correct/total}")
 
 
-def train(optimizer, lr, weightdecay, normalization, n_epochs=50):
+def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=None):
 
     assert optimizer in {"SGD", "Adam"}, "optimizer must be in \{SGD, Adam\}"
     assert normalization in {"group", "batch"}, "normalization must be in \{batch, group\}"
@@ -53,8 +54,13 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=50):
     trainloader, valloader = get_train_validation_data(transform=transform, train_proportion=0.9)
 
     model = ResNet(normalization)
-    criterion = CrossEntropyLoss()
+    if model_path is not None:
+        model.load_state_dict(torch.load(model_path))
+        
+        
     model.cuda()
+
+    criterion = CrossEntropyLoss()
     criterion.cuda()
     
 
@@ -134,10 +140,11 @@ if __name__=='__main__':
     parser.add_argument("--lr", type=float, required=True)
     parser.add_argument("--wd", type=float, required=True)
     parser.add_argument("--optimizer", type=str, required=True, choices=["SGD", "Adam"])
+    parser.add_argument("--path", required=False, type=str, default=None) # for passing model
     args = parser.parse_args()
 
 
 
-    train(optimizer=args.optimizer, lr=args.lr, weightdecay=args.wd, normalization=args.normalization)
+    train(optimizer=args.optimizer, lr=args.lr, weightdecay=args.wd, normalization=args.normalization, model_path=args.path)
     test(args.normalization)
 
