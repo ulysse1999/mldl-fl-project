@@ -4,6 +4,8 @@ from data.provider import get_testing_data
 
 path = "checkpoint.pt"
 
+# if something went wrong with final_train, you can reload the model to evaluate it
+
 def test(normalization):
 
     best_trained_model = ResNet(normalization)
@@ -31,4 +33,4 @@ def test(normalization):
     print(f"Test set accuracy : {correct/total}")
 
 if __name__=="__main__":
-    test(normalization="group")
+    test(normalization="batch")

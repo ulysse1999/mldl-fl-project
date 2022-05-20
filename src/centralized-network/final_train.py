@@ -65,8 +65,12 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
 
 
 if __name__=='__main__':
+    # from fist hyper parameter tuning : (with batch_size 256)
     # BN : Adam, lr=0.00035, weightdecay = 0.0225
     # GN : SGD, lr=0.00095, weightdecay = 0.0762
-    main(optimizer='SGD', lr=0.1, weightdecay=0.0001, normalization="batch")
-    test("group")
+    # probably quite bad
+    normalization="batch"
+    # SET THE PARAMETERS FOR THE EXPERIMENT
+    main(optimizer='SGD', lr=0.1, weightdecay=0.0001, normalization=normalization)
+    test(normalization)
 
