@@ -10,7 +10,7 @@ from torch.nn import CrossEntropyLoss
 # for now we choose not to save the model
 
 
-def main(optimizer, lr, weightdecay, normalization, n_epochs=50):
+def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
 
     assert optimizer in {"SGD", "Adam"}, "optimizer must be in \{SGD, Adam\}"
     assert normalization in {"group", "batch"}, "normalization must be in \{batch, group\}"

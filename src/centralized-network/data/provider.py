@@ -12,6 +12,9 @@ base_transform = transforms.Compose([
 ])
 
 def get_train_validation_data(transform=base_transform, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=2):
+
+    if transform is None:
+        transform = base_transform
     
     dataset = torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
@@ -40,6 +43,10 @@ def get_training_data(transform=base_transform, BATCH_SIZE=256,shuffle=True, n_w
     """
     get DataLoader for training data
     """
+
+    if transform is None:
+        transform = base_transform
+
     trainloader = torch.utils.data.DataLoader(
         torchvision.datasets.CIFAR10(
             DATAPATH, train=True, download=True, 
@@ -54,6 +61,9 @@ def get_testing_data(transform=base_transform, BATCH_SIZE=256, shuffle=True, n_w
     """
     get DataLoader for testing data
     """
+
+    if transform is None:
+        transform = base_transform
 
     testloader = torch.utils.data.DataLoader(
         torchvision.datasets.CIFAR10(
