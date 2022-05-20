@@ -21,8 +21,8 @@ def main(max_num_epochs = 15, num_samples=10):
     # we will see later for momentum as it requires more advanced config space and I'm not super familiar with raytune grid search
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
-        "lr" : tune.uniform(1e-7, 1e-3),
-        "weightdecay" : tune.uniform(0, 0.1)
+        "lr" : tune.loguniform(1e-7, 1e-2),
+        "weightdecay" : tune.loguniform(0, 0.1)
     } # maybe change some things here
 
 
