@@ -55,7 +55,8 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=No
 
     model = ResNet(normalization)
     if model_path is not None:
-        model.load_state_dict(torch.load(model_path))
+        model_state, _ = torch.load(model_path)
+        model.load_state_dict(model_state)
         
         
     model.cuda()
