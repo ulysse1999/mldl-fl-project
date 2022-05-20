@@ -1,0 +1,43 @@
+MAX EPOCHS : 12
+N_SAMPLES : 7
+config = {
+        "optimizer" : tune.grid_search(["SGD", "Adam"]),
+        "lr" : tune.uniform(1e-7, 1e-3),
+        "weightdecay" : tune.uniform(0, 0.1)
+    }
+BATCH NORMALIZATION + BATCH SIZE = 256
+
+== Status ==
+Current time: 2022-05-18 18:57:01 (running for 00:35:35.43)
+Memory usage on this node: 3.2/12.7 GiB
+Using AsyncHyperBand: num_stopped=14
+Bracket: Iter 8.000: -1.0464631482958793 | Iter 4.000: -1.2808824196457862 | Iter 2.000: -1.4867617309093475 | Iter 1.000: -1.7478900402784348
+Resources requested: 0/2 CPUs, 0/1 GPUs, 0.0/7.48 GiB heap, 0.0/3.74 GiB objects (0.0/1.0 accelerator_type:K80)
+Result logdir: /root/ray_results/train_2022-05-18_18-21-25
+Number of trials: 14/14 (14 TERMINATED)
++-------------------+------------+------------------+-------------+-------------+---------------+----------+------------+----------------------+
+| Trial name        | status     | loc              |          lr | optimizer   |   weightdecay |     loss |   accuracy |   training_iteration |
+|-------------------+------------+------------------+-------------+-------------+---------------+----------+------------+----------------------|
+| train_540bc_00000 | TERMINATED | 172.28.0.2:12863 | 0.000601189 | SGD         |    0.096673   | 0.965183 |     0.6636 |                   12 |
+| train_540bc_00001 | TERMINATED | 172.28.0.2:13344 | 0.000345775 | Adam        |    0.022405   | 0.926519 |     0.6893 |                   12 |
+| train_540bc_00002 | TERMINATED | 172.28.0.2:13809 | 0.000601552 | SGD         |    0.0395515  | 1.74233  |     0.3787 |                    1 |
+| train_540bc_00003 | TERMINATED | 172.28.0.2:13885 | 0.000360907 | Adam        |    0.0195573  | 1.2557   |     0.5765 |                    4 |
+| train_540bc_00004 | TERMINATED | 172.28.0.2:14059 | 0.00021378  | SGD         |    0.00504817 | 1.9916   |     0.2809 |                    1 |
+| train_540bc_00005 | TERMINATED | 172.28.0.2:14128 | 0.000414885 | Adam        |    0.0888522  | 1.75345  |     0.3947 |                    1 |
+| train_540bc_00006 | TERMINATED | 172.28.0.2:14194 | 0.000497304 | SGD         |    0.0036811  | 1.83902  |     0.3488 |                    1 |
+| train_540bc_00007 | TERMINATED | 172.28.0.2:14271 | 0.000373679 | Adam        |    0.0197138  | 1.66508  |     0.4982 |                    2 |
+| train_540bc_00008 | TERMINATED | 172.28.0.2:14387 | 0.000293279 | SGD         |    0.0452867  | 1.94064  |     0.3034 |                    1 |
+| train_540bc_00009 | TERMINATED | 172.28.0.2:14463 | 0.000752626 | Adam        |    0.096099   | 2.0125   |     0.2135 |                    1 |
+| train_540bc_00010 | TERMINATED | 172.28.0.2:14540 | 5.39418e-05 | SGD         |    0.0225321  | 2.20671  |     0.1988 |                    1 |
+| train_540bc_00011 | TERMINATED | 172.28.0.2:14614 | 0.000682318 | Adam        |    0.0507059  | 3.0725   |     0.2118 |                    1 |
+| train_540bc_00012 | TERMINATED | 172.28.0.2:14694 | 0.000553261 | SGD         |    0.0861855  | 1.53778  |     0.4395 |                    2 |
+| train_540bc_00013 | TERMINATED | 172.28.0.2:14807 | 0.0006497   | Adam        |    0.0393897  | 1.81349  |     0.447  |                    4 |
++-------------------+------------+------------------+-------------+-------------+---------------+----------+------------+----------------------+
+
+
+2022-05-18 18:57:01,351	INFO tune.py:702 -- Total run time: 2135.61 seconds (2135.42 seconds for the tuning loop).
+Best trial config: {'optimizer': 'Adam', 'lr': 0.00034577541749928367, 'weightdecay': 0.022405019091436752}
+Best trial final validation loss: 0.92651918977499
+Best trial final validation accuracy: 0.6893
+Files already downloaded and verified
+Best trial test set accuracy: 0.7251

@@ -1,0 +1,6 @@
+torch==1.11.0
+torchsummary
+torchinfo
+torchvision
+fedml
+ray
