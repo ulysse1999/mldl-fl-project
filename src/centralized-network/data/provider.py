@@ -13,7 +13,7 @@ base_transform = transforms.Compose([
                                      std=[0.229, 0.224, 0.225])
 ])
 
-def get_train_validation_data(transform=base_transform, train_proportion = 0.8, BATCH_SIZE=256, shuffle=True, n_worker=2):
+def get_train_validation_data(transform=base_transform, train_proportion = 0.8, BATCH_SIZE=128, shuffle=True, n_worker=2):
 
     if transform is None:
         transform = base_transform
@@ -41,7 +41,7 @@ def get_train_validation_data(transform=base_transform, train_proportion = 0.8, 
     return trainloader, valloader
 
 
-def get_training_data(transform=base_transform, BATCH_SIZE=256,shuffle=True, n_worker=2):
+def get_training_data(transform=base_transform, BATCH_SIZE=128,shuffle=True, n_worker=2):
     """
     get DataLoader for training data
     """
@@ -59,7 +59,7 @@ def get_training_data(transform=base_transform, BATCH_SIZE=256,shuffle=True, n_w
     )
     return trainloader
 
-def get_testing_data(transform=base_transform, BATCH_SIZE=256, shuffle=True, n_worker=2):
+def get_testing_data(transform=base_transform, BATCH_SIZE=128, shuffle=True, n_worker=2):
     """
     get DataLoader for testing data
     """
