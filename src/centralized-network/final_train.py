@@ -6,6 +6,7 @@ import torch, torch.nn as nn
 import numpy as np
 from torch.optim import SGD, Adam
 from torch.nn import CrossEntropyLoss
+from final_test import test
 
 # for now we choose not to save the model
 
@@ -60,5 +61,6 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=100):
 if __name__=='__main__':
     # BN : Adam, lr=0.00035, weightdecay = 0.0225
     # GN : SGD, lr=0.00095, weightdecay = 0.0762
-    main(optimizer='Adam', lr=0.00035, weightdecay=0.0225, normalization="batch")
+    main(optimizer='SGD', lr=0.00095, weightdecay=0.0762, normalization="group")
+    test("group")
 

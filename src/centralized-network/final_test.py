@@ -4,7 +4,7 @@ from data.provider import get_testing_data
 
 path = "checkpoint.pt"
 
-def main(normalization):
+def test(normalization):
 
     best_trained_model = ResNet(normalization)
 
@@ -31,4 +31,4 @@ def main(normalization):
     print(f"Test set accuracy : {correct/total}")
 
 if __name__=="__main__":
-    main(normalization="batch")
+    test(normalization="group")
