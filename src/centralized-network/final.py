@@ -67,8 +67,8 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=No
 
     optimizer = SGD(model.parameters(), lr=lr, weight_decay = weightdecay, momentum=0.9) if optimizer=="SGD" \
                 else Adam(model.parameters(), lr=lr, weight_decay = weightdecay)
-                
-    MIN_ACC = float("inf")
+
+    MAX_ACC = float("-inf")
 
     # model training
     for epoch in range(n_epochs):
@@ -119,8 +119,8 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=No
         print(f"Validation loss : {val_loss/val_steps}")
         print(f"Validation accuracy : {val_acc}")
 
-        if val_acc < MIN_ACC:
-            MIN_ACC = val_acc
+        if val_acc > MAX_ACC:
+            MAX_ACC = val_acc
             torch.save((model.state_dict(), optimizer.state_dict()), path)
             print("Model saved")
             
