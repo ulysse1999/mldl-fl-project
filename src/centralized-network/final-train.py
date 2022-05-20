@@ -59,7 +59,7 @@ def main(optimizer, lr, weightdecay, normalization, n_epochs=50):
     with torch.no_grad():
         for data in testloader:
             images, labels = data
-            images, labels = images.to('cpu'), labels.to('cpu')
+            images, labels = images.cuda(), labels.cuda()
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
