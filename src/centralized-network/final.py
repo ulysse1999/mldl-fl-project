@@ -67,13 +67,13 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=100, model_path=No
 
     optimizer = SGD(model.parameters(), lr=lr, weight_decay = weightdecay, momentum=0.9) if optimizer=="SGD" \
                 else Adam(model.parameters(), lr=lr, weight_decay = weightdecay)
-
-    model.train()
-
+                
     MIN_ACC = float("inf")
 
     # model training
     for epoch in range(n_epochs):
+
+        model.train()
         
         print(f"epoch : {epoch}")
         losses = list()
