@@ -10,7 +10,7 @@ from torchvision.transforms import Compose, ToTensor, Normalize, RandomHorizonta
 def get_transform(p_flip=0.5):
     transform = Compose(
         [   
-            RandomCrop(size=32, padding=4),
+            RandomCrop(size=32, padding=4, padding_mode='reflect'),
             RandomHorizontalFlip(p_flip),
             ToTensor(),
             Normalize(mean=[0.491, 0.482, 0.446],
