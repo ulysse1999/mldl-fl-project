@@ -9,5 +9,3 @@ Test set accuracy : 0.8766
 
 SECOND EXP :
 Best trial config: {'optimizer': 'SGD', 'lr': 0.0008192096356901848, 'weightdecay': 0.019428560727424483}
-started with this (20 epochs) val accuracy 0.75
-changed lr to 0.00008 and wd to 0.002 - training for 20 epochs
