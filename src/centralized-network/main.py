@@ -8,10 +8,11 @@ from ray.tune.schedulers import ASHAScheduler
 import torch, torch.nn as nn
 from ray.tune import CLIReporter
 import os
+from argparse import ArgumentParser
 
 
 
-def main(max_num_epochs = 15, num_samples=9):
+def main(normalization, max_num_epochs = 15, num_samples=9):
     """
     train / eval loop for HP tuning
     using transform on eval / test sets 
@@ -39,7 +40,7 @@ def main(max_num_epochs = 15, num_samples=9):
 
     transform = get_transform()
 
-    normalization = "batch" # PARAMETER !!!
+    
 
     trainloader, valloader = get_train_validation_data(transform=transform) # change parameters when data augmentation pipeline will be done
 
@@ -70,4 +71,8 @@ def main(max_num_epochs = 15, num_samples=9):
     print("Best trial test set accuracy: {}".format(test_acc))
 
 if __name__=='__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument("--normalization", required=True, type=str, choices=["batch", "group"])
+    args = parser.parse_args()
+
+    main(args.normalization)

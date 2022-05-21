@@ -129,13 +129,7 @@ def train(optimizer, lr, weightdecay, normalization, n_epochs=50, model_path=Non
 
 
 if __name__=='__main__':
-    # from fist hyper parameter tuning : (with batch_size 256)
-    # BN : Adam, lr=0.00035, weightdecay = 0.0225
-    # GN : SGD, lr=0.00095, weightdecay = 0.0762
-    # probably quite bad
-    normalization="batch"
-    # SET THE PARAMETERS FOR THE EXPERIMENT
-
+    # CLI handling, easy for tuning model (just reload last model from checkpoint, change lr/wd as wished)
     parser = argparse.ArgumentParser()
     parser.add_argument("--normalization", type=str, required=True, choices=["batch", "group"])
     parser.add_argument("--lr", type=float, required=True)
