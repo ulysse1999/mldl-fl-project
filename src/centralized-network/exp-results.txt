@@ -2,5 +2,5 @@ FIRST EXP :
 Best trial config: {'optimizer': 'Adam', 'lr': 0.00011897939617107107, 'weightdecay': 0.05847753609428313}
 started with this configuration
 after 50 epochs (validation accuracy around 0.77... all metrics had been stagnant for a whie - 20 epochs), changed lr to 2e-5
-
+20 epochs - val acc 0.88 - changed lr to 4e-6 and wd to 0.005
 
