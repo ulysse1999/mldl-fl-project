@@ -1,5 +1,6 @@
 FIRST EXP :
-optimizer='Adam', lr=0.00035, weightdecay=0.0225, normalization="batch"
-Test set accuracy : 0.7884
+Best trial config: {'optimizer': 'Adam', 'lr': 0.00011897939617107107, 'weightdecay': 0.05847753609428313}
+started with this configuration
+after 50 epochs (validation accuracy around 0.77... all metrics had been stagnant for a whie - 20 epochs), changed lr to 2e-5
 
 

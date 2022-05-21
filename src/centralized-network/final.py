@@ -142,10 +142,11 @@ if __name__=='__main__':
     parser.add_argument("--wd", type=float, required=True)
     parser.add_argument("--optimizer", type=str, required=True, choices=["SGD", "Adam"])
     parser.add_argument("--path", required=False, type=str, default=None) # for passing model
+    parser.add_argument("--epochs", required=False, type=int, default=50)
     args = parser.parse_args()
 
 
 
-    train(optimizer=args.optimizer, lr=args.lr, weightdecay=args.wd, normalization=args.normalization, model_path=args.path)
+    train(optimizer=args.optimizer, lr=args.lr, weightdecay=args.wd, normalization=args.normalization, model_path=args.path, n_epochs=args.epochs)
     test(args.normalization)
 
