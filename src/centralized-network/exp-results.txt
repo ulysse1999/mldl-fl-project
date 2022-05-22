@@ -9,3 +9,10 @@ Test set accuracy : 0.8766
 
 SECOND EXP :
 Best trial config: {'optimizer': 'SGD', 'lr': 0.0008192096356901848, 'weightdecay': 0.019428560727424483}
+20 epochs with these params - Test set accuracy : 0.7651
+relaunch for 20 epochs (didnt seem to have reached convergence) : test set accuracy : 0.8049
+relaunch for 20 epochs (reached CV) : test set accuracy : 0.81
+changed lr to 0.00005 : 20 epochs - test set accuracy = 0.84 (val accuracy = 0.87)
+lr 0.00005 wd 0.005 20 epochs : TSA = 0.85
+lr 0.000005 wd 0.005 20 epochs : TSA = 0.85
+STop woth 85 accuracy
