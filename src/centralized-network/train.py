@@ -10,7 +10,7 @@ import os
 
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
-def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
+def train(config, trainloader, valloader, normalization, checkpoint_dir = None, n_epochs=10):
     """
     training of the global, centralized model
 
@@ -18,7 +18,7 @@ def train(config, trainloader, valloader, checkpoint_dir = None, n_epochs=10):
     
     """
 
-    model = ResNet(normalization="group")
+    model = ResNet(normalization=normalization)
     model.cuda()
 
 

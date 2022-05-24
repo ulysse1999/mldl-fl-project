@@ -8,10 +8,11 @@ from ray.tune.schedulers import ASHAScheduler
 import torch, torch.nn as nn
 from ray.tune import CLIReporter
 import os
+from argparse import ArgumentParser
 
 
 
-def main(max_num_epochs = 12, num_samples=7):
+def main(normalization, max_num_epochs = 15, num_samples=9):
     """
     train / eval loop for HP tuning
     using transform on eval / test sets 
@@ -21,9 +22,9 @@ def main(max_num_epochs = 12, num_samples=7):
     # we will see later for momentum as it requires more advanced config space and I'm not super familiar with raytune grid search
     config = {
         "optimizer" : tune.grid_search(["SGD", "Adam"]),
-        "lr" : tune.uniform(1e-7, 1e-3),
+        "lr" : tune.loguniform(1e-4, 1e-2),
         "weightdecay" : tune.uniform(0, 0.1)
-    }
+    } # maybe change some things here
 
 
 
@@ -39,10 +40,12 @@ def main(max_num_epochs = 12, num_samples=7):
 
     transform = get_transform()
 
+    
+
     trainloader, valloader = get_train_validation_data(transform=transform) # change parameters when data augmentation pipeline will be done
 
     result = tune.run(
-        tune.with_parameters(train, trainloader=trainloader, valloader=valloader, n_epochs=max_num_epochs),
+        tune.with_parameters(train, trainloader=trainloader, valloader=valloader, n_epochs=max_num_epochs, normalization=normalization),
         resources_per_trial={"cpu": 2, "gpu": 1},
         num_samples=num_samples,
         config=config,
@@ -58,7 +61,7 @@ def main(max_num_epochs = 12, num_samples=7):
     print("Best trial final validation accuracy: {}".format(
             best_trial.last_result["accuracy"]))
 
-    best_trained_model = ResNet(normalization="group")
+    best_trained_model = ResNet(normalization=normalization)
     best_checkpoint_dir = best_trial.checkpoint.value
     model_state, optimizer_state = torch.load(os.path.join(
         best_checkpoint_dir, "checkpoint"))
@@ -68,4 +71,8 @@ def main(max_num_epochs = 12, num_samples=7):
     print("Best trial test set accuracy: {}".format(test_acc))
 
 if __name__=='__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument("--normalization", required=True, type=str, choices=["batch", "group"])
+    args = parser.parse_args()
+
+    main(args.normalization)

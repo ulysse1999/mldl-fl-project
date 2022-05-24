@@ -1,0 +1,18 @@
+FIRST EXP :
+Best trial config: {'optimizer': 'Adam', 'lr': 0.00011897939617107107, 'weightdecay': 0.05847753609428313}
+started with this configuration
+after 50 epochs (validation accuracy around 0.77... all metrics had been stagnant for a whie - 20 epochs), changed lr to 2e-5
+20 epochs - val acc 0.88 - changed lr to 4e-6 and wd to 0.005
+20 epochs : val acc 0.91 - changed lr to 2e-7 and wd to 0.0005
+10 epochs : val acc 0.93 (almost 0.94) and 
+Test set accuracy : 0.8766
+
+SECOND EXP :
+Best trial config: {'optimizer': 'SGD', 'lr': 0.0008192096356901848, 'weightdecay': 0.019428560727424483}
+20 epochs with these params - Test set accuracy : 0.7651
+relaunch for 20 epochs (didnt seem to have reached convergence) : test set accuracy : 0.8049
+relaunch for 20 epochs (reached CV) : test set accuracy : 0.81
+changed lr to 0.00005 : 20 epochs - test set accuracy = 0.84 (val accuracy = 0.87)
+lr 0.00005 wd 0.005 20 epochs : TSA = 0.85
+lr 0.000005 wd 0.005 20 epochs : TSA = 0.85
+STop woth 85 accuracy

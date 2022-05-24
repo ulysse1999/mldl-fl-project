@@ -9,12 +9,10 @@ for parameter tuning
                                           ^
 adapt train.py for hyperparameter tuning  |
 
-training : validation at each epoch ? if yes -> change data repartition in data/provider.py (this option is better for HP tuning)
-else, change train function
-(learning rate, weight decay, optimizer, momentum in SGD...)
-write test_accuracy function
-train with best found parameters (after param search)
-evaluate accuracy for both BN and GN
+for bother BN and GN : 
+run hyper parameter tuning scripts (change n_epochs, num_samples and probably the tuning parameters on weightdecay / learning rate)
+train with best found parameters for a large number of epochs 
+evaluate accuracy don't forget to apply augmentation pipeline (ToTensor -> Normalization)
 
 SECOND PART, FL baseline :
 
