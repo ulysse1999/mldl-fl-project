@@ -1,8 +1,6 @@
 from data.provider import get_dataset, get_iid_split
 from data.augmentation import get_transform
 
-from . import augmentation
-
 
 def main():
 
