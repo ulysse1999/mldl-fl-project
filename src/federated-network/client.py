@@ -9,7 +9,7 @@ class Client:
 
     def __init__(self, normalization, local_dataset, epochs=1):
         self.model = ResNet(normalization)
-        self.optimizer = SGD(lr=1)
+        self.normalization = normalization
         self.dataset = torch.utils.data.DataLoader(
             local_dataset,
             BATCH_SIZE=32,
@@ -22,6 +22,8 @@ class Client:
 
     def train(self):
 
+        optimizer = SGD(lr=1)
+
         criterion = CrossEntropyLoss()
         criterion.cuda()
 
@@ -31,14 +33,21 @@ class Client:
                 imgs, labels = data
                 imgs, labels = imgs.cuda(), labels.cuda()
 
-                self.optimizer.zero_grad()
+                optimizer.zero_grad()
                 pred = self.model(imgs)
                 pred = pred.cuda()
                 
                 loss = criterion(pred, labels)
                 loss.backward()
-                self.optimizer.step()
+                optimizer.step()
 
-    def send_data():
+
+    def get_data(self, key):
+        model_dict = self.model.state_dict()
+        return model_dict[key].data.clone()
+
+    def set_model(self, model_dict):
+        self.model = ResNet(self.normalization)
+        self.model.load_state_dict(model_dict)
 
     
