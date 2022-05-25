@@ -33,7 +33,7 @@ def main(epochs, normalization, rounds, client_proportion):
     clients = dict()
 
     for i in range(N_CLIENTS):
-        clients[i] = Client(subdatasets[i])
+        clients[i] = Client(subdatasets[i], epochs)
 
     # create server
 
