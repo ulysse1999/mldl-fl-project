@@ -21,7 +21,7 @@ def average(clients, normalization, client_subset):
     return dummy_dict
 
 
-def main(epochs, normalization, rounds, client_proportion):
+def main(epochs, normalization, rounds, client_proportion, batch_size):
 
     # get data and split it
     transform = get_transform()
@@ -33,7 +33,7 @@ def main(epochs, normalization, rounds, client_proportion):
     clients = dict()
 
     for i in range(N_CLIENTS):
-        clients[i] = Client(normalization, subdatasets[i], epochs)
+        clients[i] = Client(normalization, subdatasets[i], batch_size,epochs)
 
     # create server
 
@@ -68,7 +68,7 @@ if __name__=='__main__':
     parser.add_argument("--client_proportion", type=float, required=True)
 
     args = parser.parse_args()
-    main(args.epochs, args.normalization, args.rounds, args.client_proportion)
+    main(args.epochs, args.normalization, args.rounds, args.client_proportion, args.batchsize)
 
 
 
