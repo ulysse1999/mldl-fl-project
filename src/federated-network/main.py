@@ -54,6 +54,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
+    return 0
+
 
 
 
