@@ -10,6 +10,7 @@ from random import sample
 # global parameters : number of epochs locally, normalization type
 
 def average(clients, normalization, client_subset):
+    print("Server update")
 
     n_selected_clients = len(client_subset)
 
@@ -47,8 +48,10 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
         client_subset = sample(range(N_CLIENTS), int(client_proportion*N_CLIENTS))
 
         for index in client_subset:
+            print(f"Training client  {index}")
             clients[index].set_model(server.model.state_dict())
             clients[index].train()
+            print("Done")
 
         model_dict = average(clients, normalization, client_subset)
 
