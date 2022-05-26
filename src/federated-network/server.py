@@ -3,8 +3,7 @@ path = CHECKPOINT_PATH
 
 class Server:
 
-    def __init__(self, normalization):
-
+    def __init__(self):        
         self.model = ResNet()
 
     def update_model(self, state_dict):
