@@ -55,7 +55,6 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
         server.update_model(model_dict)
 
 
-    ...
 
 
 if __name__=='__main__':
