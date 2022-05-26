@@ -56,6 +56,8 @@ class ResNet(nn.Module):
     def __init__(self, normalization="batch"):
         super().__init__()
 
+        assert normalization in {"batch", "group"}, f"Normalization should be batch or group, is :{normalization}"
+
         if normalization=="batch":
             norm = nn.BatchNorm2d
         elif normalization=="group":
