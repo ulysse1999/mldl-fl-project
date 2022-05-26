@@ -8,7 +8,6 @@ from torch.nn import CrossEntropyLoss
 class Client:
 
     def __init__(self, normalization, local_dataset, batch_size=32 ,epochs=1):
-        self.model = ResNet(normalization)
         self.normalization = normalization
         self.dataset = torch.utils.data.DataLoader(
             local_dataset,
@@ -22,7 +21,7 @@ class Client:
 
     def train(self):
 
-        optimizer = SGD(lr=1)
+        optimizer = SGD(self.model.parameters(), lr=1)
 
         criterion = CrossEntropyLoss()
         criterion.cuda()

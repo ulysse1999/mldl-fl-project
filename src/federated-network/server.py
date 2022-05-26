@@ -1,3 +1,5 @@
+from resnet50 import ResNet
+
 CHECKPOINT_PATH = "global_checkpoint.pt"
 path = CHECKPOINT_PATH
 
