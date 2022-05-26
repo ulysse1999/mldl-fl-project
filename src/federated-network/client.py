@@ -27,6 +27,9 @@ class Client:
         criterion = CrossEntropyLoss()
         criterion.cuda()
 
+        self.model.cuda()
+        self.model.train()
+
         for epoch in self.epochs:
             # training loop
             for i, data in enumerate(self.dataset):
