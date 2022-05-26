@@ -55,7 +55,7 @@ def main(epochs, normalization, rounds, client_proportion):
         server.update_model(model_dict)
 
 
-        ...
+    ...
 
 
 if __name__=='__main__':
@@ -68,7 +68,7 @@ if __name__=='__main__':
     parser.add_argument("--client_proportion", type=float, required=True)
 
     args = parser.parse_args()
-    main(args.epochs, args.normalization, args.rounds)
+    main(args.epochs, args.normalization, args.rounds, args.client_proportion)
 
 
 
