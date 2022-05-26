@@ -10,11 +10,11 @@ class Server:
 
     def update_model(self, state_dict):
         
-        model.load_state_dict(state_dict)
+        self.model.load_state_dict(state_dict)
 
     def test_global(self):
 
-        model.eval()
+        self.model.eval()
 
         testloader = get_testing_data()
 
@@ -34,6 +34,6 @@ class Server:
 
     def save_model(self):
 
-        torch.save((model.state_dict(), optimizer.state_dict()), path)
+        torch.save((self.model.state_dict(), optimizer.state_dict()), path)
 
         print("Model saved")
