@@ -54,8 +54,9 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
+    print("the training is complete")
 
-    ...
+
 
 
 if __name__=='__main__':
