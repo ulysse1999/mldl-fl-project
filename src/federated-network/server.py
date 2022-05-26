@@ -3,11 +3,6 @@ path = CHECKPOINT_PATH
 
 class Server:
 
-<<<<<<< HEAD
-    def__init__(self, normalization):
-
-    self.model = ResNet(normalization)
-=======
     def __init__(self, normalization):
 
         self.model = ResNet()
@@ -41,4 +36,3 @@ class Server:
         torch.save((model.state_dict(), optimizer.state_dict()), path)
 
         print("Model saved")
->>>>>>> ricardo
