@@ -29,7 +29,7 @@ class Client:
         self.model.cuda()
         self.model.train()
 
-        for epoch in self.epochs:
+        for epoch in range(self.epochs):
             # training loop
             for i, data in enumerate(self.dataset):
                 imgs, labels = data
