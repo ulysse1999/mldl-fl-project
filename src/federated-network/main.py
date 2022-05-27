@@ -7,6 +7,7 @@ from resnet50 import ResNet
 from random import sample
 from test import test_accuracy
 import copy
+import gc
 
 
 # global parameters : number of epochs locally, normalization type
@@ -49,6 +50,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
     for round in range(1,rounds+1):
 
+        gc.collect()
+
         print(f"##### ROUND {round}")
 
         client_subset = sample(range(N_CLIENTS), int(client_proportion*N_CLIENTS))
@@ -67,6 +70,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         if round%20==0:
             server.test_global()
+
 
     server.save_model()
 
