@@ -36,3 +36,23 @@ def get_iid_split(dataset):
         [N_IMAGES_PER_CLIENT]*N_CLIENTS)
 
     return subdatasets
+
+
+def get_testing_data(transform=base_transform, BATCH_SIZE=256, shuffle=True, n_worker=2):
+    """
+    get DataLoader for testing data
+    """
+
+    if transform is None:
+        transform = base_transform
+
+    testloader = torch.utils.data.DataLoader(
+        torchvision.datasets.CIFAR10(
+            DATAPATH, train=False, download=True, 
+            transform=transform,
+        ),
+        batch_size=BATCH_SIZE, shuffle=shuffle,
+        num_workers = n_worker
+    )
+
+    return testloader
