@@ -66,6 +66,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.test_global()
 
+    server.save_model()
+
     
     
 
