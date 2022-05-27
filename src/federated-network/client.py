@@ -21,7 +21,7 @@ class Client:
 
     def train(self):
 
-        optimizer = SGD(self.model.parameters(), lr=1e-4)
+        optimizer = SGD(self.model.parameters(), lr=0.1)
 
         criterion = CrossEntropyLoss()
         criterion.cuda()
