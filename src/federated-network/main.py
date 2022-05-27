@@ -5,7 +5,7 @@ from server import Server
 from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
-from train import test_accuracy
+from test import test_accuracy
 
 
 # global parameters : number of epochs locally, normalization type
