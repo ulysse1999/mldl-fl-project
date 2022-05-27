@@ -72,11 +72,11 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 if __name__=='__main__':
     parser = ArgumentParser()
 
-    parser.add_argument("--normalization", type=str, choices=["group", "batch"], required=True)
-    parser.add_argument("--epochs", type=int, required=True)
-    parser.add_argument("--rounds", type=int, required=True)
-    parser.add_argument("--batchsize", type=int, required=True)
-    parser.add_argument("--client_proportion", type=float, required=True)
+    parser.add_argument("--normalization", type=str, choices=["group", "batch"], required=True, help="Normalization layer, group or batch")
+    parser.add_argument("--epochs", type=int, required=True, help="Number of epochs for local training of clients")
+    parser.add_argument("--rounds", type=int, required=True, help="Number of rounds of training")
+    parser.add_argument("--batchsize", type=int, required=True, help="Batch size during learning")
+    parser.add_argument("--client_proportion", type=float, required=True, help="Proportion of client selected during each round")
 
     args = parser.parse_args()
     main(args.epochs, args.normalization, args.rounds, args.client_proportion, args.batchsize)
