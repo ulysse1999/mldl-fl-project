@@ -19,13 +19,8 @@ def average(clients, normalization, client_subset):
     dummy_model = ResNet(normalization)
     dummy_dict = dummy_model.state_dict()
 
-    print("DUMMY DICT")
-    print(dummy_dict)
     for key in dummy_dict:
         dummy_dict[key] = sum([clients[i].get_data(key) for i in client_subset]) / n_selected_clients
-
-    print("DUMMY DICT")
-    print(dummy_dict)
 
     return dummy_dict
 
