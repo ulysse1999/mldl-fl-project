@@ -8,6 +8,7 @@ from random import sample
 from test import test_accuracy
 import copy
 import gc
+from client_simulation import ClientSimulation
 
 
 # global parameters : number of epochs locally, normalization type
@@ -34,6 +35,10 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
     dataset = get_dataset(transform)
     subdatasets = get_iid_split(dataset)
 
+    n_clients_each_round = int(client_proportion*N_CLIENTS)
+
+    sim = ClientSimulation(n_clients_each_round, normalization)
+
     # create clients
 
     clients = dict()
@@ -54,17 +59,12 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         print(f"##### ROUND {round}")
 
-        client_subset = sample(range(N_CLIENTS), int(client_proportion*N_CLIENTS))
+        client_subset = sample(range(N_CLIENTS), n_clients_each_round)
 
-        for index in client_subset:
-            print(f"Training client  {index}")
-            server_model_dict = server.get_model_dict()
+        server_model_dict = server.get_model_dict()
+        trained_models = sim.train(clients, client_subset, server_model_dict)
 
-            clients[index].set_model(server_model_dict)
-            clients[index].train()
-            print("Done")
-
-        model_dict = average(clients, normalization, client_subset)
+        model_dict = average(trained_models, normalization, client_subset)
 
         server.update_model(model_dict)
 
