@@ -28,6 +28,7 @@ class Server:
                 images, labels = data
                 images, labels = images.to('cpu'), labels.to('cpu')
                 outputs = self.model(images)
+                print(predicted)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
