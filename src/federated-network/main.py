@@ -46,7 +46,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
     # training loop
 
-    for round in range(rounds):
+    for round in range(1,rounds+1):
 
         print(f"##### ROUND {round}")
 
@@ -64,7 +64,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-        server.test_global()
+        if round%20==0 and round != 0:
+            server.test_global()
 
     server.save_model()
 
