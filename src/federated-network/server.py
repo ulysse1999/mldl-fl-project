@@ -1,4 +1,7 @@
 from resnet50 import ResNet
+import torch
+from data.provider import get_testing_data
+
 
 CHECKPOINT_PATH = "global_checkpoint.pt"
 path = CHECKPOINT_PATH
@@ -6,7 +9,7 @@ path = CHECKPOINT_PATH
 class Server:
 
     def __init__(self, normalization):        
-        self.model = ResNet()
+        self.model = ResNet(normalization)
 
     def update_model(self, state_dict):
         
@@ -24,7 +27,7 @@ class Server:
             for data in testloader:
                 images, labels = data
                 images, labels = images.to('cpu'), labels.to('cpu')
-                outputs = model(images)
+                outputs = self.model(images)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
