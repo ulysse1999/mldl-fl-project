@@ -57,7 +57,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
             print(f"Training client  {index}")
             server_model_dict = server.get_model_dict()
 
-            clients[index].set_model(server_model_dict))
+            clients[index].set_model(server_model_dict)
             clients[index].train()
             print("Done")
 
@@ -65,8 +65,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-        if round%20==0:
-            server.test_global()
+        server.test_global()
 
     server.save_model()
 

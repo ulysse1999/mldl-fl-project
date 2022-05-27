@@ -50,7 +50,7 @@ class Client:
 
 
     def get_data(self, key):
-        return self.model_dict[key].data.clone()
+        return self.model_dict[key]
 
     def set_model(self, model_dict):
         self.model = ResNet(self.normalization)
