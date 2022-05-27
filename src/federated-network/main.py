@@ -59,7 +59,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-    test_acc = test_accuracy(server.model, transform=transform)
+    test_acc = test_accuracy(server.model)
     print("Best trial test set accuracy: {}".format(test_acc))
     
 
