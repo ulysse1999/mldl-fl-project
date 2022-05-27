@@ -65,7 +65,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-        server.test_global()
+        if round%20==0:
+            server.test_global()
 
     server.save_model()
 
