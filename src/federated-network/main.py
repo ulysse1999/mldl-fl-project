@@ -19,6 +19,7 @@ def average(clients, normalization, client_subset):
     dummy_dict = dummy_model.state_dict()
     for key in dummy_dict:
         dummy_dict[key] = sum([clients[i].get_data(key) for i in client_subset]) / n_selected_clients
+        print(dummy_dict[key])
 
     return dummy_dict
 
