@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
 from test import test_accuracy
+import copy
 
 
 # global parameters : number of epochs locally, normalization type
@@ -52,7 +53,9 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         for index in client_subset:
             print(f"Training client  {index}")
-            clients[index].set_model(server.model.state_dict())
+            server_model_dict = server.get_model_dict()
+
+            clients[index].set_model(copy.deepcopy(server_model_dict))
             clients[index].train()
             print("Done")
 

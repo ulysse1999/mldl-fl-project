@@ -12,8 +12,10 @@ class Server:
         self.model = ResNet(normalization)
 
     def update_model(self, state_dict):
-        
         self.model.load_state_dict(state_dict)
+
+    def get_model_dict(self):
+        return self.model.state_dict()
 
     def test_global(self):
 
@@ -29,7 +31,6 @@ class Server:
                 images, labels = images.to('cpu'), labels.to('cpu')
                 outputs = self.model(images)
                 _, predicted = torch.max(outputs.data, 1)
-                print(predicted)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
 
