@@ -19,7 +19,7 @@ class Server:
 
         self.model.eval()
 
-        testloader = get_testing_data()
+        testloader = get_testing_data(BATCH_SIZE=10000) # test dataset size is 10k
 
         correct = 0
         total = 0
