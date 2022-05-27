@@ -43,7 +43,10 @@ class Client:
                 loss.backward()
                 optimizer.step()
 
+        self.model = self.model.to('cpu')
+
         self.model_dict = self.model.state_dict()
+        torch.cuda.empty_cache()
 
 
     def get_data(self, key):
