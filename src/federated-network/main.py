@@ -79,7 +79,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size, path):
             server.test_global()
 
 
-    server.save_model()
+        if round%100==0:
+            server.save_model()
 
     
     

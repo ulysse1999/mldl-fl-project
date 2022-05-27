@@ -9,3 +9,8 @@ test set accuracy :
 60 rounds : 0.42
 80 rounds : 0.45
 100 rounds : 0.48
+120 rounds : 0.50
+140 rounds : 0.5147
+160 rounds : 0.53
+180 rounds : 0.548 
+crashed
