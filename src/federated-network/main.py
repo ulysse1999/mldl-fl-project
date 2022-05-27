@@ -5,6 +5,7 @@ from server import Server
 from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
+from train import test_accuracy
 
 
 # global parameters : number of epochs locally, normalization type
@@ -54,7 +55,9 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-    print("the training is complete")
+    test_acc = test_accuracy(server.model, transform=transform)
+    print("Best trial test set accuracy: {}".format(test_acc))
+    
 
 
 
