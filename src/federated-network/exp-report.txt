@@ -2,4 +2,10 @@ with learning rate of 1 (or 0.1), the network does not learn anything
 we should use typical learning rates for this network, around 1e-3
 the averaging step and passing the averaged network to the server network works
 more advanced testing with these options :
---normalization batch --epochs 1 --rounds 100 --batchsize 10 --client_proportion 0.1
+--normalization batch --epochs 1 --rounds 100 --batchsize 10 --client_proportion 0.1 (lr=1e-3, wd = 5e-4)
+test set accuracy :
+20 rounds : 0.25
+40 rounds : 0.37
+60 rounds : 0.42
+80 rounds : 0.45
+100 rounds : 0.48

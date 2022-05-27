@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
 from test import test_accuracy
-import copy
+import torch
 import gc
 from client_simulation import ClientSimulation
 
@@ -14,6 +14,8 @@ from client_simulation import ClientSimulation
 # global parameters : number of epochs locally, normalization type
 
 def average(clients, normalization, client_subset):
+    # WARNING clients is not the clients dictionary of the main function
+    # it is a dictionary of _Client computed at each round in ClientSimulation.train
     print("Server update")
 
     n_selected_clients = len(client_subset)
@@ -28,7 +30,10 @@ def average(clients, normalization, client_subset):
     return dummy_dict
 
 
-def main(epochs, normalization, rounds, client_proportion, batch_size):
+def main(epochs, normalization, rounds, client_proportion, batch_size, path):
+
+    
+
 
     # get data and split it
     transform = get_transform()
@@ -50,6 +55,8 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
     server = Server(normalization)
 
+    if path is not None:
+        server.update_model(torch.load(path))
 
     # training loop
 
@@ -88,9 +95,10 @@ if __name__=='__main__':
     parser.add_argument("--rounds", type=int, required=True, help="Number of rounds of training")
     parser.add_argument("--batchsize", type=int, required=True, help="Batch size during learning")
     parser.add_argument("--client_proportion", type=float, required=True, help="Proportion of client selected during each round")
+    parser.add_argument("--path", type=str, required=False, default=None, help="path of a previous model")
 
     args = parser.parse_args()
-    main(args.epochs, args.normalization, args.rounds, args.client_proportion, args.batchsize)
+    main(args.epochs, args.normalization, args.rounds, args.client_proportion, args.batchsize, args.path)
 
 
 
