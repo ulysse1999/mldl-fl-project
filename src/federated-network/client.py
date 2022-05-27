@@ -43,10 +43,11 @@ class Client:
                 loss.backward()
                 optimizer.step()
 
+        self.model_dict = self.model.state_dict()
+
 
     def get_data(self, key):
-        model_dict = self.model.state_dict()
-        return model_dict[key].data.clone()
+        return self.model_dict[key].data.clone()
 
     def set_model(self, model_dict):
         self.model = ResNet(self.normalization)

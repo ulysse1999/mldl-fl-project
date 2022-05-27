@@ -35,7 +35,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
     clients = dict()
 
     for i in range(N_CLIENTS):
-        clients[i] = Client(normalization, subdatasets[i], batch_size,epochs)
+        clients[i] = Client(normalization, subdatasets[i], batch_size, epochs)
 
     # create server
 
@@ -52,7 +52,7 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         for index in client_subset:
             print(f"Training client  {index}")
-            clients[index].set_model(server.model.state_dict())
+            clients[index].set_model(server.model.state_dict().copy())
             clients[index].train()
             print("Done")
 
