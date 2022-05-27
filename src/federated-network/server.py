@@ -37,6 +37,6 @@ class Server:
 
     def save_model(self):
 
-        torch.save((self.model.state_dict(), optimizer.state_dict()), path)
+        torch.save(self.model.state_dict(), path)
 
         print("Model saved")

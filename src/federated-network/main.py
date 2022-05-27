@@ -45,7 +45,9 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
     # training loop
 
-    for _ in range(rounds):
+    for round in range(rounds):
+
+        print(f"##### ROUND {round}")
 
         client_subset = sample(range(N_CLIENTS), int(client_proportion*N_CLIENTS))
 
@@ -59,8 +61,9 @@ def main(epochs, normalization, rounds, client_proportion, batch_size):
 
         server.update_model(model_dict)
 
-    test_acc = test_accuracy(server.model)
-    print("Best trial test set accuracy: {}".format(test_acc))
+        server.test_global()
+
+    
     
 
 
