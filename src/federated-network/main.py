@@ -9,7 +9,9 @@ from test import test_accuracy
 import torch
 import gc
 from client_simulation import ClientSimulation
+from unbalancing.provider import generate_niid_unbalanced_data
 
+N_CLASSES= 10
 
 # global parameters : number of epochs locally, normalization type
 
@@ -23,22 +25,27 @@ def average(clients, normalization, client_subset):
     dummy_model = ResNet(normalization)
     dummy_dict = dummy_model.state_dict()
 
+    total_samples = sum([len(clients[i].dataset) for i in client_subset])
+    proportion = {i:len(clients[i].dataset) / total_samples for i in client_subset}
+
     for key in dummy_dict:
             
-        dummy_dict[key] = sum([clients[i].get_data(key) for i in client_subset]) / n_selected_clients
+        dummy_dict[key] = sum([ proportion[i] * clients[i].get_data(key) for i in client_subset]) 
 
     return dummy_dict
 
 
-def main(epochs, normalization, rounds, client_proportion, batch_size, path):
+def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, path):
 
     
-
-
-    # get data and split it
     transform = get_transform()
     dataset = get_dataset(transform)
-    subdatasets = get_iid_split(dataset)
+
+    # get data and split it
+    if distrib=="iid":
+        subdatasets = get_iid_split(dataset)
+    else:
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=0.25)
 
     n_clients_each_round = int(client_proportion*N_CLIENTS)
 
@@ -97,9 +104,10 @@ if __name__=='__main__':
     parser.add_argument("--batchsize", type=int, required=True, help="Batch size during learning")
     parser.add_argument("--client_proportion", type=float, required=True, help="Proportion of client selected during each round")
     parser.add_argument("--path", type=str, required=False, default=None, help="path of a previous model")
+    parser.add_argument("--distrib", type=str, required=True, choices=["iid", "niid"])
 
     args = parser.parse_args()
-    main(args.epochs, args.normalization, args.rounds, args.client_proportion, args.batchsize, args.path)
+    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path)
 
 
 
