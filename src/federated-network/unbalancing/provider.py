@@ -32,6 +32,8 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
     #distribution of data over clients
     data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000)
 
+    print(data_per_client)
+
     result = dict()
 
     for client in range(n_clients):
