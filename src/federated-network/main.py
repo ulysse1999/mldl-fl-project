@@ -35,7 +35,7 @@ def average(clients, normalization, client_subset):
     return dummy_dict
 
 
-def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, path):
+def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, alpha):
 
     
     transform = get_transform()
@@ -45,7 +45,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
     if distrib=="iid":
         subdatasets = get_iid_split(dataset)
     else:
-        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=0.25, batchsize=batch_size)
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha, batchsize=batch_size)
 
     n_clients_each_round = int(client_proportion*N_CLIENTS)
 
@@ -105,9 +105,10 @@ if __name__=='__main__':
     parser.add_argument("--client_proportion", type=float, required=True, help="Proportion of client selected during each round")
     parser.add_argument("--path", type=str, required=False, default=None, help="path of a previous model")
     parser.add_argument("--distrib", type=str, required=True, choices=["iid", "niid"])
+    parser.add_argument("--alpha", type=float, required=False, default=1.0, help="Concentration parameter for Dirichlet distribution")
 
     args = parser.parse_args()
-    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path)
+    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path, args.alpha)
 
 
 
