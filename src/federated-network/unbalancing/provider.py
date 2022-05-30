@@ -22,7 +22,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
     label = dataset.targets
 
     data_by_label = {
-        k : np.where(label==k) for k in range(n_classes)
+        k : np.where(label==k, label) for k in range(n_classes)
     }
 
     # distribution of classes for each client
@@ -38,6 +38,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
         client_dataset = []
         
         class_ids = choices(range(n_classes), weights=classes_over_clients[client], k=int(data_per_client[client]))
+
         for lab in class_ids:
             i= choice(data_by_label[lab])
             client_dataset.append(i)
@@ -50,15 +51,5 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
         
 
 
-class NIIDataset(Dataset):
-
-    def __init__(self, data):
-        self.data = data
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        return self.data[0], self.data[1]
 
     
