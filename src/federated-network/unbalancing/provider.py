@@ -19,7 +19,7 @@ DATAPATH = ".cifar10"
 
 def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
 
-    label = dataset.targets
+    label = np.array(dataset.targets)
 
     data_by_label = {
         k : np.where(label==k)[0] for k in range(n_classes)
