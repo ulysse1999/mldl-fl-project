@@ -35,7 +35,7 @@ def average(clients, normalization, client_subset):
     return dummy_dict
 
 
-def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, alpha):
+def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, path, alpha):
 
     
     transform = get_transform()
