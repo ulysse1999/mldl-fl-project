@@ -45,7 +45,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
     if distrib=="iid":
         subdatasets = get_iid_split(dataset)
     else:
-        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=0.25, epoch_size=epochs)
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=0.25, batchsize=batch_size)
 
     n_clients_each_round = int(client_proportion*N_CLIENTS)
 
