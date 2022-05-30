@@ -37,7 +37,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
 
         client_dataset = []
         
-        class_ids = choices(range(n_classes), weights=classes_over_clients[client], k=data_per_client[client])
+        class_ids = choices(range(n_classes), weights=classes_over_clients[client], k=int(data_per_client[client]))
         for lab in class_ids:
             i= choice(data_by_label[lab])
             client_dataset.append(i)
