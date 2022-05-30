@@ -41,10 +41,6 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsiz
         data_per_client[indices] -=1
         # lose a bit of data, not a big deal
 
-
-
-    print(data_per_client)
-
     result = dict()
 
     for client in range(n_clients):
