@@ -86,7 +86,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
             server.test_global()
 
 
-        if round%100==0:
+        if round%20==0:
             server.save_model()
 
     
