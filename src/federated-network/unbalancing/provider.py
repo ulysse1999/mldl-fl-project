@@ -25,7 +25,6 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
         k : np.where(label==k)[0] for k in range(n_classes)
     }
 
-    print(data_by_label)
 
     # distribution of classes for each client
     classes_over_clients = np.random.dirichlet([alpha]*n_classes, n_clients)
