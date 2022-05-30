@@ -17,7 +17,7 @@ base_transform = transforms.Compose([
 
 DATAPATH = ".cifar10"
 
-def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
+def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, epoch_size):
 
     label = np.array(dataset.targets)
 
@@ -31,6 +31,17 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
 
     #distribution of data over clients
     data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000)
+
+    # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % EPOCHS == 1
+
+    is_there_a_wrong_amount_of_data = np.any(data_per_client % epoch_size ==1)
+
+    if is_there_a_wrong_amount_of_data:
+        indices = np.where(data_per_client % epoch_size ==1)
+        data_per_client[indices] -=1
+        # lose a bit of data, not a big deal
+
+
 
     print(data_per_client)
 
