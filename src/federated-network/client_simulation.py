@@ -2,6 +2,7 @@ from torch.optim import SGD
 from torch.nn import CrossEntropyLoss
 from resnet50 import ResNet
 import torch
+from joblib import Parallel, delayed
 
 class ClientSimulation:
 
@@ -12,18 +13,16 @@ class ClientSimulation:
 
     def train(self, clients, client_subset, server_model_dict):
 
-        cl_data = dict()
+        self.cl_data = dict()
+
+        Parallel(n_jobs=2, require="sharedmem")(delayed(self._train(clients, client_index, server_model_dict)) for client_index in client_subset)
         
-        for index in client_subset:
-            
-            cl = _Client(self.normalization, clients[index].dataset, clients[index].epochs, server_model_dict)
-            print(f"Training client {index}")
-            cl.train()
-            print("Done")
-            cl_data[index] = cl
+        return self.cl_data
 
-        return cl_data
-
+    def _train(self, clients, client_index, server_model_dict):
+        cl = _Client(self.normalization, clients[client_index].dataset, clients[client_index].epochs, server_model_dict)
+        cl.train()
+        self.cl_data[client_index] = cl
 
 class _Client:
 
