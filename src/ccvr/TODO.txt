@@ -1,0 +1,3 @@
+extract statistics (mean, varcov) for each class, in each client involved in a round
+compute global statistics using the extracted ones and clients data weight
+in each round, train server using virtual data generated using GMM + statistics
