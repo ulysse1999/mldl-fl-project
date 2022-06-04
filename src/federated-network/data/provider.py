@@ -38,7 +38,7 @@ def get_iid_split(dataset):
     return subdatasets
 
 
-def get_testing_data(transform=base_transform, BATCH_SIZE=256, shuffle=True, n_worker=2):
+def get_testing_data(transform=base_transform, BATCH_SIZE=1, shuffle=True, n_worker=2):
     """
     get DataLoader for testing data
     """
