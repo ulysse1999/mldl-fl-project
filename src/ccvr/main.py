@@ -16,6 +16,9 @@ from unbalancing.provider import generate_niid_unbalanced_data
 
 N_CLASSES= 10
 
+TEST_PERIOD = 20
+SAVE_PERIOD=20
+
 # global parameters : number of epochs locally, normalization type
 
 def average(clients, normalization, client_subset):
@@ -89,11 +92,15 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
 
         server.update_model(model_dict)
 
-        if round%20==0:
+        # TODO : server.train_on_vr()
+
+
+
+        if round%TEST_PERIOD==0:
             server.test_global()
 
 
-        if round%20==0:
+        if round%SAVE_PERIOD==0:
             server.save_model()
 
     
