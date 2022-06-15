@@ -87,7 +87,7 @@ class Client:
             loss.backward()
             optimizer.step()
 
-
+        print(torch.cat(feats_list).size())
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
