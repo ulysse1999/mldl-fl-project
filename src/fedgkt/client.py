@@ -90,8 +90,7 @@ class Client:
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
-        print(torch.Tensor(feats_list).size())
-        return TensorDataset(torch.Tensor(feats_list), torch.Tensor(pred_list))
+        return TensorDataset(feats_list, pred_list)
 
     def get_data(self, key):
         return self.model_dict[key]
