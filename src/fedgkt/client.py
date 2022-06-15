@@ -54,7 +54,7 @@ class Client:
         if server_logit is not None:
             self.dataset = TensorDataset(self.dataset[0,:], server_logit[self.index]) 
 
-        for epoch in range(self.epochs):
+        for epoch in range(self.epochs-1):
             for i, data in enumerate(self.dataset):
                 imgs, labels = data 
                 imgs, labels = imgs.cuda(), labels.cuda()
@@ -67,12 +67,31 @@ class Client:
                 loss.backward()
                 optimizer.step()
 
+        pred_list = []
+        feats_list = []
+
+        for i, data in enumerate(self.dataset):
+            imgs, labels = data 
+            imgs, labels = imgs.cuda(), labels.cuda()
+
+            optimizer.zero_grad()
+            pred, feats = self.model(imgs)
+            pred = pred.cuda()
+
+            loss = crossEntropy(pred, labels) # +KLDiv(pred, labels)
+            loss.backward()
+            optimizer.step()
+
+            pred_list.append(pred)
+            feats_list.append(feats)
+
+
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
-        print(feats.size())
-        return TensorDataset(feats, pred)
+        print(feats_list.size())
+        return TensorDataset(torch.Tensor(feats_list), torch.Tensor(pred_list))
 
     def get_data(self, key):
         return self.model_dict[key]
