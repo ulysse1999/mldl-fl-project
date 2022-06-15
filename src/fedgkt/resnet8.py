@@ -50,7 +50,7 @@ class ResNet8(nn.Module):
         self.layer1 = self._make_layer(2, 16)
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Linear(16, 10)
+        self.fc = nn.Linear(160, 10)
 
 
     def _make_layer(self, n_blocks, planes):
