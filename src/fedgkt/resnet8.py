@@ -26,7 +26,17 @@ class ResNet8(nn.Module):
     def __init__(self, normalization="batch"):
         super().__init__()
 
-        norm = nn.BatchNorm2d
+        assert normalization in {"batch", "group"}, f"Normalization should be batch or group, is :{normalization}"
+
+        if normalization=="batch":
+            norm = nn.BatchNorm2d
+        elif normalization=="group":
+
+            def group_norm(num_channels):
+                gn = nn.GroupNorm(num_groups=2, num_channels=num_channels)
+                return gn
+
+            norm = group_norm
 
         self.nomr_f = norm
 
@@ -56,11 +66,11 @@ class ResNet8(nn.Module):
         x = self.conv1(x)
         x = self.n(x)
         x = self.relu(x)
-        x = self.layer1(x)
-        x = self.avgpool(x)
+        xf = self.layer1(x)
+        x = self.avgpool(xf)
         x = self.fc(x)
 
-        return x
+        return x, xf
 
     
     

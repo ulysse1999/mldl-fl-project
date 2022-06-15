@@ -1,6 +1,7 @@
 from torch.optim import SGD
-from torch.nn import CrossEntropyLoss
+from torch.nn import CrossEntropyLoss, KLDivLoss
 from resnet49 import ResNet49
+from data.provider import get_testing_data
 import torch
 
 
@@ -50,8 +51,10 @@ class Server:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
 
-        criterion = CrossEntropyLoss()
-        criterion.cuda()
+        crossEntropy = CrossEntropyLoss()
+        KLDiv = KLDivLoss()
+        crossEntropy.cuda()
+        KLDiv.cuda()
 
         self.model.cuda()
         self.model.train()
@@ -66,7 +69,7 @@ class Server:
                 pred = self.model(imgs)
                 pred = pred.cuda()
                 
-                loss = criterion(pred, labels)
+                loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
                 loss.backward()
                 optimizer.step()
 
@@ -74,3 +77,5 @@ class Server:
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
+
+        return pred
