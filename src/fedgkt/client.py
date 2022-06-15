@@ -79,7 +79,7 @@ class Client:
             pred, feats = self.model(imgs)
 
             pred_list.append(pred)
-            feats_list.append(feats)
+            feats_list.append(torch.reshape(feats, (1,16,32,32)))
             
             pred = pred.cuda()
 
