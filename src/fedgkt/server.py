@@ -63,10 +63,10 @@ class Server:
             # training loop
             for i, data in enumerate(client_learnings):
 
-                print(data.size())
-
                 imgs, labels = data
                 imgs, labels = imgs.cuda(), labels.cuda()
+                
+                print(imgs.size())
 
                 optimizer.zero_grad()
                 pred = self.model(imgs)
