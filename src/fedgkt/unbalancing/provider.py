@@ -17,12 +17,12 @@ base_transform = transforms.Compose([
 
 DATAPATH = ".cifar10"
 
-def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
+def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsize):
 
-    label = dataset.target
+    label = np.array(dataset.targets)
 
     data_by_label = {
-        k : np.where(label==k) for k in range(n_classes)
+        k : np.where(label==k)[0] for k in range(n_classes)
     }
 
     # distribution of classes for each client
@@ -31,13 +31,21 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
     #distribution of data over clients
     data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000)
 
+    # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % BATCHSIZE == 1
+    is_there_a_wrong_amount_of_data = np.any(np.isclose(data_per_client % batchsize, 1.))
+
+    if is_there_a_wrong_amount_of_data:
+        indices = np.where(np.isclose(data_per_client % batchsize, 1.))
+        data_per_client[indices] -=1
+        # lose a bit of data, not a big deal
+
     result = dict()
 
     for client in range(n_clients):
 
         client_dataset = []
         
-        class_ids = choices(range(n_classes), weights=classes_over_clients[client], k=data_per_client[client])
+        class_ids = choices(range(n_classes), weights=classes_over_clients[client], k=int(data_per_client[client]))
         for lab in class_ids:
             i= choice(data_by_label[lab])
             client_dataset.append(i)
@@ -48,17 +56,5 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha):
         
 
         
-
-
-class NIIDataset(Dataset):
-
-    def __init__(self, data):
-        self.data = data
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        return self.data[0], self.data[1]
 
     
