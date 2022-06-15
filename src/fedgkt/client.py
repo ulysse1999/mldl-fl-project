@@ -87,14 +87,12 @@ class Client:
             loss.backward()
             optimizer.step()
 
-        print(type(feats_list))
-        print(type(pred_list))
 
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
-        return TensorDataset(feats_list, pred_list)
+        return TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
 
     def get_data(self, key):
         return self.model_dict[key]
