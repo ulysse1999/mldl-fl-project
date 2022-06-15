@@ -67,7 +67,8 @@ class ResNet8(nn.Module):
         x = self.n(x)
         x = self.relu(x)
         xf = self.layer1(x)
-        x = self.avgpool(xf)
+        x = self.avgpool(xf)        
+        x = torch.flatten(x, start_dim=1)
         x = x.view(1, -1)
         x = self.fc(x)
 
