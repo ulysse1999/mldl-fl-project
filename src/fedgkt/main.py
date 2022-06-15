@@ -96,9 +96,10 @@ if __name__=='__main__':
     parser.add_argument("--batchsize", type=int, required=True, help="Batch size during learning")
     parser.add_argument("--path", type=str, required=False, default=None, help="path of a previous model")
     parser.add_argument("--distrib", type=str, required=True, choices=["iid", "niid"])
+    parser.add_argument("--alpha", type=float, required=False, default=1.0, help="Concentration parameter for Dirichlet distribution")
 
     args = parser.parse_args()
-    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path)
+    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path, args.alpha)
 
 
 
