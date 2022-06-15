@@ -77,14 +77,16 @@ class Client:
 
             optimizer.zero_grad()
             pred, feats = self.model(imgs)
+
+            pred_list.append(pred)
+            feats_list.append(feats)
+            
             pred = pred.cuda()
 
             loss = crossEntropy(pred, labels) # +KLDiv(pred, labels)
             loss.backward()
             optimizer.step()
 
-            pred_list.append(pred)
-            feats_list.append(feats)
 
         pred_list = np.array(pred_list)
         feats_list = np.array(feats_list)
