@@ -3,6 +3,7 @@ from torch.nn import CrossEntropyLoss, KLDivLoss
 from resnet8 import ResNet8
 import torch
 from torch.utils.data import Dataset, Subset, TensorDataset
+import numpy as np
 
 class ClientSimulation:
 
@@ -85,12 +86,14 @@ class Client:
             pred_list.append(pred)
             feats_list.append(feats)
 
+        pred_list = np.array(pred_list)
+        feats_list = np.array(feats_list)
 
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
-        return TensorDataset(feats_list, pred_list)
+        return TensorDataset(torch.Tensor(feats_list), torch.Tensor(pred_list))
 
     def get_data(self, key):
         return self.model_dict[key]
