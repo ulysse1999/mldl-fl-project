@@ -35,7 +35,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     # create server
 
-    server = Server(normalization)
+    server = Server(normalization, epochs)
 
     if path is not None:
         server.update_model(torch.load(path))
