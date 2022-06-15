@@ -30,7 +30,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     clients = dict()
 
-    for i in range(N_CLIENTS):
+    for i in range(5):
         clients[i] = Client(i, normalization, subdatasets[i]['index'], subdatasets[i]['data'], batch_size, epochs)
 
     # create server
@@ -56,6 +56,8 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     server_logit = pred
 
+    server.test_global()
+
     # training loop
     
     for round in range(2,rounds+1):
@@ -74,11 +76,10 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         server_logit = pred
 
-        if round%20==0:
-            server.test_global()
+        server.test_global()
 
 
-        if round%100==0:
+        if round%5==0:
             server.save_model()
 
     
