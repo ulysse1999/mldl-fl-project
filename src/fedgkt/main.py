@@ -99,7 +99,7 @@ if __name__=='__main__':
     parser.add_argument("--alpha", type=float, required=False, default=1.0, help="Concentration parameter for Dirichlet distribution")
 
     args = parser.parse_args()
-    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path, args.alpha)
+    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.distrib, args.path, args.alpha)
 
 
 
