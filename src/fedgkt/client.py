@@ -87,6 +87,8 @@ class Client:
             loss.backward()
             optimizer.step()
 
+        print(type(feats_list))
+        print(type(pred_list))
 
         self.model = self.model.to('cpu')
 
