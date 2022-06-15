@@ -59,6 +59,8 @@ class Server:
         self.model.cuda()
         self.model.train()
 
+        print(data.size())
+
         for epoch in range(self.epochs):
             # training loop
             for i, data in enumerate(client_learnings):

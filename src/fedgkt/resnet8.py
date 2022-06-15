@@ -74,7 +74,7 @@ class ResNet8(nn.Module):
         x = x.view(1, -1)
         x = self.fc(x)
 
-        print(f"Output shape {x.size()} \n Features shape {xf.size()}")
+        #print(f"Output shape {x.size()} \n Features shape {xf.size()}")
 
         return x, xf
 
