@@ -7,15 +7,17 @@ class BasicBlock(nn.Module):
         self.conv1 = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(output_channels, output_channels, kernel_size=3, stride=1, padding=1)
 
+        self.shortcut = nn.Sequential()
+
         self.n1 = norm(output_channels)
         self.n2 = norm(output_channels)
     
     def forward(self, x):
 
-        shortcut = x
+        shortcut = self.shortcut(x)
         x = nn.ReLU()(self.n1(self.conv1(x)))
         x = nn.ReLU()(self.n2(self.conv2(x)))
-        x += shortcut
+        x = shortcut + x
         x = nn.ReLU()(x)
 
         return x
