@@ -91,6 +91,9 @@ class Client:
         pred_list = np.array(pred_list)
         feats_list = np.array(feats_list)
 
+        print(pred_list[0:2])
+        print(feats_list[0:2])
+
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
