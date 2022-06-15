@@ -87,10 +87,6 @@ class Client:
             loss.backward()
             optimizer.step()
 
-
-        pred_list = np.array(pred_list)
-        feats_list = np.array(feats_list)
-
         print(pred_list[0:2])
         print(feats_list[0:2])
 
