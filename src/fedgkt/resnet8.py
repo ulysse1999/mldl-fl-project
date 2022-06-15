@@ -50,7 +50,7 @@ class ResNet8(nn.Module):
         self.layer1 = self._make_layer(2, 16)
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Linear(1, 10)
+        self.fc = nn.Linear(16, 10)
 
 
     def _make_layer(self, n_blocks, planes):
@@ -68,6 +68,7 @@ class ResNet8(nn.Module):
         x = self.relu(x)
         xf = self.layer1(x)
         x = self.avgpool(xf)
+        x = x.view(1, -1)
         x = self.fc(x)
 
         return x, xf
