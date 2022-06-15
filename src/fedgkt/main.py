@@ -12,7 +12,7 @@ from unbalancing.provider import generate_niid_unbalanced_data
 N_CLASSES= 10
 
 
-def main(normalization, epochs, rounds, batch_size, distrib, path):
+def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     
     transform = get_transform()
@@ -22,7 +22,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path):
     if distrib=="iid":
         subdatasets = get_iid_split(dataset)
     else:
-        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=0.5)
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha)
 
     sim = ClientSimulation(N_CLIENTS, normalization)
 
