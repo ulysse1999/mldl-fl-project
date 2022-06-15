@@ -22,7 +22,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
     if distrib=="iid":
         subdatasets = get_iid_split(dataset)
     else:
-        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha)
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha, batchsize=batch_size)
 
     sim = ClientSimulation(N_CLIENTS, normalization)
 
