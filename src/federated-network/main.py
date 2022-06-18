@@ -1,3 +1,4 @@
+from sqlalchemy import null
 from data.provider import get_dataset, get_iid_split, N_CLIENTS, N_IMAGES_PER_CLIENT
 from data.augmentation import get_transform
 from client import Client
@@ -10,6 +11,9 @@ import torch
 import gc
 from client_simulation import ClientSimulation
 from unbalancing.provider import generate_niid_unbalanced_data
+import pytorch_lightning as pl
+from gradattack.attacks.gradientinversion import GradientReconstructor
+from gradattack.utils import (cross_entropy_for_onehot, parse_args,patch_image, save_fig)
 
 N_CLASSES= 10
 
@@ -66,7 +70,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
         server.update_model(torch.load(path))
 
     # training loop
-
+    trained_models = null
     for round in range(1,rounds+1):
 
         gc.collect()
@@ -86,8 +90,31 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
             server.test_global()
 
 
-        if round%20==0:
-            server.save_model()
+        # if round%20==0:
+        #     server.save_model()
+
+                
+    for index in client_subset:
+        client_model = trained_models[index]
+        client_model.save_model()
+        example_batch = client_model.get_datamodule_batch()
+        batch_gradients, step_results = client_model.model.get_batch_gradients(example_batch, 0)
+        batch_inputs_transform, batch_targets_transform = step_results["transformed_batch"]
+        attack_instance = GradientReconstructor(
+            client_model,
+            ground_truth_inputs=batch_inputs_transform,
+            ground_truth_gradients=batch_gradients,
+            ground_truth_labels=batch_targets_transform,
+        )
+
+        # Define the attack instance and launch the attack
+        attack_trainer = pl.Trainer(max_epochs=10000)
+        attack_trainer.fit(attack_instance)
+        result = attack_instance.best_guess.detach().to("cpu")
+
+        save_fig(result,"attackResults/reconstructed.png",save_npy=True,save_fig=False)
+        save_fig(patch_image(result),"attackResults/reconstructed.png",save_npy=False)
+        break
 
     
     
