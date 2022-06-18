@@ -4,4 +4,3 @@ torchinfo
 torchvision
 fedml
 ray
-GradAttack==0.1.2
