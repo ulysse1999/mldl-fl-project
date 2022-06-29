@@ -45,7 +45,7 @@ class Client:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
         crossEntropy = CrossEntropyLoss()
-        KLDiv = KLDivLoss()
+        KLDiv = KLDivLoss(reduction='none')
         crossEntropy.cuda()
         KLDiv.cuda()
 
