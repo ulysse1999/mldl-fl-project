@@ -58,7 +58,7 @@ class Client:
         for epoch in range(self.epochs-1):
             for i, data in enumerate(self.dataset):
                 imgs, labels = data 
-                imgs, labels = imgs.to(torch.float32).cuda(), labels.to(torch.float32).cuda()
+                imgs, labels = imgs.cuda(), labels.cuda()
 
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
