@@ -61,6 +61,7 @@ class Server:
 
         for epoch in range(self.epochs):
             # training loop
+            print(client_learnings.size())
             for i, data in enumerate(client_learnings):
 
                 imgs, labels = data
@@ -69,7 +70,7 @@ class Server:
                 print(imgs.size())
 
                 optimizer.zero_grad()
-                pred = self.model(torch.reshape(imgs, (1,16,32,32)))
+                pred = self.model(imgs)
                 pred = pred.cuda()
                 
                 loss = sum(crossEntropy(pred, labels),KLDiv(pred, labels))
