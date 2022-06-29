@@ -58,7 +58,7 @@ class Client:
         for epoch in range(self.epochs-1):
             for i, data in enumerate(self.dataset):
                 imgs, labels = data 
-                imgs, labels = imgs.cuda(), labels.cuda()
+                imgs, labels = imgs.to(torch.float32).cuda(), labels.to(torch.float32).cuda()
 
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
@@ -84,7 +84,7 @@ class Client:
             pred_list.append(pred)
             feats_list.append(torch.reshape(feats, (1,16,32,32)))
             
-            pred = pred.to(torch.float32).cuda()
+            pred = pred.cuda()
             
             print(f"cross entropy 2: {crossEntropy(pred, labels)}")
             print(f"KLDiv 2: {KLDiv(pred, labels)}")
