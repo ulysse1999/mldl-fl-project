@@ -61,7 +61,7 @@ class Server:
 
         for epoch in range(self.epochs):
             # training loop
-            print(dir(client_learnings))
+            print(client_learnings.__sizeof__)
             for i, data in enumerate(client_learnings):
 
                 imgs, labels = data
