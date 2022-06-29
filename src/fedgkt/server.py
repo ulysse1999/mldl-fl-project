@@ -66,10 +66,10 @@ class Server:
                 imgs, labels = data
                 imgs, labels = imgs.cuda(), labels.cuda()
                 
-                print(imgs.size())
+                print([imgs].size())
 
                 optimizer.zero_grad()
-                pred = self.model(imgs)
+                pred = self.model([imgs])
                 pred = pred.cuda()
                 
                 loss = sum(crossEntropy(pred, labels),KLDiv(pred, labels))
