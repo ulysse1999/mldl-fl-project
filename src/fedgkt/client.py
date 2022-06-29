@@ -63,12 +63,12 @@ class Client:
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
                 pred = pred.cuda()
-                
+
                 print(f"cross entropy: {crossEntropy(pred, labels)}")
                 print(f"KLDiv: {KLDiv(pred, labels)}")
 
                 loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
-                loss.backward()
+                loss.to(torch.float32).backward()
                 optimizer.step()
 
         pred_list = []
@@ -89,7 +89,7 @@ class Client:
             print(f"cross entropy 2: {crossEntropy(pred, labels)}")
             print(f"KLDiv 2: {KLDiv(pred, labels)}")
             loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
-            loss.backward()
+            loss.to(torch.float32).backward()
             optimizer.step()
 
         print(torch.cat(feats_list).size())
