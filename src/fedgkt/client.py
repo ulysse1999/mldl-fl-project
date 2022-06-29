@@ -64,7 +64,7 @@ class Client:
                 pred, feats = self.model(imgs)
                 pred = pred.cuda()
 
-                loss = crossEntropy(pred, labels).item() + KLDiv(pred, labels).item()
+                loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
                 loss.backward()
                 optimizer.step()
 
