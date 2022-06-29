@@ -88,7 +88,7 @@ class Client:
             
             print(f"cross entropy 2: {crossEntropy(pred, labels)}")
             print(f"KLDiv 2: {KLDiv(pred, labels)}")
-            loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
+            loss = crossEntropy(pred, labels).item() + KLDiv(pred, labels).item()
             loss.backward()
             optimizer.step()
 
