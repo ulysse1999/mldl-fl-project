@@ -66,6 +66,8 @@ class Client:
 
                 print(type(pred))
                 print(type(feats))
+                print(type(labels))
+                print(labels.shape, pred.shape)
 
                 loss = sum([crossEntropy(pred, labels), KLDiv(pred.to(torch.float32), labels.to(torch.float32))])
                 loss.backward()
