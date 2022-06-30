@@ -49,11 +49,14 @@ class Client:
         crossEntropy.cuda()
         KLDiv.cuda()
 
+        kld_flag = 0
+
         self.model.cuda()
         self.model.train()
 
         if server_logit is not None:
             self.dataset = TensorDataset(self.dataset[0,:], server_logit[self.index]) 
+            kld_flag = 1
 
         for epoch in range(self.epochs-1):
             for i, data in enumerate(self.dataset):
@@ -64,11 +67,14 @@ class Client:
                 pred, feats = self.model(imgs)
                 pred = pred.cuda()
 
-                loss = sum([crossEntropy(pred, labels), KLDiv(pred.to(torch.float32), labels.to(torch.float32))])
+                if kld_flag == 0:
+                    loss = crossEntropy(pred,labels)
+                else:
+                    loss = sum([crossEntropy(pred, labels), KLDiv(pred, labels)])
+
                 loss.backward()
                 optimizer.step()
-            print(pred)
-            print(feats)
+
         pred_list = []
         feats_list = []
 
@@ -84,9 +90,10 @@ class Client:
             
             pred = pred.cuda()
             
-            print(f"cross entropy 2: {crossEntropy(pred, labels)}")
-            print(f"KLDiv 2: {KLDiv(pred, labels)}")
-            loss = crossEntropy(pred, labels) + KLDiv(pred, labels)
+            if kld_flag == 0:
+                loss = crossEntropy(pred,labels)
+            else:
+                loss = sum([crossEntropy(pred, labels), KLDiv(pred, labels)])
             loss.backward()
             optimizer.step()
 
