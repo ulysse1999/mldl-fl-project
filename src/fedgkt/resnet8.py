@@ -1,31 +1,9 @@
 import torch, torch.nn as nn
 
-class BasicBlock(nn.Module):
-    def __init__(self, input_channels, output_channels, norm):
-        super().__init__()
-
-        self.conv1 = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(output_channels, output_channels, kernel_size=3, stride=1, padding=1)
-
-        self.shortcut = nn.Sequential()
-
-        self.n1 = norm(output_channels)
-        self.n2 = norm(output_channels)
-    
-    def forward(self, x):
-
-        shortcut = self.shortcut(x)
-        x = nn.ReLU()(self.n1(self.conv1(x)))
-        x = nn.ReLU()(self.n2(self.conv2(x)))
-        x = shortcut + x
-        x = nn.ReLU()(x)
-
-        return x
-
-        
 
 class ResNet8(nn.Module):
     def __init__(self, normalization="batch"):
+
         super().__init__()
 
         assert normalization in {"batch", "group"}, f"Normalization should be batch or group, is :{normalization}"
@@ -40,43 +18,38 @@ class ResNet8(nn.Module):
 
             norm = group_norm
 
-        self.nomr_f = norm
-
-        self.input_channels = 16
-
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=1)
-        self.n = norm(16)
         self.relu = nn.ReLU()
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=1)
 
-        self.layer1 = self._make_layer(2, 16)
+        self.conv1 = nn.Conv2d(3, 16, (3,3), stride=(1,1), pad=(1,1))
+        self.n1 = norm(16)
+        
+        self.maxpool = nn.MaxPool2d((3,1))
+
+        self.lay1conv1 =nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay1n1 = norm(16)
+
+        self.lay1conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay1n2 = norm(16)
+
+        self.lay2conv1 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay2n1 = norm(16)
+
+        self.lay2conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay2n2 = norm(16)
+
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(16, 10)
 
-
-    def _make_layer(self, n_blocks, planes):
-
-        layers = list()
-
-        for _ in range(n_blocks):
-            layers.append(BasicBlock(self.input_channels, planes, self.nomr_f))
-
-        return nn.Sequential(*layers)
-    
-    def forward(self,x):
-        x = self.conv1(x)
-        x = self.n(x)
-        x = self.relu(x)
-        xf = self.layer1(x)
-        x = self.avgpool(xf)        
-        x = torch.flatten(x, start_dim=1)
-        x = x.view(1, -1)
+    def forward(self, x):
+        x = self.relu(self.n1(self.conv1(x)))
+        # feature extraction should take the value here, that is in "relu" layer
+        x = self.maxpool(x)
+        x = nn.ReLU()(self.lay1n1(self.lay1conv1(x)))
+        x = nn.ReLU()(self.lay1n2(self.lay1conv2(x)))
+        x = nn.ReLU()(self.lay2n1(self.lay2conv1(x)))
+        x = nn.ReLU()(self.lay2n2(self.lay2conv2(x)))
+        x = self.avgpool(x)
         x = self.fc(x)
 
-        #print(f"Output shape {x.size()} \n Features shape {xf.size()}")
-
-        return x, xf
-
-    
-    
+        return x
