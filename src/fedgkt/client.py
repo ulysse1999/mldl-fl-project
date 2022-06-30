@@ -64,11 +64,13 @@ class Client:
                 pred, feats = self.model(imgs)
                 pred = pred.cuda()
 
+                print(type(pred))
+                print(type(feats))
+
                 loss = sum([crossEntropy(pred, labels), KLDiv(pred.to(torch.float32), labels.to(torch.float32))])
                 loss.backward()
                 optimizer.step()
-            print(pred)
-            print(feats)
+            
         pred_list = []
         feats_list = []
 
