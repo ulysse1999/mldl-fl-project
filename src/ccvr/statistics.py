@@ -54,9 +54,10 @@ def statistics(clients, client_subset, trained_models):
     final_means, final_covs = {}, {}
 
     for label in range(0,10):
-        for index in client_subset:
-            
+        final_means[label] = sum([mean * len(vectors) for vectors, mean in zip(features[index][label] ,means[index][label]) for index in client_subset]) / sum([len(vectors) for vectors in features[index][label] for index in client_subset])
+        final_covs[label] = 
 
+    return final_means, final_covs
     
 
 
