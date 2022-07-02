@@ -1,3 +1,4 @@
+from ccvr.statistics import statistics
 from data.provider import get_dataset, get_iid_split, N_CLIENTS, N_IMAGES_PER_CLIENT
 from data.augmentation import get_transform
 from client import Client
@@ -10,6 +11,7 @@ import torch
 import gc
 from client_simulation import ClientSimulation
 from unbalancing.provider import generate_niid_unbalanced_data
+from statistics import statistics
 
 # CCVR 
 # built on the same basis as federated-network
@@ -86,7 +88,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
         
         # after training, compute statistics for each client, to send them to the server for additional training
 
-        # mean, cov = statistics (clients, client_subset, trained_models) something like that
+        means, covs = statistics(clients, client_subset, trained_models) 
 
 
 
