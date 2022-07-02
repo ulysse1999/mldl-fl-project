@@ -88,7 +88,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
         
         # after training, compute statistics for each client, to send them to the server for additional training
 
-        means, covs = statistics(clients, client_subset, trained_models) 
+        means, covs, nc = statistics(clients, client_subset, trained_models) 
 
 
 
@@ -97,6 +97,8 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
         server.update_model(model_dict)
 
         # TODO : server.train_on_vr()
+
+        server.train_on_vr(means, covs)
 
 
 

@@ -43,9 +43,9 @@ class Server:
 
         print("Model saved")
 
-    def train_on_vr(self):
+    def train_on_vr(self, means, covs):
         """
         TODO
         training on virtual representations 
         """
-        pass
+        
