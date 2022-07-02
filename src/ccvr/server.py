@@ -1,6 +1,10 @@
 from resnet50 import ResNet
 import torch
 from data.provider import get_testing_data
+from torch.distributions.multivariate_normal import MultivariateNormal
+from torch.nn import CrossEntropyLoss
+from torch.optim import SGD
+from torch.utils.data import BatchSampler
 
 
 CHECKPOINT_PATH = "global_checkpoint.pt"
@@ -43,9 +47,51 @@ class Server:
 
         print("Model saved")
 
-    def train_on_vr(self, means, covs):
+    def freeze_model(self):
+        for name, param in self.model.named_parameters():
+            if not name.startswith("fc"):
+                param.requires_grad = False
+
+    def unfreeze_model(self):
+        for name, param in self.model.named_parameters():
+            if not name.startswith("fc"):
+                param.requires_grad = True
+
+    def train_on_vr(self, means, covs, nc, n_training_iterations=200):
         """
-        TODO
         training on virtual representations 
         """
-        
+        total_samples = sum(nc.values())
+        # for now we simply train for n_training_iterations each for each class
+
+        self.freeze_model()
+
+        for label in range(0,10):
+            distrib = MultivariateNormal(loc=means[label], covariance_matrix=covs[label])
+            samples = distrib.sample_n(n_training_iterations)
+
+            self._train(samples, label)
+
+
+        self.unfreeze_model()
+            
+    def _train(self, samples, label, batch_size=32):
+        self.model.cuda()
+
+        data = BatchSampler(samples, batch_size=batch_size)
+
+        criterion = CrossEntropyLoss()
+
+        optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
+
+        self.model.train()
+
+        for f in data:
+            f=f.cuda()
+            optimizer.zero_grad()
+            pred = self.model(f)
+            loss=criterion(pred, torch.Tensor([label]*batch_size), dtype=torch.long)
+            loss.backward()
+            optimizer.step()
+
+        self.model.cpu()
