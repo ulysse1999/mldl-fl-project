@@ -78,6 +78,7 @@ def statistics(clients, client_subset, trained_models):
 
     for label in range(0,10):
         nc = sum([len(vectors) for index in client_subset for vectors in features[index][label] ])
+        print(f"nc = {nc}")
         n_samples[label] = nc
         final_means[label] = sum([means[index][label] * len(vectors) for index in client_subset for vectors in features[index][label] ]) / nc
         final_covs[label] = ( sum([covs[index][label] * (len(vectors)-1) for index in client_subset for vectors in features[index][label] ]) \
