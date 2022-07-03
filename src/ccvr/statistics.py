@@ -56,8 +56,8 @@ def statistics(clients, client_subset, trained_models):
         
         n_samples[label] = nc
 
-        final_means[label] = torch.mean(torch.Tensor(features[label]), 0)
-        final_covs[label] = torch.cov(torch.Tensor(features[label]))
+        final_means[label] = torch.mean(torch.stack(features[label]), 0)
+        final_covs[label] = torch.cov(torch.stack(features[label]))
 
     print("Result computed")
 
