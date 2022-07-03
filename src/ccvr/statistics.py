@@ -60,7 +60,7 @@ def statistics(clients, client_subset, trained_models):
 
     print("Features extracted")
 
-    print("features nb :", {{i : len(features[k][i]) for i in features[k]} for k in features})
+    print("features nb :", {k:{i : len(features[k][i]) for i in features[k]} for k in features})
 
     shape = get_feature_shape(features)
 
