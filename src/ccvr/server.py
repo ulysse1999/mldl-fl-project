@@ -87,7 +87,7 @@ class Server:
         self.model.train()
 
         for f in data:
-            f=f.cuda()
+            #f=f.cuda()
             optimizer.zero_grad()
             pred = self.model(f)
             loss=criterion(pred, torch.Tensor([label]*batch_size), dtype=torch.long)
