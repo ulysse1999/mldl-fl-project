@@ -31,11 +31,13 @@ def statistics(clients, client_subset, trained_models):
 
         for data in clients[index].dataset:
             imgs, labels = data
+            res_layer, _ = getter(imgs)
+            lay = res_layer["feature_extraction"]
 
             for i in range(len(imgs)):
                 img, label = imgs[i], labels[i]
-                res_layer, _ = getter(img)
-                lay = res_layer["feature_extraction"]
+                #res_layer, _ = getter(torch.Tensor(img))
+                lay = res_layer["feature_extraction"][i]
 
                 if label in features[index]:
                     features[index][label].append(lay)
