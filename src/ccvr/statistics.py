@@ -80,9 +80,9 @@ def statistics(clients, client_subset, trained_models):
         nc = sum([len(features[index][label]) for index in client_subset ])
         print(f"nc = {nc}")
         n_samples[label] = nc
-        final_means[label] = sum([means[index][label] * len(vectors) for index in client_subset for vectors in features[index][label] ]) / nc
-        final_covs[label] = ( sum([covs[index][label] * (len(vectors)-1) for index in client_subset for vectors in features[index][label] ]) \
-            + sum([torch.matmul(means[index][label], means[index][label].t()) * len(vectors) for index in client_subset for vectors in features[index][label] ]) \
+        final_means[label] = sum([means[index][label] * len(features[index][label]) for index in client_subset  ]) / nc
+        final_covs[label] = ( sum([covs[index][label] * (len(features[index][label])-1) for index in client_subset ]) \
+            + sum([torch.matmul(means[index][label], means[index][label].t()) * len(features[index][label]) for index in client_subset  ]) \
             - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
 
     print("Result computed")
