@@ -52,8 +52,8 @@ def statistics(clients, client_subset, trained_models):
     n_samples = {}
 
     for label in range(0,10):
-        nc = sum([len(features[index][label]) for index in client_subset ])
-        print(f"nc = {nc}")
+        nc = len(features[label])
+        
         n_samples[label] = nc
 
         final_means[label] = torch.mean(torch.Tensor(features[label]), 0)
