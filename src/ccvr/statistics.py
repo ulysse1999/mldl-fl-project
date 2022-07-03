@@ -23,7 +23,7 @@ def statistics(clients, client_subset, trained_models):
         features[index] = {}
 
         m = create_feature_extractor(trained_models[index].model,
-            return_nodes={"conv5x.2.n3" : "features"}
+            return_nodes={"conv5x" : "features"}
             )
 
         for data in clients[index].dataset:
