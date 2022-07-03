@@ -76,14 +76,12 @@ def statistics(clients, client_subset, trained_models):
     final_means, final_covs = {}, {}
     n_samples = {}
 
-    print(features)
-
     for label in range(0,10):
         nc = sum([len(vectors) for index in client_subset for vectors in features[index][label] ])
         n_samples[label] = nc
-        final_means[label] = sum([mean * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label]) ]) / nc
-        final_covs[label] = ( sum([cov * (len(vectors)-1) for index in client_subset for vectors, cov in zip(features[index][label] ,covs[index][label])]) \
-            + sum([torch.matmul(mean, mean.t()) * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label])]) \
+        final_means[label] = sum([means[index][label] * len(vectors) for index in client_subset for vectors in features[index][label] ]) / nc
+        final_covs[label] = ( sum([covs[index][label] * (len(vectors)-1) for index in client_subset for vectors in features[index][label] ]) \
+            + sum([torch.matmul(means[index][label], means[index][label].t()) * len(vectors) for index in client_subset for vectors in features[index][label] ]) \
             - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
 
     print("Result computed")
