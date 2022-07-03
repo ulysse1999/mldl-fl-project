@@ -78,7 +78,7 @@ class Server:
     def _train(self, samples, label, batch_size=32):
         self.model.cuda()
 
-        data = BatchSampler(samples, batch_size=batch_size)
+        data = BatchSampler(samples, batch_size=batch_size, drop_last=True)
 
         criterion = CrossEntropyLoss()
 
