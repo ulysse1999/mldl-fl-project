@@ -46,9 +46,11 @@ def statistics(clients, client_subset, trained_models):
 
             feats = model(imgs)
 
+            print(len(feats))
+
             features[index] = {i:[] for i in range(10)}
+
             
-            print(len(imgs))
             for i in range(len(imgs)):
 
                 _img, label = imgs[i], labels[i]
