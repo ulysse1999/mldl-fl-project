@@ -91,7 +91,7 @@ def statistics(clients, client_subset, trained_models):
             + sum([torch.matmul(means[index][label], means[index][label].t()) * len(features[index][label]) for index in client_subset  ]) \
             - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
 
-        print(final_covs[label].shape)
+        print(final_covs[label])
 
     print("Result computed")
 
