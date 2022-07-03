@@ -39,6 +39,8 @@ def statistics(clients, client_subset, trained_models):
         model.avgpool = nn.Identity()
         model.fc = nn.Identity()
 
+        print("n data :", len(clients[index].dataset))
+
         for data in clients[index].dataset:
             imgs, labels = data
 
