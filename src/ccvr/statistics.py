@@ -36,14 +36,16 @@ def statistics(clients, client_subset, trained_models):
             imgs, labels = data
 
             feats = model(imgs)
+
+            features[index] = {i:[] for i in range(10)}
             
             for i in range(len(imgs)):
                 _img, label = imgs[i], labels[i]
+
+                lab = label.item()
                 
-                if label in features[index]:
-                    features[index][label].append(feats[i])
-                else:
-                    features[index][label] = [feats[i]]
+                features[index][lab].append(feats[i])
+                
 
         # set the model correctly
         model.avgpool = nn.AdaptiveAvgPool2d(1)
