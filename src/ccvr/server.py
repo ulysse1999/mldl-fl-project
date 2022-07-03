@@ -88,10 +88,11 @@ class Server:
 
         for f in data:
             #f=f.cuda()
-            optimizer.zero_grad()
-            pred = self.model(f)
-            loss=criterion(pred, torch.Tensor([label]*batch_size), dtype=torch.long)
-            loss.backward()
-            optimizer.step()
+            for img in f:
+                optimizer.zero_grad()
+                pred = self.model(img)
+                loss=criterion(pred, torch.Tensor([label]*1), dtype=torch.long)
+                loss.backward()
+                optimizer.step()
 
         self.model.cpu()
