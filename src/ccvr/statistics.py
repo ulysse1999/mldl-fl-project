@@ -39,7 +39,7 @@ def statistics(clients, client_subset, trained_models):
         model.avgpool = nn.Identity()
         model.fc = nn.Identity()
 
-        print("n data :", len(clients[index].dataset))
+        c = 0
 
         for data in clients[index].dataset:
             imgs, labels = data
@@ -54,6 +54,9 @@ def statistics(clients, client_subset, trained_models):
                 lab = label.item()
                 
                 features[index][lab].append(feats[i])
+                c+=1
+
+        print(f"n data : {c}")
                 
 
         # set the model correctly
