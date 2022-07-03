@@ -1,5 +1,6 @@
 from torchvision.models.feature_extraction import create_feature_extractor
 import torch, torch.nn as nn
+import gc
 
 def statistics(clients, client_subset, trained_models):
     """
@@ -36,6 +37,8 @@ def statistics(clients, client_subset, trained_models):
                 features[lab].append(feats[i])
 
         model.fc = save_fc
+
+    gc.collect()
 
     print("Features extracted")
 

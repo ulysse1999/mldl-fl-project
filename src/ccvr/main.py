@@ -86,9 +86,9 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
         
         # after training, compute statistics for each client, to send them to the server for additional training
 
+        gc.colect()
+
         means, covs, nc = statistics(clients, client_subset, trained_models) 
-
-
 
         model_dict = average(trained_models, normalization, client_subset)
 
