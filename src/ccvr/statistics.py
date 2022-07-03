@@ -40,10 +40,6 @@ def statistics(clients, client_subset, trained_models):
 
     gc.collect()
 
-    print("Features extracted")
-
-    print("Means/covs computed")
-
     final_means, final_covs = {}, {}
     n_samples = {}
 
@@ -54,10 +50,6 @@ def statistics(clients, client_subset, trained_models):
 
         final_means[label] = torch.mean(torch.stack(features[label]), 0)
         final_covs[label] = torch.cov(torch.stack(features[label]).T) + torch.eye(2048) # we have to make the covariance matrix PD
-
-        print(final_means[label].shape, final_covs[label].shape)
-
-    print("Result computed")
 
     return final_means, final_covs, n_samples
     
