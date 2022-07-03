@@ -1,5 +1,5 @@
 from torchvision.models.feature_extraction import create_feature_extractor
-import torch
+import torch, torch.nn as nn
 
 def compute_mean(vectors):
     return sum(vectors) / len(vectors)
@@ -9,6 +9,8 @@ def compute_cov(vectors, mean):
         return torch.zeros(vectors[0].shape)
 
     return sum([ torch.matmul(vec-mean, (vec-mean).t()) for vec in vectors]) / (len(vectors)-1) 
+
+
 
 def statistics(clients, client_subset, trained_models):
     """
@@ -22,16 +24,19 @@ def statistics(clients, client_subset, trained_models):
 
         features[index] = {}
 
-        m = create_feature_extractor(trained_models[index].model,
-            return_nodes={"conv5x" : "features"}
-            )
+        model = trained_models[index].model
+
+        # saving model last FC layer
+        save_fc = model.fc
+
+        model.avgpool = nn.Identity()
+        model.fc = nn.Identity()
 
         for data in clients[index].dataset:
             imgs, labels = data
 
-            feats = m(imgs)["features"]
+            feats = model(imgs)
             
-
             for i in range(len(imgs)):
                 _img, label = imgs[i], labels[i]
                 
@@ -39,6 +44,10 @@ def statistics(clients, client_subset, trained_models):
                     features[index][label].append(feats[i])
                 else:
                     features[index][label] = [feats[i]]
+
+        # set the model correctly
+        model.avgpool = nn.AdaptiveAvgPool2d(1)
+        model.fc = save_fc
 
     print("Features extracted")
 
