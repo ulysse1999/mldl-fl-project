@@ -10,8 +10,6 @@ def compute_cov(vectors, mean):
 
     return sum([ torch.matmul(vec-mean, (vec-mean).t()) for vec in vectors]) / (len(vectors)-1) 
 
-def f
-
 def statistics(clients, client_subset, trained_models):
     """
     clients : Client instances, useful to access data
@@ -40,7 +38,7 @@ def statistics(clients, client_subset, trained_models):
             
 
             for i in range(len(imgs)):
-                img, label = imgs[i], labels[i]
+                _img, label = imgs[i], labels[i]
                 
                 if label in features[index]:
                     features[index][label].append(feats[i])
