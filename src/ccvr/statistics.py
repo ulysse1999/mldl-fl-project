@@ -1,4 +1,4 @@
-from torch_intermediate_layer_getter import IntermediateLayerGetter
+from torchvision.models.feature_extraction import create_feature_extractor
 import torch
 
 def compute_mean(vectors):
@@ -9,6 +9,8 @@ def compute_cov(vectors, mean):
         return torch.zeros(vectors[0].shape)
 
     return sum([ torch.matmul(vec-mean, (vec-mean).t()) for vec in vectors]) / (len(vectors)-1) 
+
+def f
 
 def statistics(clients, client_subset, trained_models):
     """
@@ -27,22 +29,23 @@ def statistics(clients, client_subset, trained_models):
 
         features[index] = {}
 
-        getter = IntermediateLayerGetter(trained_models[index].model, layers, keep_output=False)
+        m = create_feature_extractor(trained_models[index].model,
+            return_nodes={"conv5x.2.n3"}
+            )
 
         for data in clients[index].dataset:
             imgs, labels = data
-            res_layer, _ = getter(imgs)
-            lay = res_layer["feature_extraction"]
+
+            feats = m(imgs)
+            
 
             for i in range(len(imgs)):
                 img, label = imgs[i], labels[i]
-                #res_layer, _ = getter(torch.Tensor(img))
-                lay = res_layer["feature_extraction"][i]
-
+                
                 if label in features[index]:
-                    features[index][label].append(lay)
+                    features[index][label].append(feats[i])
                 else:
-                    features[index][label] = [lay]
+                    features[index][label] = [feats[i]]
 
     print("Features extracted")
 
