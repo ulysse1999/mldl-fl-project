@@ -91,6 +91,13 @@ class Server:
 
 
         for feats in data:
+            
+            optimizer.zero_grad()
+            pred = model(feats)
+            loss=criterion(pred, torch.tensor([label]*batch_size))
+            loss.backward()
+            optimizer.step()
+
             #f=f.cuda()
             for f in feats:
                 optimizer.zero_grad()
