@@ -32,7 +32,7 @@ def statistics(clients, client_subset, trained_models):
         for data in clients[index].dataset:
             imgs, labels = data
 
-            for i in range(imgs):
+            for i in imgs:
                 img, label = imgs[i], labels[i]
                 res_layer, _ = getter(img)
                 lay = res_layer["feature_extraction"]
