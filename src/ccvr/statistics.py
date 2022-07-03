@@ -16,11 +16,6 @@ def statistics(clients, client_subset, trained_models):
     client_subset : indexes of the selected clients for this round
     trained_models : (index -> ResNet model) 
     """
-
-    layers = {
-        "conv5x.2.n3" : "feature_extraction"
-    }
-
     features = dict()
 
     for index in client_subset:
@@ -28,13 +23,13 @@ def statistics(clients, client_subset, trained_models):
         features[index] = {}
 
         m = create_feature_extractor(trained_models[index].model,
-            return_nodes={"conv5x.2.n3"}
+            return_nodes={"conv5x.2.n3" : "features"}
             )
 
         for data in clients[index].dataset:
             imgs, labels = data
 
-            feats = m(imgs)
+            feats = m(imgs)["features"]
             
 
             for i in range(len(imgs)):
