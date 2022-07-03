@@ -1,24 +1,6 @@
 from torchvision.models.feature_extraction import create_feature_extractor
 import torch, torch.nn as nn
 
-def compute_mean(vectors):
-    return sum(vectors) / len(vectors)
-
-def compute_cov(vectors, mean):
-    if len(vectors) == 1:
-        return torch.zeros(vectors[0].shape)
-
-    return sum([ torch.matmul(vec-mean, (vec-mean).t()) for vec in vectors]) / (len(vectors)-1) 
-
-def get_feature_shape(features):
-    for k in features:
-        for i in features[k]:
-            if len(features[k][i]) >= 1:
-                return features[k][i][0].shape
-
-
-
-
 def statistics(clients, client_subset, trained_models):
     """
     clients : Client instances, useful to access data
@@ -29,7 +11,7 @@ def statistics(clients, client_subset, trained_models):
 
     for index in client_subset:
 
-        features[index] = {i:[] for i in range(10)}
+        features = {i:[] for i in range(10)}
 
         model = trained_models[index].model
 
@@ -52,10 +34,10 @@ def statistics(clients, client_subset, trained_models):
 
                 lab = label.item()
                 
-                features[index][lab].append(feats[i])
+                features[lab].append(feats[i])
                 c+=1
 
-        print(f"n data : {c}")
+        
                 
 
         # set the model correctly
@@ -63,19 +45,6 @@ def statistics(clients, client_subset, trained_models):
         model.fc = save_fc
 
     print("Features extracted")
-
-    print("features nb :", {k:{i : len(features[k][i]) for i in features[k]} for k in features})
-
-    shape = get_feature_shape(features)
-
-    means, covs = dict(), dict()
-
-    for index in client_subset:
-        means[index] = dict()
-        covs[index] = dict()
-        for label in features[index]:
-            means[index][label] = compute_mean(features[index][label]) if len(features[index][label])>=1 else torch.zeros(shape)
-            covs[index][label] = compute_cov(features[index][label], means[index][label]) if len(features[index][label])>=1 else torch.matmul(torch.zeros(shape), torch.zeros(shape).t())
 
     print("Means/covs computed")
 
@@ -86,12 +55,9 @@ def statistics(clients, client_subset, trained_models):
         nc = sum([len(features[index][label]) for index in client_subset ])
         print(f"nc = {nc}")
         n_samples[label] = nc
-        final_means[label] = sum([means[index][label] * len(features[index][label]) for index in client_subset  ]) / nc
-        final_covs[label] = ( sum([covs[index][label] * (len(features[index][label])-1) for index in client_subset ]) \
-            + sum([torch.matmul(means[index][label], means[index][label].t()) * len(features[index][label]) for index in client_subset  ]) \
-            - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
-        print(final_means[label])
-        print(final_covs[label])
+
+        final_means[label] = torch.mean(torch.Tensor(features[label]))
+        final_covs[label] = torch.cov(torch.Tensor(features[label]))
 
     print("Result computed")
 
