@@ -9,9 +9,11 @@ def statistics(clients, client_subset, trained_models):
     """
     features = dict()
 
+    features = {i:[] for i in range(10)}
+
     for index in client_subset:
 
-        features = {i:[] for i in range(10)}
+        
 
         model = trained_models[index].model
 
