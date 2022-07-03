@@ -95,7 +95,7 @@ class Server:
             for f in feats:
                 optimizer.zero_grad()
                 pred = model(f)
-                loss=criterion(pred, torch.Tensor([label]*1, dtype=torch.long)
+                loss=criterion(pred, torch.Tensor([label]*1, dtype=torch.long))
                 loss.backward()
                 optimizer.step()
 
