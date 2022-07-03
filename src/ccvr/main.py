@@ -6,7 +6,6 @@ from server import Server
 from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
-from test import test_accuracy
 import torch
 import gc
 from client_simulation import ClientSimulation
