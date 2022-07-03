@@ -5,6 +5,7 @@ from torch.distributions.multivariate_normal import MultivariateNormal
 from torch.nn import CrossEntropyLoss
 from torch.optim import SGD
 from torch.utils.data import BatchSampler
+from classifier import Classifier
 
 
 CHECKPOINT_PATH = "global_checkpoint.pt"
@@ -76,7 +77,7 @@ class Server:
         self.unfreeze_model()
             
     def _train(self, samples, label, batch_size=32):
-        self.model.cuda()
+        
 
         data = BatchSampler(samples, batch_size=batch_size, drop_last=True)
 
@@ -84,15 +85,19 @@ class Server:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
 
-        self.model.train()
+        model = Classifier()
+        model.cuda()
+        model.fc = self.model.fc
 
-        for f in data:
+
+        for feats in data:
             #f=f.cuda()
-            for img in f:
+            for f in feats:
                 optimizer.zero_grad()
-                pred = self.model(img)
+                pred = model(f)
                 loss=criterion(pred, torch.Tensor([label]*1), dtype=torch.long)
                 loss.backward()
                 optimizer.step()
 
-        self.model.cpu()
+        model.cpu()
+        self.model.fc = model.fc
