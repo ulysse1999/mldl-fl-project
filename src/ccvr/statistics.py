@@ -44,6 +44,8 @@ def statistics(clients, client_subset, trained_models):
                 else:
                     features[index][label] = [lay]
 
+    print("Features extracted")
+
     means, covs = dict(), dict()
 
     for index in client_subset:
@@ -52,6 +54,8 @@ def statistics(clients, client_subset, trained_models):
         for label in features[index]:
             means[index][label] = compute_mean(features[index][label])
             covs[index][label] = compute_cov(features[index][label], means[index][label])
+
+    print("Means/covs computed")
 
     final_means, final_covs = {}, {}
     n_samples = {}
@@ -63,6 +67,8 @@ def statistics(clients, client_subset, trained_models):
         final_covs[label] = ( sum([cov * (len(vectors)-1) for index in client_subset for vectors, cov in zip(features[index][label] ,covs[index][label])]) \
             + sum([torch.matmul(means, mean.t()) * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label])]) \
             - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
+
+    print("Result computed")
 
     return final_means, final_covs, n_samples
     
