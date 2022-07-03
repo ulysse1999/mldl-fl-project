@@ -20,7 +20,6 @@ def statistics(clients, client_subset, trained_models):
         # saving model last FC layer
         save_fc = model.fc
 
-        model.avgpool = nn.Identity()
         model.fc = nn.Identity()
 
         for data in clients[index].dataset:
@@ -36,12 +35,6 @@ def statistics(clients, client_subset, trained_models):
                 
                 features[lab].append(feats[i])
 
-
-        
-                
-
-        # set the model correctly
-        model.avgpool = nn.AdaptiveAvgPool2d(1)
         model.fc = save_fc
 
     print("Features extracted")
