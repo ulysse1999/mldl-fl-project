@@ -10,6 +10,13 @@ def compute_cov(vectors, mean):
 
     return sum([ torch.matmul(vec-mean, (vec-mean).t()) for vec in vectors]) / (len(vectors)-1) 
 
+def get_feature_shape(features):
+    for k in features:
+        for i in features[k]:
+            if len(features[k][i]) >= 1:
+                return features[k][i][0].shape
+
+
 
 
 def statistics(clients, client_subset, trained_models):
@@ -53,14 +60,16 @@ def statistics(clients, client_subset, trained_models):
 
     print("Features extracted")
 
+    shape = get_feature_shape(features)
+
     means, covs = dict(), dict()
 
     for index in client_subset:
         means[index] = dict()
         covs[index] = dict()
         for label in features[index]:
-            means[index][label] = compute_mean(features[index][label])
-            covs[index][label] = compute_cov(features[index][label], means[index][label])
+            means[index][label] = compute_mean(features[index][label]) if len(features[index][label])>=1 else torch.zeros(shape)
+            covs[index][label] = compute_cov(features[index][label], means[index][label]) if len(features[index][label])>=1 else torch.matmul(torch.zeros(shape), torch.zeros(shape).t())
 
     print("Means/covs computed")
 
@@ -74,7 +83,7 @@ def statistics(clients, client_subset, trained_models):
         n_samples[label] = nc
         final_means[label] = sum([mean * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label]) ]) / nc
         final_covs[label] = ( sum([cov * (len(vectors)-1) for index in client_subset for vectors, cov in zip(features[index][label] ,covs[index][label])]) \
-            + sum([torch.matmul(means, mean.t()) * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label])]) \
+            + sum([torch.matmul(mean, mean.t()) * len(vectors) for index in client_subset for vectors, mean in zip(features[index][label] ,means[index][label])]) \
             - nc* torch.matmul(final_means[label], final_means[label].t() )) / (nc-1)
 
     print("Result computed")
