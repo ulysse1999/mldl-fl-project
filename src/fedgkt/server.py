@@ -51,8 +51,8 @@ class Server:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
 
-        crossEntropy = CrossEntropyLoss()
-        KLDiv = KLDivLoss(reduction='none')
+        crossEntropy = CrossEntropyLoss(reduction='sum')
+        KLDiv = KLDivLoss(reduction='sum')
         crossEntropy.cuda()
         KLDiv.cuda()
 
