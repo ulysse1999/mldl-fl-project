@@ -87,7 +87,7 @@ class Client:
             print(f"features: {feats.size()}")
             pred_list.append(pred)
             feats_list.append(torch.cat([feats]))
-            print(f"feats_list size {len(feats_list)}")
+            print(f"feats_list len {len(feats_list)}")
             
             pred = pred.cuda()
             
@@ -105,8 +105,6 @@ class Client:
         torch.cuda.empty_cache()
 
         learnings = TensorDataset(torch.stack(feats_list), torch.stack(pred_list))
-
-        print(f"features list: {torch.cat(feats_list).size()}")
 
         return learnings
 
