@@ -104,7 +104,7 @@ class Client:
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
 
-        learnings = TensorDataset(feats_list, pred_list)
+        learnings = TensorDataset(torch.stack(feats_list), torch.stack(pred_list))
 
         print(f"features list: {torch.cat(feats_list).size()}")
 
