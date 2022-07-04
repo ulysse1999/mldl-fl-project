@@ -77,7 +77,7 @@ class Server:
                 pred = pred.cuda()
                 
                 loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
-                loss.backward()
+                loss.backward(retain_graph=True)
                 optimizer.step()
         
         pred_list = torch.stack(pred_list)
