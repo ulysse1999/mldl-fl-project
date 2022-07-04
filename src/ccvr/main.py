@@ -94,8 +94,6 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
 
         server.update_model(model_dict)
 
-        # TODO : server.train_on_vr()
-
         server.train_on_vr(means, covs, nc)
 
 

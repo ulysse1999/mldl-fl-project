@@ -83,7 +83,7 @@ class Server:
 
         criterion = CrossEntropyLoss()
 
-        optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
+        optimizer = SGD(self.model.parameters(), lr=1e-1, weight_decay=5e-4)
 
         model = Classifier()
         model.cuda()
