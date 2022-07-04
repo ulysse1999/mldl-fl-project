@@ -104,7 +104,6 @@ class Client:
         torch.cuda.empty_cache()
 
         learnings = TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
-        print(learnings.size())
 
         return learnings
 
