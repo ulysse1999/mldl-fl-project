@@ -86,7 +86,7 @@ class Client:
 
             print(f"features: {feats.size()}")
             pred_list.append(pred)
-            feats_list.append(feats)
+            feats_list.append([feats])
             
             pred = pred.cuda()
             
