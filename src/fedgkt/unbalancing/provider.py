@@ -50,7 +50,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsiz
             i= choice(data_by_label[lab])
             client_dataset.append(i)
 
-        result[client] = {'index':client_dataset, 'data':Subset(dataset, client_dataset)}
+        result[client] = Subset(dataset, client_dataset)
 
     return result
         

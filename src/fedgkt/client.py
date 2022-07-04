@@ -28,10 +28,9 @@ class ClientSimulation:
 
 class Client:
 
-    def __init__(self, index, normalization, local_dataset_index, local_dataset, batch_size=32, epochs=1):
+    def __init__(self, index, normalization, local_dataset, batch_size=32, epochs=1):
         self.index = index
         self.model = ResNet8(normalization)
-        self.data_index = local_dataset_index
         self.dataset = torch.utils.data.DataLoader(
             local_dataset,
             batch_size=batch_size,
@@ -85,6 +84,7 @@ class Client:
             optimizer.zero_grad()
             pred, feats = self.model(imgs)
 
+            print(f"features: {feats.size()}")
             pred_list.append(pred)
             feats_list.append(feats)
             
@@ -104,6 +104,8 @@ class Client:
         torch.cuda.empty_cache()
 
         learnings = TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
+
+        print(f"features list: {torch.cat(feats_list)}")
 
         return learnings
 

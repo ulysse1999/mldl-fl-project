@@ -31,7 +31,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
     clients = dict()
 
     for i in range(1):
-        clients[i] = Client(i, normalization, subdatasets[i]['index'], subdatasets[i]['data'], batch_size, epochs)
+        clients[i] = Client(i, normalization, subdatasets[i], batch_size, epochs)
 
     # create server
 
