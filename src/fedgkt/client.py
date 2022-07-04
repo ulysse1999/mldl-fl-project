@@ -105,7 +105,7 @@ class Client:
 
         learnings = TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
 
-        print(f"features list: {torch.cat(feats_list)}")
+        print(f"features list: {torch.cat(feats_list).size()}")
 
         return learnings
 
