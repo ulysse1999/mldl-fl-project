@@ -54,6 +54,7 @@ class ResNet8(nn.Module):
         feats = x
         print(f"features size: {x.size()}")
         x = self.avgpool(x)
+        print(f"after avg pool size: {x.size()}")
         x = self.fc(x)
 
         return x, feats
