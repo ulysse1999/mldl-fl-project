@@ -20,21 +20,21 @@ class ResNet8(nn.Module):
 
         self.relu = nn.ReLU()
 
-        self.conv1 = nn.Conv2d(3, 16, (3,3), stride=(1,1), pad=(1,1))
+        self.conv1 = nn.Conv2d(3, 16, (3,3), stride=(1,1), padding=(1,1))
         self.n1 = norm(16)
         
         self.maxpool = nn.MaxPool2d((3,1))
 
-        self.lay1conv1 =nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay1conv1 =nn.Conv2d(16,16,(3,3),stride=(1,1), padding=(1,1))
         self.lay1n1 = norm(16)
 
-        self.lay1conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay1conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), padding=(1,1))
         self.lay1n2 = norm(16)
 
-        self.lay2conv1 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay2conv1 = nn.Conv2d(16,16,(3,3),stride=(1,1), padding=(1,1))
         self.lay2n1 = norm(16)
 
-        self.lay2conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), pad=(1,1))
+        self.lay2conv2 = nn.Conv2d(16,16,(3,3),stride=(1,1), padding=(1,1))
         self.lay2n2 = norm(16)
 
 
