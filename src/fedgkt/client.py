@@ -87,6 +87,7 @@ class Client:
             print(f"features: {feats.size()}")
             pred_list.append(pred)
             feats_list.append(torch.cat([feats]))
+            print(f"feats_list size {len(feats_list)}")
             
             pred = pred.cuda()
             
