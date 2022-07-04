@@ -86,7 +86,7 @@ class Client:
             pred, feats = self.model(imgs)
 
             pred_list.append(pred)
-            feats_list.append(torch.reshape(feats, (1,16,32,32)))
+            feats_list.append(feats)
             
             pred = pred.cuda()
             
@@ -94,15 +94,19 @@ class Client:
                 loss = crossEntropy(pred,labels)
             else:
                 loss = sum([crossEntropy(pred, labels), KLDiv(pred, labels)])
+
             loss.backward()
             optimizer.step()
 
-        print(torch.cat(feats_list).size())
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
-        return TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
+
+        learnings = TensorDataset(torch.cat(feats_list), torch.cat(pred_list))
+        print(learnings.size())
+
+        return learnings
 
     def get_data(self, key):
         return self.model_dict[key]
