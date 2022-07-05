@@ -59,7 +59,6 @@ class Server:
         self.model.cuda()
         self.model.train()
 
-        pred_list = []
 
         # training loop
         for epoch in range(self.epochs-1):
@@ -72,12 +71,13 @@ class Server:
 
                 optimizer.zero_grad()
                 pred = self.model(imgs)
-                pred_list.append(pred)
                 pred = pred.cuda()
                 
                 loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
                 loss.backward(retain_graph=True)
                 optimizer.step()
+
+        pred_list = []
 
         #last loop
         for i, data in enumerate(client_learnings):
