@@ -74,7 +74,7 @@ class Server:
                 pred = self.model(imgs)
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, labels) + KLDiv(pred.log(), cl_logit)
+                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
                 loss.backward()
                 optimizer.step()
 
@@ -92,7 +92,8 @@ class Server:
                 pred_list.append(pred)
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, cl_labels) + KLDiv(pred.log(), cl_logit)
+                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
+                
                 loss.backward()
                 optimizer.step()
         
