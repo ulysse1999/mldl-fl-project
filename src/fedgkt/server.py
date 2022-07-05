@@ -96,7 +96,7 @@ class Server:
                 loos1 = crossEntropy(pred, cl_logit.softmax(dim=1)) 
                 loos2 = KLDiv(pred.log(), cl_logit.softmax(dim=1))
                 loss_sum  = loos1
-                loos_sum += loos2.item()
+                loss_sum += loos2.item()
 
                 loss_sum.backward()
                 optimizer.step()
