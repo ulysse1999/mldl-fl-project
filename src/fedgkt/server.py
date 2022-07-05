@@ -61,9 +61,8 @@ class Server:
 
         pred_list = []
 
-        for epoch in range(self.epochs):
-            # training loop
-            print(client_learnings.__sizeof__)
+        # training loop
+        for epoch in range(self.epochs-1):
             for i, data in enumerate(client_learnings):
 
                 imgs, labels = data
@@ -78,6 +77,23 @@ class Server:
                 
                 loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
                 loss.backward(retain_graph=True)
+                optimizer.step()
+
+        #last loop
+        for i, data in enumerate(client_learnings):
+
+                imgs, labels = data
+                imgs, labels = imgs.cuda(), labels.cuda()
+                
+                print(imgs.size())
+
+                optimizer.zero_grad()
+                pred = self.model(imgs)
+                pred_list.append(pred)
+                pred = pred.cuda()
+                
+                loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
+                loss.backward()
                 optimizer.step()
         
         pred_list = torch.stack(pred_list)
