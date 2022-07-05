@@ -64,8 +64,9 @@ class Server:
         for epoch in range(self.epochs-1):
             for i, data in enumerate(client_learnings):
 
-                imgs, labels = data
-                imgs, labels = imgs.cuda(), labels.cuda()
+                imgs, cl_logit = data
+                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+                _, labels = torch.max(cl_logit.data, 1)
                 
                 print(imgs.size())
 
@@ -73,7 +74,7 @@ class Server:
                 pred = self.model(imgs)
                 pred = pred.cuda()
                 
-                loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
+                loss = crossEntropy(pred, labels) + KLDiv(pred, cl_logit)
                 loss.backward(retain_graph=True)
                 optimizer.step()
 
@@ -82,17 +83,16 @@ class Server:
         #last loop
         for i, data in enumerate(client_learnings):
 
-                imgs, labels = data
-                imgs, labels = imgs.cuda(), labels.cuda()
-                
-                print(imgs.size())
+                imgs, cl_logit = data
+                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+                _, cl_labels = torch.max(cl_logit.data, 1)
 
                 optimizer.zero_grad()
                 pred = self.model(imgs)
                 pred_list.append(pred)
                 pred = pred.cuda()
                 
-                loss = sum([crossEntropy(pred, labels),KLDiv(pred, labels)])
+                loss = crossEntropy(pred, cl_labels) + KLDiv(pred, cl_logit)
                 loss.backward()
                 optimizer.step()
         

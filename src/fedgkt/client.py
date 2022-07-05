@@ -69,7 +69,9 @@ class Client:
                 if kld_flag == 0:
                     loss = crossEntropy(pred,labels)
                 else:
-                    loss = sum([crossEntropy(pred, labels), KLDiv(pred, labels)])
+                    logit = labels
+                    _, labels = torch.max(logit.data, 1)
+                    loss = crossEntropy(pred, labels) + KLDiv(pred, logit)
 
                 loss.backward()
                 optimizer.step()
