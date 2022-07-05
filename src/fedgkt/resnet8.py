@@ -43,13 +43,13 @@ class ResNet8(nn.Module):
 
     def forward(self, x):
         x = self.relu(self.n1(self.conv1(x)))
+        feats = x
         # feature extraction should take the value here, that is in "relu" layer
         x = self.maxpool(x)
         x = nn.ReLU()(self.lay1n1(self.lay1conv1(x)))
         x = nn.ReLU()(self.lay1n2(self.lay1conv2(x)))
         x = nn.ReLU()(self.lay2n1(self.lay2conv1(x)))
         x = nn.ReLU()(self.lay2n2(self.lay2conv2(x)))
-        feats = x
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
