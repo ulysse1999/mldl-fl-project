@@ -72,10 +72,6 @@ class ResNet49(nn.Module):
         
         self.input_channel_s = 16
 
-        # MAXPOOL, kernel=3, stride=2
-
-        self.maxpool = nn.MaxPool2d(kernel_size = 3, stride=2, padding=1)
-
         # 3 times
         # CONV kernel=1, channels=64
         # CONV kernel=3 channels=64
