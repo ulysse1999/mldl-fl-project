@@ -91,10 +91,14 @@ class Server:
                 pred = self.model(imgs)
                 pred_list.append(pred)
                 pred = pred.cuda()
+
                 
-                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
-                
-                loss.backward()
+                loos1 = crossEntropy(pred, cl_logit.softmax(dim=1)) 
+                loos2 = KLDiv(pred.log(), cl_logit.softmax(dim=1))
+                loss_sum  = loos1
+                loos_sum += loos2.item()
+
+                loss_sum.backward()
                 optimizer.step()
         
         pred_list = torch.stack(pred_list)
