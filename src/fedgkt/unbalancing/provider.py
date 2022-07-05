@@ -31,12 +31,12 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsiz
     #distribution of data over clients
     data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000)
 
-    # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % BATCHSIZE == 1
-    is_there_a_wrong_amount_of_data = np.any(np.isclose(data_per_client % batchsize, 1.))
+    # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % BATCHSIZE != 0
+    is_there_a_wrong_amount_of_data = np.any(data_per_client % batchsize != 0)
 
     if is_there_a_wrong_amount_of_data:
-        indices = np.where(np.isclose(data_per_client % batchsize, 1.))
-        data_per_client[indices] -=1
+        indices = np.where(data_per_client % batchsize != 0)
+        data_per_client[indices] -= data_per_client % batchsize
         # lose a bit of data, not a big deal
 
     result = dict()
