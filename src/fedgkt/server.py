@@ -95,10 +95,8 @@ class Server:
                 
                 loos1 = crossEntropy(pred, cl_logit.softmax(dim=1)) 
                 loos2 = KLDiv(pred.log(), cl_logit.softmax(dim=1))
-                loss_sum  = loos1
-                loss_sum += loos2.item()
-
-                loss_sum.backward()
+                loos1.backward()
+                loos2.backward()
                 optimizer.step()
         
         pred_list = torch.stack(pred_list)
