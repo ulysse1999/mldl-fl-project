@@ -114,7 +114,6 @@ class ResNet49(nn.Module):
         self.fc = nn.Linear(1<<11, 10)
         
     def forward(self, x):
-        x = self.maxpool(x)
         x = self.conv2x(x)
         x = self.conv3x(x)
         x = self.conv4x(x)
