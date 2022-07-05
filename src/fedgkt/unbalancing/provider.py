@@ -34,7 +34,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsiz
     # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % BATCHSIZE != 0
     for i in range(len(data_per_client)):
         if data_per_client[i] % batchsize != 0 :
-            data_per_client[i] -= data_per_client % batchsize
+            data_per_client[i] -= data_per_client[i] % batchsize
         # lose a bit of data, not a big deal
 
     result = dict()
