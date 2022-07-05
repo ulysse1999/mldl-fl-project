@@ -50,7 +50,6 @@ class ResNet8(nn.Module):
         x = nn.ReLU()(self.lay2n1(self.lay2conv1(x)))
         x = nn.ReLU()(self.lay2n2(self.lay2conv2(x)))
         feats = x
-        print(f"features size: {x.size()}")
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)

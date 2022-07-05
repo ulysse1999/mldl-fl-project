@@ -84,10 +84,13 @@ class Client:
             optimizer.zero_grad()
             pred, feats = self.model(imgs)
 
+            print(f"imgs: {imgs.size()}")
             print(f"features: {feats.size()}")
+            print(f"pred: {pred.size()}")
+
             pred_list.append(pred)
             feats_list.append(torch.cat([feats]))
-            print(f"feats_list len {len(feats_list)}")
+            print(f"feats_list len: {len(feats_list)}")
             
             pred = pred.cuda()
             
