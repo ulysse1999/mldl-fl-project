@@ -59,9 +59,11 @@ class Server:
         self.model.cuda()
         self.model.train()
 
+        pred_list = []
+
 
         # training loop
-        for epoch in range(self.epochs-1):
+        for epoch in range(self.epochs):
             for i, data in enumerate(client_learnings):
 
                 imgs, cl_logit = data
@@ -71,31 +73,14 @@ class Server:
 
                 optimizer.zero_grad()
                 pred = self.model(imgs)
+                if epoch==self.epochs-1:
+                    pred_list.append(pred)
                 pred = pred.cuda()
                 
                 loss = crossEntropy(pred, cl_logit.softmax(dim=1)).item() + KLDiv(pred.log(), cl_logit.softmax(dim=1)).item()
-                loss.backward()
+                loss.backward(retain_graph=True)
                 optimizer.step()
-
-        pred_list = []
-
-        #last loop
-        for i, data in enumerate(client_learnings):
-
-                imgs, cl_logit = data
-                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
                 
-                optimizer.zero_grad()
-                pred = self.model(imgs)
-                pred_list.append(pred)
-                pred = pred.cuda()
-
-                loos = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
-
-                loos.backward(retain_graph=True)
-
-                optimizer.step()
-        
         pred_list = torch.stack(pred_list)
 
         self.model = self.model.to('cpu')
