@@ -4,3 +4,4 @@ torchinfo
 torchvision
 fedml
 ray
+torch-intermediate-layer-getter

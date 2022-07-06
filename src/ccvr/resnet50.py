@@ -3,9 +3,6 @@ from functools import partial
 
 # inspired from pytorch implementation : https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py
 
-# you can check https://colab.research.google.com/github/pytorch/pytorch.github.io/blob/master/assets/hub/nvidia_deeplearningexamples_resnet50.ipynb#scrollTo=modern-finish
-# that the architecture is the same (except for the FC layer since we are training on CIFAR10 instead of ImageNet)
-
 # https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html
 # https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html
 # https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html
@@ -58,6 +55,8 @@ class BottleneckBlock(nn.Module):
 class ResNet(nn.Module):
     def __init__(self, normalization="batch"):
         super().__init__()
+
+        assert normalization in {"batch", "group"}, f"Normalization should be batch or group, is :{normalization}"
 
         if normalization=="batch":
             norm = nn.BatchNorm2d

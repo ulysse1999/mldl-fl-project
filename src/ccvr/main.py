@@ -1,3 +1,4 @@
+from statistics import statistics
 from data.provider import get_dataset, get_iid_split, N_CLIENTS, N_IMAGES_PER_CLIENT
 from data.augmentation import get_transform
 from client import Client
@@ -5,13 +6,18 @@ from server import Server
 from argparse import ArgumentParser
 from resnet50 import ResNet
 from random import sample
-from test import test_accuracy
 import torch
 import gc
 from client_simulation import ClientSimulation
 from unbalancing.provider import generate_niid_unbalanced_data
 
+# CCVR 
+# built on the same basis as federated-network
+
 N_CLASSES= 10
+
+TEST_PERIOD = 20
+SAVE_PERIOD=20
 
 # global parameters : number of epochs locally, normalization type
 
@@ -35,7 +41,7 @@ def average(clients, normalization, client_subset):
     return dummy_dict
 
 
-def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, path, alpha):
+def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, path, alpha, unbalanced):
 
     
     transform = get_transform()
@@ -45,7 +51,7 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
     if distrib=="iid":
         subdatasets = get_iid_split(dataset)
     else:
-        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha, batchsize=batch_size)
+        subdatasets = generate_niid_unbalanced_data(dataset, N_CLIENTS, N_CLASSES, alpha=alpha, batchsize=batch_size, unbalanced=unbalanced)
 
     n_clients_each_round = int(client_proportion*N_CLIENTS)
 
@@ -77,16 +83,26 @@ def main(normalization, epochs, rounds, batch_size, client_proportion, distrib, 
 
         server_model_dict = server.get_model_dict()
         trained_models = sim.train(clients, client_subset, server_model_dict)
+        
+        # after training, compute statistics for each client, to send them to the server for additional training
+
+        gc.collect()
+
+        means, covs, nc = statistics(clients, client_subset, trained_models) 
 
         model_dict = average(trained_models, normalization, client_subset)
 
         server.update_model(model_dict)
 
-        if round%20==0:
+        server.train_on_vr(means, covs, nc)
+
+
+
+        if round%TEST_PERIOD==0:
             server.test_global()
 
 
-        if round%20==0:
+        if round%SAVE_PERIOD==0:
             server.save_model()
 
     
@@ -106,9 +122,10 @@ if __name__=='__main__':
     parser.add_argument("--path", type=str, required=False, default=None, help="path of a previous model")
     parser.add_argument("--distrib", type=str, required=True, choices=["iid", "niid"])
     parser.add_argument("--alpha", type=float, required=False, default=1.0, help="Concentration parameter for Dirichlet distribution")
+    parser.add_argument("--unbalanced", default="unbalanced", type=str, required=False, choices=["unbalanced", "balanced"])
 
     args = parser.parse_args()
-    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path, args.alpha)
+    main(args.normalization, args.epochs, args.rounds, args.batchsize, args.client_proportion, args.distrib, args.path, args.alpha, args.unbalanced)
 
 
 
