@@ -90,7 +90,9 @@ class Server:
                     print("Pred", pred)
                     klloss = KLDiv(pred.log(), target)
                     print("KLloss", klloss)
-                    loss = crossEntropy(pred, target) + klloss
+                    celoss = crossEntropy(pred, target)
+                    print("CELoss", celoss)
+                    loss = celoss + klloss
                     print("Loss", loss)
                     print("Target", target)
                     loss.backward(retain_graph=True)
