@@ -73,14 +73,16 @@ class Server:
 
                 optimizer.zero_grad()
                 pred = self.model(imgs)
+
                 if epoch==self.epochs-1:
                     pred_list.append(pred)
+
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, cl_logit.softmax(dim=1)).item() + KLDiv(pred.log(), cl_logit.softmax(dim=1)).item()
+                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1)).item()
                 loss.backward(retain_graph=True)
                 optimizer.step()
-                
+
         pred_list = torch.stack(pred_list)
 
         self.model = self.model.to('cpu')
