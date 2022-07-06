@@ -80,21 +80,21 @@ class Server:
 
                     optimizer.zero_grad()
                     pred = self.model(imgs)
+                    print(pred)
                     pred = pred.softmax(dim=1)
-
+                    print(pred)
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
 
                     pred = pred.cuda()
 
-                    print("Pred", pred)
+                    
                     klloss = KLDiv(pred.log(), target)
-                    print("KLloss", klloss)
+                    
                     celoss = crossEntropy(pred, target)
-                    print("CELoss", celoss)
+                    
                     loss = celoss + klloss
-                    print("Loss", loss)
-                    print("Target", target)
+                    
                     loss.backward(retain_graph=True)
                     optimizer.step()
                 
