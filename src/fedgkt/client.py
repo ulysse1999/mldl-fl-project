@@ -107,7 +107,7 @@ class Client:
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
-        torch.cuda.empty_cache()
+        #torch.cuda.empty_cache()
 
         learnings = TensorDataset(torch.stack(feats_list), torch.stack(pred_list))
 
