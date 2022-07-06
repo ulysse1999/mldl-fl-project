@@ -79,9 +79,10 @@ class Server:
 
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1)).item()
+                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
                 loss.backward(retain_graph=True)
                 optimizer.step()
+                optimizer.zero_grad()
 
         pred_list = torch.stack(pred_list)
 
