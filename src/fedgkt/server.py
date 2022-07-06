@@ -87,10 +87,12 @@ class Server:
 
                     pred = pred.cuda()
 
-                    print(pred)
+                    print("Pred", pred)
                     klloss = KLDiv(pred.log(), target)
-                    print(klloss)
+                    print("KLloss", klloss)
                     loss = crossEntropy(pred, target) + klloss
+                    print("Loss", loss)
+                    print("Target", target)
                     loss.backward(retain_graph=True)
                     optimizer.step()
                 
