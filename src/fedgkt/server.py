@@ -68,6 +68,8 @@ class Server:
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+
+                target = cl_logit.softmax(dim=1)
                 
                 print(imgs.size())
 
@@ -79,10 +81,10 @@ class Server:
 
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
+                loss = crossEntropy(pred, target) + KLDiv(pred.log(), target)
                 loss.backward(retain_graph=True)
                 optimizer.step()
-                optimizer.zero_grad()
+                
 
         pred_list = torch.stack(pred_list)
 
