@@ -78,6 +78,7 @@ class Server:
 
                     optimizer.zero_grad()
                     pred = self.model(imgs)
+                    pred = pred.softmax(dim=1)
 
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
