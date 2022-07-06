@@ -62,7 +62,7 @@ class Server:
 
         # training loop
         for epoch in range(self.epochs-1):
-            for i, data in enumerate(client_learnings):
+            for i, data in enumerate(client_learnings.dataset):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
@@ -85,8 +85,7 @@ class Server:
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
-                _, cl_labels = torch.max(cl_logit.data, 1)
-
+                
                 optimizer.zero_grad()
                 pred = self.model(imgs)
                 pred_list.append(pred)
@@ -96,8 +95,8 @@ class Server:
                 loos1 = crossEntropy(pred, cl_logit.softmax(dim=1)) 
                 loos1.backward()
                 loos2 = KLDiv(pred.log(), cl_logit.softmax(dim=1))
-                
                 loos2.backward()
+
                 optimizer.step()
         
         pred_list = torch.stack(pred_list)
