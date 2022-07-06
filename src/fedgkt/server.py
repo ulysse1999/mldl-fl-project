@@ -62,11 +62,10 @@ class Server:
 
         # training loop
         for epoch in range(self.epochs-1):
-            for i, data in enumerate(client_learnings.dataset):
+            for i, data in enumerate(client_learnings):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
-                _, labels = torch.max(cl_logit.data, 1)
                 
                 print(imgs.size())
 
@@ -74,14 +73,14 @@ class Server:
                 pred = self.model(imgs)
                 pred = pred.cuda()
                 
-                loss = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
+                loss = crossEntropy(pred, cl_logit.softmax(dim=1)).item() + KLDiv(pred.log(), cl_logit.softmax(dim=1)).item()
                 loss.backward()
                 optimizer.step()
 
         pred_list = []
 
         #last loop
-        for i, data in enumerate(client_learnings.dataset):
+        for i, data in enumerate(client_learnings):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
