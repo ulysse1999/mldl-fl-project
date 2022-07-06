@@ -77,9 +77,10 @@ class Server:
                 with detect_anomaly():
 
                     target = cl_logit.softmax(dim=1)
-
-                    optimizer.zero_grad()
+                    
                     pred = self.model(imgs)
+                    optimizer.zero_grad()
+                    
                     print(pred)
                     pred = pred.softmax(dim=1)
                     print(pred)
