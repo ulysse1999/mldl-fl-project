@@ -119,7 +119,7 @@ class ResNet49(nn.Module):
         x = self.conv4x(x)
         x = self.conv5x(x)
         x = self.avgpool(x)
-        #x = torch.flatten(x, start_dim=1)
+        x = torch.flatten(x, start_dim=1)
         x = self.fc(x)
 
         return x
