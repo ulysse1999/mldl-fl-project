@@ -17,7 +17,7 @@ base_transform = transforms.Compose([
 
 DATAPATH = ".cifar10"
 
-def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsize, unbalanced=True):
+def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsize, unbalanced="unbalanced"):
 
     label = np.array(dataset.targets)
 
@@ -30,7 +30,7 @@ def generate_niid_unbalanced_data(dataset, n_clients, n_classes, alpha, batchsiz
     classes_over_clients = np.random.dirichlet([alpha]*n_classes, n_clients)
 
     #distribution of data over clients
-    data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000) if unbalanced else np.array([500]*100)
+    data_per_client = np.rint(np.random.dirichlet([5]*n_clients)*50000) if unbalanced=="unbalanced" else np.array([500]*100)
 
     # for BN to work, you need to avoid cases where AMOUNT_OF_DATA % BATCHSIZE == 1
 
