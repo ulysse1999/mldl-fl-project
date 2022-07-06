@@ -90,7 +90,7 @@ class Server:
                     pred = pred.cuda()
 
                     
-                    klloss = KLDiv(pred.log(), target)
+                    klloss = KLDiv(pred, target)
                     
                     celoss = crossEntropy(pred, target)
                     
