@@ -81,7 +81,7 @@ class Server:
         pred_list = []
 
         #last loop
-        for i, data in enumerate(client_learnings):
+        for i, data in enumerate(client_learnings.dataset):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
@@ -91,11 +91,9 @@ class Server:
                 pred_list.append(pred)
                 pred = pred.cuda()
 
-                
-                loos1 = crossEntropy(pred, cl_logit.softmax(dim=1)) 
-                loos1.backward()
-                loos2 = KLDiv(pred.log(), cl_logit.softmax(dim=1))
-                loos2.backward()
+                loos = crossEntropy(pred, cl_logit.softmax(dim=1)) + KLDiv(pred.log(), cl_logit.softmax(dim=1))
+
+                loos.backward(retain_graph=True)
 
                 optimizer.step()
         
