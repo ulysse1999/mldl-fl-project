@@ -79,10 +79,10 @@ class Server:
                     target = cl_logit.softmax(dim=1)
                     
                     pred = self.model(imgs)
-                    optimizer.zero_grad()
+                    
                     
                     print(pred)
-                    pred = pred.softmax(dim=1)
+                    pred = pred.softmax()
                     print(pred)
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
@@ -95,6 +95,7 @@ class Server:
                     celoss = crossEntropy(pred, target)
                     
                     loss = celoss + klloss
+                    optimizer.zero_grad()
                     
                     loss.backward(retain_graph=True)
                     optimizer.step()
