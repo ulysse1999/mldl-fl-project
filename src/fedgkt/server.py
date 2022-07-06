@@ -3,6 +3,7 @@ from torch.nn import CrossEntropyLoss, KLDivLoss
 from resnet49 import ResNet49
 from data.provider import get_testing_data
 import torch
+from torch.autograd import detect_anomaly
 
 
 CHECKPOINT_PATH = "global_checkpoint.pt"
@@ -73,17 +74,19 @@ class Server:
                 
                 print(imgs.size())
 
-                optimizer.zero_grad()
-                pred = self.model(imgs)
+                with detect_anomaly():
 
-                if epoch==self.epochs-1:
-                    pred_list.append(pred)
+                    optimizer.zero_grad()
+                    pred = self.model(imgs)
 
-                pred = pred.cuda()
-                
-                loss = crossEntropy(pred, target) + KLDiv(pred.log(), target)
-                loss.backward(retain_graph=True)
-                optimizer.step()
+                    if epoch==self.epochs-1:
+                        pred_list.append(pred)
+
+                    pred = pred.cuda()
+                    
+                    loss = crossEntropy(pred, target) + KLDiv(pred.log(), target)
+                    loss.backward(retain_graph=True)
+                    optimizer.step()
                 
 
         pred_list = torch.stack(pred_list)
