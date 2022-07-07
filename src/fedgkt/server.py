@@ -103,7 +103,7 @@ class Server:
                     loss = klloss
                     optimizer.zero_grad()
                     
-                    loss.backward(retain_graph=True)
+                    loss.backward()
                     optimizer.step()
                 
 
