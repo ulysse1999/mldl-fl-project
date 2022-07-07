@@ -54,8 +54,8 @@ class Server:
 
         crossEntropy = CrossEntropyLoss(reduction='sum')
         KLDiv = KLDivLoss(reduction='sum')
-        #crossEntropy.cuda()
-        #KLDiv.cuda()
+        crossEntropy.cuda()
+        KLDiv.cuda()
 
         self.model.cuda()
         self.model.train()
@@ -99,10 +99,10 @@ class Server:
                     klloss = KLDiv(normalized_pred.log(), target)
                     
                     celoss = crossEntropy(pred, target)
+
+                    klloss.backward(retain_graph=True)
+                    celoss.backward()
                     
-                    loss = celoss + klloss
-                    
-                    loss.backward()
                     optimizer.step()
                 
 

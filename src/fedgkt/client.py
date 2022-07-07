@@ -89,9 +89,9 @@ class Client:
             preds, feats = self.model(imgs)
 
     
-            pred_list.extend(preds.item())
+            pred_list.extend(preds)
             #feats_list.append(torch.cat([feats]))
-            feats_list.extend(feats.item())
+            feats_list.extend(feats)
             
             
             #preds = preds.cuda()
