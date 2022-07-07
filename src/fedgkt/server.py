@@ -66,7 +66,7 @@ class Server:
             client_learnings,
             batch_size=10,
             shuffle=True,
-            num_workers=2,
+            num_workers=1,
             pin_memory=True
             )
 
