@@ -4,6 +4,7 @@ from resnet8 import ResNet8
 import torch
 from torch.utils.data import Dataset, Subset, TensorDataset
 import numpy as np
+from featdataset import FeatureDataset
 
 
 class ClientSimulation:
@@ -111,7 +112,7 @@ class Client:
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
 
-        learnings = TensorDataset(torch.stack(feats_list), torch.stack(pred_list))
+        learnings = FeatureDataset(feats_list, pred_list)
 
         return learnings
 
