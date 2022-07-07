@@ -62,7 +62,7 @@ class Server:
 
         pred_list = []
 
-        data = torch.utils.data.DataLoader(
+        dataset = torch.utils.data.DataLoader(
             client_learnings,
             batch_size=10,
             shuffle=True,
@@ -73,7 +73,7 @@ class Server:
 
         # training loop
         for epoch in range(self.epochs):
-            for i, data in enumerate(data):
+            for i, data in enumerate(dataset):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
