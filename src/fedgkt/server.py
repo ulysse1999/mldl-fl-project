@@ -62,10 +62,18 @@ class Server:
 
         pred_list = []
 
+        data = torch.utils.data.DataLoader(
+            client_learnings,
+            batch_size=10,
+            shuffle=True,
+            num_workers=2,
+            pin_memory=True
+            )
+
 
         # training loop
         for epoch in range(self.epochs):
-            for i, data in enumerate(client_learnings):
+            for i, data in enumerate(data):
 
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
@@ -78,7 +86,7 @@ class Server:
 
                 with detect_anomaly():
 
-                    target = cl_logit.softmax(dim=0)
+                    target = cl_logit.softmax(dim=1)
                     
                     pred = self.model(imgs)
                     
