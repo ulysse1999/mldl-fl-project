@@ -70,13 +70,15 @@ class Server:
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
+                print(cl_logit)
+
                 
                 
                 print(imgs.size())
 
                 with detect_anomaly():
 
-                    target = cl_logit.softmax(dim=1)
+                    target = cl_logit.softmax(dim=0)
                     
                     pred = self.model(imgs)
                     
