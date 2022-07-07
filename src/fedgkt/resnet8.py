@@ -44,7 +44,7 @@ class ResNet8(nn.Module):
     def forward(self, x):
         x = self.relu(self.n1(self.conv1(x)))
         feats = x
-        feats = torch.flatten(feats, start_dim=1)
+        
         # feature extraction should take the value here, that is in "relu" layer
         x = self.maxpool(x)
         x = nn.ReLU()(self.lay1n1(self.lay1conv1(x)))
