@@ -78,11 +78,7 @@ class Server:
                 imgs, cl_logit = data
                 imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
-                print(cl_logit)
-
-                
-                
-                print(imgs.size())
+                #print(cl_logit)
 
                 with detect_anomaly():
 
@@ -91,9 +87,9 @@ class Server:
                     pred = self.model(imgs)
                     
                     
-                    print(pred)
+                    #print(pred)
                     pred = pred.softmax(dim=1)
-                    print(pred)
+                    #print(pred)
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
 

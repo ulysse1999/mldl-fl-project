@@ -87,6 +87,8 @@ class Client:
             optimizer.zero_grad()
             preds, feats = self.model(imgs)
 
+            print(preds, feats)
+
             
 
             pred_list.extend(preds)
