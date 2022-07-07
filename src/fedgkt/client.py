@@ -87,7 +87,7 @@ class Client:
             optimizer.zero_grad()
             preds, feats = self.model(imgs)
 
-            print(preds, feats)
+            
 
             
 
