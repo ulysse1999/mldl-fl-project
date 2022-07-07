@@ -78,6 +78,8 @@ class Server:
                 imgs, cl_logit = data
                 #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
+                optimizer.zero_grad()
+
                 
 
                 with detect_anomaly():
@@ -101,7 +103,7 @@ class Server:
                     #loss = celoss + klloss
 
                     loss = celoss
-                    optimizer.zero_grad()
+                    
                     
                     loss.backward()
                     optimizer.step()

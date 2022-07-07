@@ -43,7 +43,7 @@ class ResNet8(nn.Module):
 
     def forward(self, x):
         x = self.relu(self.n1(self.conv1(x)))
-        feats = x
+        feats = x.clone()
         
         # feature extraction should take the value here, that is in "relu" layer
         x = self.maxpool(x)
