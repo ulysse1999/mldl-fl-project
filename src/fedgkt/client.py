@@ -88,10 +88,7 @@ class Client:
             optimizer.zero_grad()
             preds, feats = self.model(imgs)
 
-            
-
-            
-
+    
             pred_list.extend(preds)
             #feats_list.append(torch.cat([feats]))
             feats_list.extend(feats)

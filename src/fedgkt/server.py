@@ -98,12 +98,11 @@ class Server:
                     
                     klloss = KLDiv(normalized_pred, target)
                     
-                    celoss = crossEntropy(normalized_pred, target)
+                    celoss = crossEntropy(pred, target)
                     
                     loss = celoss + klloss
 
                     loss = celoss
-                    
                     
                     loss.backward()
                     optimizer.step()
