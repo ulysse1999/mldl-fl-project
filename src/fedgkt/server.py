@@ -54,8 +54,8 @@ class Server:
 
         crossEntropy = CrossEntropyLoss(reduction='sum')
         KLDiv = KLDivLoss(reduction='sum')
-        crossEntropy.cuda()
-        KLDiv.cuda()
+        #crossEntropy.cuda()
+        #KLDiv.cuda()
 
         self.model.cuda()
         self.model.train()
@@ -76,7 +76,7 @@ class Server:
             for i, data in enumerate(dataset):
 
                 imgs, cl_logit = data
-                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+                #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
                 
 
@@ -88,10 +88,10 @@ class Server:
                     
                     normalized_pred = pred.softmax(dim=1)
                     
-                    #if epoch==self.epochs-1:
-                    #    pred_list.append(pred)
+                    if epoch==self.epochs-1:
+                        pred_list.append(pred)
 
-                    normalized_pred = normalized_pred.cuda()
+                    #normalized_pred = normalized_pred.cuda()
 
                     
                     klloss = KLDiv(normalized_pred, target)
