@@ -58,7 +58,8 @@ class Client:
         if server_logit is not None:
             self.dataset = TensorDataset(self.dataset[0,:], server_logit[self.index]) 
             kld_flag = 1
-
+        
+        print(self.dataset)
         for epoch in range(self.epochs-1):
             for i, data in enumerate(self.dataset):
                 imgs, labels = data 
