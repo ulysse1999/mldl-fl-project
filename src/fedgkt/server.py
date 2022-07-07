@@ -82,7 +82,7 @@ class Server:
                     
                     
                     print(pred)
-                    pred = pred.softmax(dim=0)
+                    pred = pred.softmax(dim=1)
                     print(pred)
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
