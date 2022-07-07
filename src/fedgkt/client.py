@@ -94,7 +94,7 @@ class Client:
             feats_list.extend(feats)
             
             
-            preds = preds.cuda()
+            #preds = preds.cuda()
             
             if kld_flag == 0:
                 loss = crossEntropy(preds,labels)
