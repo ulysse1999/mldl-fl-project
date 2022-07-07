@@ -97,9 +97,9 @@ class Client:
             preds = preds.cuda()
             
             if kld_flag == 0:
-                loss = crossEntropy(pred,labels)
+                loss = crossEntropy(preds,labels)
             else:
-                loss = sum([crossEntropy(pred, labels), KLDiv(pred, labels)])
+                loss = sum([crossEntropy(preds, labels), KLDiv(preds, labels)])
 
             loss.backward()
             optimizer.step()
