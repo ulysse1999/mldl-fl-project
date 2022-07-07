@@ -88,17 +88,18 @@ class Server:
                     
                     
                     #print(pred)
-                    pred = pred.softmax(dim=1)
+                    
+                    normalized_pred =pred.softmax(dim=1)
                     #print(pred)
                     if epoch==self.epochs-1:
                         pred_list.append(pred)
 
-                    pred = pred.cuda()
+                    normalized_pred = normalized_pred.cuda()
 
                     
-                    klloss = KLDiv(pred, target)
+                    klloss = KLDiv(normalized_pred, target)
                     
-                    celoss = crossEntropy(pred, target)
+                    celoss = crossEntropy(normalized_pred, target)
                     
                     loss = celoss + klloss
                     optimizer.zero_grad()
