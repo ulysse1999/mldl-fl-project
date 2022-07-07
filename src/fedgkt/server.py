@@ -94,13 +94,13 @@ class Server:
                     #normalized_pred = normalized_pred.cuda()
 
                     
-                    klloss = KLDiv(normalized_pred, target)
+                    #klloss = KLDiv(normalized_pred, target)
                     
-                    #celoss = crossEntropy(normalized_pred, target)
+                    celoss = crossEntropy(normalized_pred, target)
                     
                     #loss = celoss + klloss
 
-                    loss = klloss
+                    loss = celoss
                     optimizer.zero_grad()
                     
                     loss.backward()
