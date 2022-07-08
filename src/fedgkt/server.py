@@ -87,6 +87,8 @@ class Server:
                     target = cl_logit.softmax(dim=1)
                     
                     pred = self.model(imgs)
+
+                    print(torch.isnan(pred).any())
                     
                     normalized_pred = pred.softmax(dim=1)
                     
