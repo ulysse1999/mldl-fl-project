@@ -1,0 +1,9 @@
+only train 5 clients in each round due to memory 
+IID -> learns
+NIID alpha = 5 and balanced -> learns
+NIID balanced alpha=0.5 -> learns
+
+NIID unbalanced alpha = 0.5 -> doesnt learn
+
+optimizer for calibration step : SGD lr=1e-3 wd=5e-4
+MC = 200 for each class
