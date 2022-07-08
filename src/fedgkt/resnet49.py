@@ -42,7 +42,7 @@ class BottleneckBlock(nn.Module):
 
     def forward(self, x):
 
-        shortcut = self.shortcut(x).clone()
+        shortcut = self.shortcut(x)
         x = nn.ReLU()(self.n1(self.conv1(x)))
         x = nn.ReLU()(self.n2(self.conv2(x)))
         x = nn.ReLU()(self.n3(self.conv3(x)))
