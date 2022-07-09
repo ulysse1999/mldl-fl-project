@@ -40,6 +40,8 @@ class BottleneckBlock(nn.Module):
         self.n2 = norm(output_channel_s)
         self.n3 = norm(output_channel_s*EXPANSION_RATIO)
 
+    def __enter__(self):
+        return self
 
     def forward(self, x):
 
