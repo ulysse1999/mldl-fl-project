@@ -82,6 +82,9 @@ class Client:
         feats_list = []
 
         for i, data in enumerate(self.dataset):
+
+            if i==0:
+                print(data)
             imgs, labels = data 
             imgs, labels = imgs.cuda(), labels.cuda()
 
