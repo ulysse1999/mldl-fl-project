@@ -100,10 +100,13 @@ class Server:
 
                     
                     klloss = KLDiv(normalized_pred.log(), target)
-                    
-                    celoss = crossEntropy(pred, target)
 
                     klloss.backward(retain_graph=True)
+
+                    optimizer.step()
+                    
+                    celoss = crossEntropy(pred, target)
+                    
                     celoss.backward()
                     
                     optimizer.step()
