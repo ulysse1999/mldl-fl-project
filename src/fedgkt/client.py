@@ -84,7 +84,7 @@ class Client:
         for i, data in enumerate(self.dataset):
 
             if i==0:
-                print(data.size())
+                print(data[0].size())
             imgs, labels = data 
             imgs, labels = imgs.cuda(), labels.cuda()
 
