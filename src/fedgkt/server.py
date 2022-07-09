@@ -76,7 +76,6 @@ class Server:
             for i, data in enumerate(dataset):
 
                 print(data[0].size())
-                print(self.model)
 
                 imgs, cl_logit = data
                 #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
@@ -99,17 +98,15 @@ class Server:
                     #normalized_pred = normalized_pred.cuda()
 
                     
-                    celoss = crossEntropy(pred, target)
-                    
-                    celoss.backward()
-                    
-                    optimizer.step()
-
-                    
                     klloss = KLDiv(normalized_pred.log(), target)
+                    
+                    celoss = crossEntropy(pred, target)
+
+                    print(klloss, celoss)
 
                     klloss.backward(retain_graph=True)
-
+                    celoss.backward()
+                    
                     optimizer.step()
                 
 
