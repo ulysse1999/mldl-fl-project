@@ -1,6 +1,5 @@
 import torch, torch.nn as nn
 from functools import partial
-from torch.autograd import detect_anomaly
 
 # inspired from pytorch implementation : https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py
 
@@ -40,8 +39,6 @@ class BottleneckBlock(nn.Module):
         self.n2 = norm(output_channel_s)
         self.n3 = norm(output_channel_s*EXPANSION_RATIO)
 
-    def __enter__(self):
-        return self
 
     def forward(self, x):
 
@@ -116,19 +113,16 @@ class ResNet49(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(1<<11, 10)
         
-    def __enter__(self):
-        return self
     def forward(self, x):
-        with detect_anomaly:
-            x = self.conv2x(x)
-            x = self.conv3x(x)
-            x = self.conv4x(x)
-            x = self.conv5x(x)
-            x = self.avgpool(x)
-            x = torch.flatten(x, start_dim=1)
-            x = self.fc(x)
+        x = self.conv2x(x)
+        x = self.conv3x(x)
+        x = self.conv4x(x)
+        x = self.conv5x(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, start_dim=1)
+        x = self.fc(x)
 
-            return x
+        return x
 
 
     def _make_layer(self, n_blocks, planes, downsample_first_layer=True):
