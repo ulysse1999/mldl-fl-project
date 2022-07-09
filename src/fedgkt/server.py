@@ -80,7 +80,9 @@ class Server:
 
                 optimizer.zero_grad()
 
-                
+                print(imgs)
+                print(cl_logit)
+
 
                 with detect_anomaly():
 
