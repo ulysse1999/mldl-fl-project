@@ -99,16 +99,17 @@ class Server:
                     #normalized_pred = normalized_pred.cuda()
 
                     
-                    klloss = KLDiv(normalized_pred.log(), target)
-
-                    klloss.backward(retain_graph=True)
-
-                    optimizer.step()
-                    
                     celoss = crossEntropy(pred, target)
                     
                     celoss.backward()
                     
+                    optimizer.step()
+
+                    
+                    klloss = KLDiv(normalized_pred.log(), target)
+
+                    klloss.backward(retain_graph=True)
+
                     optimizer.step()
                 
 
