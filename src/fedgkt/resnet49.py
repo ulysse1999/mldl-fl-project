@@ -114,6 +114,8 @@ class ResNet49(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(1<<11, 10)
         
+    def __enter__(self):
+        return self
     def forward(self, x):
         with detect_anomaly:
             x = self.conv2x(x)
