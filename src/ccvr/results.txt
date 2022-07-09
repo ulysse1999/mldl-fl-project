@@ -1,7 +1,7 @@
 only train 5 clients in each round due to memory 
-IID -> learns
-NIID alpha = 5 and balanced -> learns
-NIID balanced alpha=0.5 -> learns
+IID -> learns up to normal accuracy
+NIID alpha = 5 and balanced -> learns >=0.55
+NIID balanced alpha=0.5 -> learns : >=0.40 accuracy
 
 NIID unbalanced alpha = 0.5 -> doesnt learn
 
