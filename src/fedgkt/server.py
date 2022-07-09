@@ -76,6 +76,7 @@ class Server:
             for i, data in enumerate(dataset):
 
                 print(data[0].size())
+                print(self.model)
 
                 imgs, cl_logit = data
                 #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
