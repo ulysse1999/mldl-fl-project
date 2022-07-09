@@ -70,7 +70,7 @@ class ResNet49(nn.Module):
 
         self.norm_f = norm
         
-        self.input_channel_s = 16
+        self.input_channel_s = 64
 
         # 3 times
         # CONV kernel=1, channels=64
