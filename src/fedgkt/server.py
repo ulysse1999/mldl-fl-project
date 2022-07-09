@@ -64,7 +64,7 @@ class Server:
 
         dataset = torch.utils.data.DataLoader(
             client_learnings,
-            batch_size=100,
+            batch_size=10,
             shuffle=True,
             num_workers=0,
             pin_memory=False
