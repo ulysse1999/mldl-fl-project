@@ -75,6 +75,8 @@ class Server:
         for epoch in range(self.epochs):
             for i, data in enumerate(dataset):
 
+                print(data, i)
+
                 imgs, cl_logit = data
                 #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
