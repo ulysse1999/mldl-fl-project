@@ -72,10 +72,10 @@ class Client:
                 if kld_flag == 0:
                     imgs, labels = data 
                     print(imgs.size())
-                    #imgs, labels = imgs.cuda(), labels.cuda()
+                    imgs, labels = imgs.cuda(), labels.cuda()
                 else:                    
                     imgs, s_logit, labels = data 
-                    #imgs, s_logit, labels = imgs.cuda(), s_logit.cuda(), labels.cuda()
+                    imgs, s_logit, labels = imgs.cuda(), s_logit.cuda(), labels.cuda()
 
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
@@ -84,7 +84,7 @@ class Client:
                     pred_list.extend(pred)
                     feats_list.extend(feats)
                     labels_list.extend(labels)
-                #pred = pred.cuda()
+                pred = pred.cuda()
 
                 if kld_flag == 0:
                     loss = crossEntropy(pred,labels)
