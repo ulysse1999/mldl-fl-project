@@ -1,4 +1,5 @@
 from http import server
+from tkinter import image_names
 from torch.optim import SGD
 from torch.nn import CrossEntropyLoss, KLDivLoss
 from resnet8 import ResNet8
@@ -31,7 +32,7 @@ class ClientSimulation:
 
 class Client:
 
-    def __init__(self, index, normalization, local_dataset, batch_size=32, epochs=1):
+    def __init__(self, index, normalization, local_dataset, images=None, labels=None, batch_size=32, epochs=1):
         self.index = index
         self.model = ResNet8(normalization)
         self.dataset = torch.utils.data.DataLoader(
@@ -41,6 +42,8 @@ class Client:
             num_workers=2,
             pin_memory=True
             )
+        self.images = images 
+        self.labels = labels
         self.epochs = epochs
     
     def train(self, server_logit=None):
@@ -58,19 +61,22 @@ class Client:
 
         pred_list = []
         feats_list = []
-        labels_list = []
 
         if server_logit is not None:
             server_logit = server_logit[self.index].softmax(dim=1)
-            dataset = CustomDataset(self.dataset.images, server_logit, self.dataset.targets) 
+            dataset = CustomDataset(self.images, server_logit, self.labels) 
             kld_flag = 1
         else:
             dataset = self.dataset
+            imgs_list = []
+            labels_list = []
         
         for epoch in range(self.epochs):
             for i, data in enumerate(dataset):
                 if kld_flag == 0:
                     imgs, labels = data
+                    imgs_list.extend(imgs)
+                    labels_list.extend(labels)
                     imgs, labels = imgs.cuda(), labels.cuda()
                 else:                    
                     imgs, s_logit, labels = data 
@@ -82,7 +88,6 @@ class Client:
                 if epoch == self.epochs-1:
                     pred_list.extend(pred)
                     feats_list.extend(feats)
-                    labels_list.extend(labels)
                 pred = pred.cuda()
 
                 if kld_flag == 0:
@@ -99,10 +104,14 @@ class Client:
 
         self.model = self.model.to('cpu')
 
+        if kld_flag == 0:
+            self.images = imgs_list
+            self.labels = labels_list
+
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
 
-        learnings = CustomDataset(feats_list, pred_list, labels_list)
+        learnings = CustomDataset(feats_list, pred_list, self.labels)
 
         return learnings
 
