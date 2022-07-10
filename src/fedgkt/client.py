@@ -80,7 +80,7 @@ class Client:
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
                 
-                if epoch == self.epoch-1:
+                if epoch == self.epochs-1:
                     pred_list.extend(pred)
                     feats_list.extend(feats)
                     labels_list.extend(labels)
