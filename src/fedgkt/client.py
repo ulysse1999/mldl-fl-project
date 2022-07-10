@@ -69,7 +69,7 @@ class Client:
                 pred = pred.cuda()
 
                 if kld_flag == 0:
-                    loss = crossEntropy(pred,labels)
+                    loss = crossEntropy(preds,labels)
                 else:
                     logit = labels
                     _, labels = torch.max(logit.data, 1)
