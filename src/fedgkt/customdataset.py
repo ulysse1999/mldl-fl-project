@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset
 
-class FeatureDataset(Dataset):
+class CustomDataset(Dataset):
 
     def __init__(self, features, predictions, labels):
 

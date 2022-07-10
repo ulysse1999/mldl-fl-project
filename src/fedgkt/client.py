@@ -1,10 +1,11 @@
+from http import server
 from torch.optim import SGD
 from torch.nn import CrossEntropyLoss, KLDivLoss
 from resnet8 import ResNet8
 import torch
 from torch.utils.data import Dataset, Subset, TensorDataset
 import numpy as np
-from featdataset import FeatureDataset
+from customdataset import CustomDataset
 
 
 class ClientSimulation:
@@ -55,66 +56,53 @@ class Client:
         self.model.cuda()
         self.model.train()
 
-        if server_logit is not None:
-            self.dataset = TensorDataset(self.dataset[0,:], server_logit[self.index]) 
-            kld_flag = 1
-        
-        for epoch in range(self.epochs-1):
-            for i, data in enumerate(self.dataset):
-                imgs, labels = data 
-                imgs, labels = imgs.cuda(), labels.cuda()
-
-                optimizer.zero_grad()
-                pred, feats = self.model(imgs)
-                pred = pred.cuda()
-
-                if kld_flag == 0:
-                    loss = crossEntropy(preds,labels)
-                else:
-                    logit = labels
-                    _, labels = torch.max(logit.data, 1)
-                    loss = crossEntropy(pred, labels) + KLDiv(pred, logit)
-
-                loss.backward()
-                optimizer.step()
-
         pred_list = []
         feats_list = []
         labels_list = []
 
-        for i, data in enumerate(self.dataset):
+        if server_logit is not None:
+            server_logit = server_logit[self.index].softmax(dim=1)
+            dataset = CustomDataset(self.dataset.images, server_logit, self.dataset.targets) 
+            kld_flag = 1
+        else:
+            dataset = self.dataset
+        
+        for epoch in range(self.epochs):
+            for i, data in enumerate(dataset):
+                if kld_flag == 0:
+                    imgs, labels = data 
+                    #imgs, labels = imgs.cuda(), labels.cuda()
+                else:                    
+                    imgs, s_logit, labels = data 
+                    #imgs, s_logit, labels = imgs.cuda(), s_logit.cuda(), labels.cuda()
 
-            if i==0:
-                print(data[0].size())
-            imgs, labels = data 
-            imgs, labels = imgs.cuda(), labels.cuda()
+                optimizer.zero_grad()
+                pred, feats = self.model(imgs)
+                
+                if epoch == self.epoch-1:
+                    pred_list.extend(pred)
+                    feats_list.extend(feats)
+                    labels_list.extend(labels)
+                #pred = pred.cuda()
 
-            optimizer.zero_grad()
-            preds, feats = self.model(imgs)
+                if kld_flag == 0:
+                    loss = crossEntropy(pred,labels)
+                else:
+                    normalized_pred = pred.softmax(dim=1)
+                    s_logit = s_logit.softmax(dim=1)
 
-    
-            pred_list.extend(preds)
-            #feats_list.append(torch.cat([feats]))
-            feats_list.extend(feats)
-            labels_list.extend(labels)
-            
-            
-            #preds = preds.cuda()
-            
-            if kld_flag == 0:
-                loss = crossEntropy(preds,labels)
-            else:
-                loss = sum([crossEntropy(preds, labels), KLDiv(preds, labels)])
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred.log(), s_logit)
 
-            loss.backward()
-            optimizer.step()
+                loss.backward()
+                optimizer.step()
+
 
         self.model = self.model.to('cpu')
 
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
 
-        learnings = FeatureDataset(feats_list, pred_list, labels_list)
+        learnings = CustomDataset(feats_list, pred_list, labels_list)
 
         return learnings
 
