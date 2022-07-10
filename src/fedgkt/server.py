@@ -78,7 +78,7 @@ class Server:
                 print(data[0].size())
 
                 imgs, cl_logit, labels = data
-                #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
                 optimizer.zero_grad()
 
@@ -86,7 +86,7 @@ class Server:
 
                 with detect_anomaly():
 
-                    target = cl_logit.softmax(dim=1)
+                    cl_logit = cl_logit.softmax(dim=1)
                     
                     pred = self.model(imgs)
                     
@@ -95,10 +95,10 @@ class Server:
                     if epoch==self.epochs-1:
                         pred_list.extend(pred)
 
-                    #normalized_pred = normalized_pred.cuda()
+                    normalized_pred = normalized_pred.cuda()
 
                     
-                    klloss = KLDiv(normalized_pred.log(), target)
+                    klloss = KLDiv(normalized_pred.log(), cl_logit)
                     
                     celoss = crossEntropy(pred, labels)
 
