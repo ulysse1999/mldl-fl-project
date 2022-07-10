@@ -78,7 +78,7 @@ class Server:
                 print(data[0].size())
 
                 imgs, cl_logit, labels = data
-                imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
+                imgs, cl_logit, labels = imgs.cuda(), cl_logit.cuda(), labels.cuda()
 
                 optimizer.zero_grad()
 
