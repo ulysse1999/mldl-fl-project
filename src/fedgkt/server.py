@@ -77,7 +77,7 @@ class Server:
 
                 print(data[0].size())
 
-                imgs, cl_logit = data
+                imgs, cl_logit, labels = data
                 #imgs, cl_logit = imgs.cuda(), cl_logit.cuda()
 
                 optimizer.zero_grad()
@@ -93,14 +93,14 @@ class Server:
                     normalized_pred = pred.softmax(dim=1)
                     
                     if epoch==self.epochs-1:
-                        pred_list.append(pred)
+                        pred_list.extend(pred)
 
                     #normalized_pred = normalized_pred.cuda()
 
                     
                     klloss = KLDiv(normalized_pred.log(), target)
                     
-                    celoss = crossEntropy(pred, target)
+                    celoss = crossEntropy(pred, labels)
 
                     print(klloss, celoss)
 
@@ -109,8 +109,6 @@ class Server:
                     
                     optimizer.step()
                 
-
-        pred_list = torch.stack(pred_list)
 
         self.model = self.model.to('cpu')
 

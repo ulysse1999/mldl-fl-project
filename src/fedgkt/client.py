@@ -80,6 +80,7 @@ class Client:
 
         pred_list = []
         feats_list = []
+        labels_list = []
 
         for i, data in enumerate(self.dataset):
 
@@ -95,6 +96,7 @@ class Client:
             pred_list.extend(preds)
             #feats_list.append(torch.cat([feats]))
             feats_list.extend(feats)
+            labels_list.extend(labels)
             
             
             #preds = preds.cuda()
@@ -112,7 +114,7 @@ class Client:
         self.model_dict = self.model.state_dict()
         torch.cuda.empty_cache()
 
-        learnings = FeatureDataset(feats_list, pred_list)
+        learnings = FeatureDataset(feats_list, pred_list, labels_list)
 
         return learnings
 
