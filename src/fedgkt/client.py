@@ -70,8 +70,7 @@ class Client:
         for epoch in range(self.epochs):
             for i, data in enumerate(dataset):
                 if kld_flag == 0:
-                    imgs, labels = data 
-                    print(imgs.size())
+                    imgs, labels = data
                     imgs, labels = imgs.cuda(), labels.cuda()
                 else:                    
                     imgs, s_logit, labels = data 
