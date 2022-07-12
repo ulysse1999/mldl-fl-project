@@ -64,7 +64,7 @@ class Server:
 
                 with detect_anomaly():
 
-                    cl_logit = cl_logit.softmax(dim=1).detach()
+                    cl_logit = cl_logit.softmax(dim=1)
                     
                     pred = self.model(imgs)
                     
