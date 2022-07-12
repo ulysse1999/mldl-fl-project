@@ -108,7 +108,7 @@ class Client:
                     normalized_pred = pred.softmax(dim=1)
                     s_logit = s_logit.softmax(dim=1)
 
-                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred.log(), s_logit)
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, s_logit)
 
                 loss.backward()
                 optimizer.step()
