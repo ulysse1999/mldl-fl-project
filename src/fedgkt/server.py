@@ -84,7 +84,7 @@ class Server:
 
                     print(klloss, celoss)
 
-                    klloss.backward(retain_graph=True)
+                    klloss.backward()
                     celoss.backward()
                     
                     optimizer.step()
