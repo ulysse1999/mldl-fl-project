@@ -60,28 +60,22 @@ class Server:
 
                 optimizer.zero_grad()
 
+                cl_logit = cl_logit.softmax(dim=1)
+                
+                pred = self.model(imgs)                
+                normalized_pred = pred.softmax(dim=1)
+                
+                if epoch==self.epochs-1:
+                    aux_pred = pred.detach()
+                    pred_list.extend(aux_pred)
 
+                pred = pred.cuda()
+                
+                loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, cl_logit)
 
-                with detect_anomaly():
-
-                    cl_logit = cl_logit.softmax(dim=1)
-                    
-                    pred = self.model(imgs)
-                    
-                    normalized_pred = pred.softmax(dim=1)
-                    
-                    if epoch==self.epochs-1:
-                        aux_pred = pred.detach()
-                        pred_list.extend(aux_pred)
-
-                    pred = pred.cuda()
-
-                    
-                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, cl_logit)
-
-                    loss.backward()
-                    
-                    optimizer.step()
+                loss.backward()
+                
+                optimizer.step()
                 
 
         self.model = self.model.to('cpu')
