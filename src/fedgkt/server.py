@@ -68,17 +68,16 @@ class Server:
                     
                     pred = self.model(imgs)
                     
-                    normalized_log_pred = pred.softmax(dim=1).log()
+                    normalized_pred = pred.softmax(dim=1)
                     
                     if epoch==self.epochs-1:
                         aux_pred = pred.detach()
                         pred_list.extend(aux_pred)
 
-                    normalized_log_pred = normalized_log_pred.cuda()
                     pred = pred.cuda()
 
                     
-                    loss = crossEntropy(pred, labels) + KLDiv(normalized_log_pred, cl_logit)
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, cl_logit)
 
                     loss.backward()
                     
