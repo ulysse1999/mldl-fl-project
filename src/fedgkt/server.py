@@ -78,14 +78,9 @@ class Server:
                     pred = pred.cuda()
 
                     
-                    #klloss = KLDiv(normalized_log_pred, cl_logit)
-                    
-                    celoss = crossEntropy(pred, labels)
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_log_pred, cl_logit)
 
-                    #print(klloss, celoss)
-
-                    #klloss.backward()
-                    celoss.backward()
+                    loss.backward()
                     
                     optimizer.step()
                 
