@@ -95,8 +95,8 @@ class Client:
                 if epoch == self.epochs-1:
                     print("last epoch")
                     print(f"pred: {pred}")
-                    print(f"feats: {feats}")
-                    pred = pred.detach()
+                    #print(f"feats: {feats}")
+                    #pred = pred.detach()
                     feats = feats.detach()
                     pred_list.extend(pred)
                     feats_list.extend(feats)
