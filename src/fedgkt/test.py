@@ -9,6 +9,8 @@ def test_accuracy(cl_model, s_model, transform=None, device='cpu'):
 
     testloader = get_testing_data(transform, BATCH_SIZE=10000)
 
+    print("Testing model")
+    
     cl_model.eval() # eval mode
     s_model.eval() # eval mode
 
