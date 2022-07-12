@@ -44,13 +44,13 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     gc.collect()
 
-    print(f"##### ROUND 1 #####")
+    print(f"##### ROUND 1 #####\n")
     
     learnings = sim.train(clients)
 
     pred = {}
 
-    print(f"### Training server ###")
+    print(f"Training server")
 
     for index in clients:
         pred[index] = server.train(learnings[index])
