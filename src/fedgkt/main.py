@@ -55,7 +55,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     server_logit = pred
 
-    server.test_global()
+    test_accuracy(clients[0].model, server.model)
 
     # training loop
     
@@ -75,7 +75,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         server_logit = pred
 
-        server.test_global()
+        test_accuracy(clients[0].model, server.model)
 
 
         if round%5==0:

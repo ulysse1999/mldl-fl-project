@@ -44,6 +44,7 @@ class Client:
             )
         self.images = images 
         self.labels = labels
+        self.batch_size = batch_size
         self.epochs = epochs
     
     def train(self, server_logit=None):
@@ -64,7 +65,13 @@ class Client:
 
         if server_logit is not None:
             server_logit = server_logit[self.index].softmax(dim=1)
-            dataset = CustomDataset(self.images, server_logit, self.labels) 
+            dataset = torch.utils.data.DataLoader(
+                CustomDataset(self.images, server_logit, self.labels),
+                batch_size = self.batch_size,
+                shuffle=True,
+                num_workers=0,
+                pin_memory=False
+            )
             kld_flag = 1
         else:
             dataset = self.dataset

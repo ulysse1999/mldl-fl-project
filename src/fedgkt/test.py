@@ -5,11 +5,12 @@ from data.provider import get_testing_data
 # for HP tuning : https://pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html#the-train-function 
 
 
-def test_accuracy(model, transform=None, device='cpu'):
+def test_accuracy(cl_model, s_model, transform=None, device='cpu'):
 
-    testloader = get_testing_data(transform)
+    testloader = get_testing_data(transform, BATCH_SIZE=10000)
 
-    model.eval() # eval mode
+    cl_model.eval() # eval mode
+    s_model.eval() # eval mode
 
     correct = 0
     total = 0
@@ -17,13 +18,15 @@ def test_accuracy(model, transform=None, device='cpu'):
         for data in testloader:
             images, labels = data
             images, labels = images.to(device), labels.to(device)
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
+            feats, pred = cl_model(images)
+            output = s_model(feats)
+            _, predicted = torch.max(output.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
+    print(f"Test set accuracy (global model) : {correct/total}")
     
-    return correct / total
+    return 
 
 
 
