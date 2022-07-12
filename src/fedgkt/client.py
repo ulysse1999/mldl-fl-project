@@ -21,7 +21,7 @@ class ClientSimulation:
         learnings = dict()
 
         for index in clients:
-            print(f"###################\nTraining client {index}\n###################")
+            print(f"### Training client {index} ###")
             cl_learnings = clients[index].train(server_logit)
             print("Done\n")
             learnings[index] = cl_learnings
