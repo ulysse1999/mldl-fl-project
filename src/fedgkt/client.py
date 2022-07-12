@@ -82,8 +82,11 @@ class Client:
             for i, data in enumerate(dataset):
                 if kld_flag == 0:
                     imgs, labels = data
+
                     imgs_list.extend(imgs)
-                    labels_list.extend(labels)
+                    aux_labels = labels.detach()
+                    labels_list.extend(aux_labels)
+
                     imgs, labels = imgs.cuda(), labels.cuda()
                 else:                    
                     imgs, s_logit, labels = data 
