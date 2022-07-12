@@ -32,8 +32,8 @@ class Server:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
 
-        crossEntropy = CrossEntropyLoss(reduction='sum')
-        KLDiv = KLDivLoss(reduction='sum')
+        crossEntropy = CrossEntropyLoss()
+        KLDiv = KLDivLoss(reduction='batchmean')
         crossEntropy.cuda()
         KLDiv.cuda()
 
@@ -55,39 +55,27 @@ class Server:
         for epoch in range(self.epochs):
             for i, data in enumerate(dataset):
 
-                print(data[0].size())
-
                 imgs, cl_logit, labels = data
                 imgs, cl_logit, labels = imgs.cuda(), cl_logit.cuda(), labels.cuda()
 
                 optimizer.zero_grad()
 
+                cl_logit = cl_logit.softmax(dim=1)
+                
+                pred = self.model(imgs)                
+                normalized_pred = pred.softmax(dim=1)
+                
+                if epoch==self.epochs-1:
+                    aux_pred = pred.detach()
+                    pred_list.extend(aux_pred)
 
+                pred = pred.cuda()
+                
+                loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, cl_logit)
 
-                with detect_anomaly():
-
-                    cl_logit = cl_logit.softmax(dim=1)
-                    
-                    pred = self.model(imgs)
-                    
-                    normalized_pred = pred.softmax(dim=1)
-                    
-                    if epoch==self.epochs-1:
-                        pred_list.extend(pred)
-
-                    normalized_pred = normalized_pred.cuda()
-
-                    
-                    klloss = KLDiv(normalized_pred.log(), cl_logit)
-                    
-                    celoss = crossEntropy(pred, labels)
-
-                    print(klloss, celoss)
-
-                    klloss.backward(retain_graph=True)
-                    celoss.backward()
-                    
-                    optimizer.step()
+                loss.backward()
+                
+                optimizer.step()
                 
 
         self.model = self.model.to('cpu')

@@ -30,7 +30,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     clients = dict()
 
-    for i in range(1):
+    for i in range(N_CLIENTS):
         clients[i] = Client(i, normalization, subdatasets[i], batch_size, epochs)
 
     # create server
@@ -44,18 +44,22 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     gc.collect()
 
-    print(f"##### ROUND 1")
+    print(f"\n########## ROUND 1 ##########\n")
     
     learnings = sim.train(clients)
 
     pred = {}
 
+    print(f"------------------\n\nTraining server")
+
     for index in clients:
         pred[index] = server.train(learnings[index])
 
+    print(f"Done\n")
+
     server_logit = pred
 
-    test_accuracy(clients[0].model, server.model)
+    test_accuracy(clients[0].model, server.model, device='cuda')
 
     # training loop
     
@@ -63,23 +67,24 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         gc.collect()
 
-        print(f"##### ROUND {round}")
+        print(f"\n########## ROUND {round} ##########\n")
 
         learnings = sim.train(clients, server_logit)
 
         pred = {}
 
+        print(f"------------------\n\nTraining server")
+
         for index in clients:
 
             pred[index] = server.train(learnings[index])
+        
+        print(f"Done\n")
 
         server_logit = pred
 
-        test_accuracy(clients[0].model, server.model)
+        test_accuracy(clients[0].model, server.model, device='cuda')
 
-
-        if round%5==0:
-            server.save_model()
 
     
     

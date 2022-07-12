@@ -21,10 +21,9 @@ class ClientSimulation:
         learnings = dict()
 
         for index in clients:
-
             print(f"Training client {index}")
             cl_learnings = clients[index].train(server_logit)
-            print("Done")
+            print("Done\n")
             learnings[index] = cl_learnings
 
         return learnings
@@ -51,7 +50,7 @@ class Client:
 
         optimizer = SGD(self.model.parameters(), lr=1e-3, weight_decay=5e-4)
         crossEntropy = CrossEntropyLoss()
-        KLDiv = KLDivLoss()
+        KLDiv = KLDivLoss(reduction='batchmean')
         crossEntropy.cuda()
         KLDiv.cuda()
 
@@ -64,7 +63,7 @@ class Client:
         feats_list = []
 
         if server_logit is not None:
-            server_logit = server_logit[self.index].softmax(dim=1)
+            server_logit = server_logit[self.index]
             dataset = torch.utils.data.DataLoader(
                 CustomDataset(self.images, server_logit, self.labels),
                 batch_size = self.batch_size,
@@ -82,18 +81,23 @@ class Client:
             for i, data in enumerate(dataset):
                 if kld_flag == 0:
                     imgs, labels = data
+
                     imgs_list.extend(imgs)
-                    labels_list.extend(labels)
+                    aux_labels = labels.detach()
+                    labels_list.extend(aux_labels)
+
                     imgs, labels = imgs.cuda(), labels.cuda()
                 else:                    
                     imgs, s_logit, labels = data 
-                    imgs, s_logit, labels = imgs.cuda(), s_logit.cuda(), labels.cuda()
+                    imgs, s_logit, labels = imgs.cuda(), s_logit.softmax(dim=1).cuda(), labels.cuda()
 
                 optimizer.zero_grad()
                 pred, feats = self.model(imgs)
                 
                 if epoch == self.epochs-1:
-                    pred_list.extend(pred)
+                    aux_pred = pred.detach()
+                    feats = feats.detach()
+                    pred_list.extend(aux_pred)
                     feats_list.extend(feats)
                 pred = pred.cuda()
 
@@ -103,7 +107,7 @@ class Client:
                     normalized_pred = pred.softmax(dim=1)
                     s_logit = s_logit.softmax(dim=1)
 
-                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred.log(), s_logit)
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, s_logit)
 
                 loss.backward()
                 optimizer.step()
