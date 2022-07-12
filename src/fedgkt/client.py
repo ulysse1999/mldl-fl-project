@@ -72,6 +72,7 @@ class Client:
                 pin_memory=False
             )
             kld_flag = 1
+            print("kldflag = 1")
         else:
             dataset = self.dataset
             imgs_list = []

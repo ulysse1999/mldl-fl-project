@@ -73,9 +73,13 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         pred = {}
 
+        print(f"Training server")
+
         for index in clients:
 
             pred[index] = server.train(learnings[index])
+        
+        print(f"Done\n")
 
         server_logit = pred
 
