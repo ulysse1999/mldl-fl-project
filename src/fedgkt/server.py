@@ -73,7 +73,8 @@ class Server:
                     normalized_log_pred = pred.softmax(dim=1).log()
                     
                     if epoch==self.epochs-1:
-                        pred_list.extend(pred)
+                        aux_pred = pred.detach()
+                        pred_list.extend(aux_pred)
 
                     normalized_log_pred = normalized_log_pred.cuda()
                     pred = pred.cuda()
@@ -85,7 +86,7 @@ class Server:
 
                     print(klloss, celoss)
 
-                    klloss.backward()
+                    klloss.backward(retain_graph=True)
                     celoss.backward()
                     
                     optimizer.step()
