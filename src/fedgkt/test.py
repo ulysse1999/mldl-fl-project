@@ -9,7 +9,7 @@ def test_accuracy(cl_model, s_model, transform=None, device='cuda'):
 
     testloader = get_testing_data(transform, BATCH_SIZE=100)
 
-    print("\nTesting model")
+    print("\nTesting global model")
 
     cl_model.eval() # eval mode
     s_model.eval() # eval mode
@@ -30,7 +30,7 @@ def test_accuracy(cl_model, s_model, transform=None, device='cuda'):
             correct += (predicted == labels).sum().item()
             torch.cuda.empty_cache()
 
-    print(f"Test set accuracy (global model) : {correct/total}")
+    print(f"Accuracy: {correct/total}")
     
     return 
 
