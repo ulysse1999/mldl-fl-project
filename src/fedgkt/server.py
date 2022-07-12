@@ -70,7 +70,7 @@ class Server:
                     
                     pred = self.model(imgs)
                     
-                    normalized_pred = pred.softmax(dim=1)
+                    normalized_pred = pred.softmax(dim=1).detach()
                     
                     if epoch==self.epochs-1:
                         pred_list.extend(pred)

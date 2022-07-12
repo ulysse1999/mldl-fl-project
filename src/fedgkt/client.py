@@ -93,8 +93,6 @@ class Client:
                 pred, feats = self.model(imgs)
                 
                 if epoch == self.epochs-1:
-                    print("last epoch")
-                    print(f"pred: {pred}")
                     aux_pred = pred.detach()
                     feats = feats.detach()
                     pred_list.extend(aux_pred)
