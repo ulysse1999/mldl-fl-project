@@ -93,6 +93,8 @@ class Client:
                 pred, feats = self.model(imgs)
                 
                 if epoch == self.epochs-1:
+                    pred = pred.detach()
+                    feats = feats.detach()
                     pred_list.extend(pred)
                     feats_list.extend(feats)
                 pred = pred.cuda()
