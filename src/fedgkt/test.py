@@ -7,7 +7,7 @@ from data.provider import get_testing_data
 
 def test_accuracy(cl_model, s_model, transform=None, device='cpu'):
 
-    testloader = get_testing_data(transform, BATCH_SIZE=10000)
+    testloader = get_testing_data(transform, BATCH_SIZE=100)
 
     print("Testing model")
 

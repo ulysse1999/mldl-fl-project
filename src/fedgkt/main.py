@@ -44,7 +44,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     gc.collect()
 
-    print(f"##### ROUND 1 #####\n")
+    print(f"\n##### ROUND 1 #####\n")
     
     learnings = sim.train(clients)
 
