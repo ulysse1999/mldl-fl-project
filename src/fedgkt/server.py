@@ -70,15 +70,16 @@ class Server:
                     
                     pred = self.model(imgs)
                     
-                    normalized_pred = pred.softmax(dim=1).log().detach()
+                    normalized_log_pred = pred.softmax(dim=1).log()
                     
                     if epoch==self.epochs-1:
                         pred_list.extend(pred)
 
-                    normalized_pred = normalized_pred.cuda()
+                    normalized_log_pred = normalized_log_pred.cuda()
+                    pred = pred.cuda()
 
                     
-                    klloss = KLDiv(normalized_pred, cl_logit)
+                    klloss = KLDiv(normalized_log_pred, cl_logit)
                     
                     celoss = crossEntropy(pred, labels)
 
