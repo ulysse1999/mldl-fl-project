@@ -86,9 +86,6 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
         test_accuracy(clients[0].model, server.model, device='cuda')
 
 
-        if round%5==0:
-            server.save_model()
-
     
     
 
