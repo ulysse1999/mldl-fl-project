@@ -67,7 +67,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         gc.collect()
 
-        print(f"##### ROUND {round} #####")
+        print(f"\n##### ROUND {round} #####\n")
 
         learnings = sim.train(clients, server_logit)
 
