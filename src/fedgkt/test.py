@@ -20,7 +20,10 @@ def test_accuracy(cl_model, s_model, transform=None, device='cpu'):
         for data in testloader:
             images, labels = data
             images, labels = images.to(device), labels.to(device)
+            cl_model.to(device)
             pred, feats = cl_model(images)
+            feats = feats.to(device)
+            s_model.to(device)
             output = s_model(feats)
             _, predicted = torch.max(output.data, 1)
             total += labels.size(0)
