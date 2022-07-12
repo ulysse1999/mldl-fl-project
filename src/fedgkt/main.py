@@ -50,7 +50,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     pred = {}
 
-    print(f"------------------\nTraining server")
+    print(f"------------------\n\nTraining server")
 
     for index in clients:
         pred[index] = server.train(learnings[index])
@@ -73,7 +73,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
         pred = {}
 
-        print(f"------------------\nTraining server")
+        print(f"------------------\n\nTraining server")
 
         for index in clients:
 
