@@ -59,7 +59,7 @@ def main(normalization, epochs, rounds, batch_size, distrib, path, alpha):
 
     server_logit = pred
 
-    test_accuracy(clients[0].model, server.model, device='gpu')
+    test_accuracy(clients[0].model, server.model, device='cuda')
 
     # training loop
     
