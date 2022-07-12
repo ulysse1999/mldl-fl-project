@@ -28,7 +28,7 @@ def test_accuracy(cl_model, s_model, transform=None, device='cpu'):
             _, predicted = torch.max(output.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-            torch.cuda.empty_cache()
+            #torch.cuda.empty_cache()
 
     print(f"Test set accuracy (global model) : {correct/total}")
     
