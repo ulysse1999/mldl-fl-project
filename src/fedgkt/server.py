@@ -77,7 +77,7 @@ class Server:
                     pred = pred.cuda()
 
                     
-                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, cl_logit)
+                    loss = crossEntropy(pred, labels) + KLDiv(normalized_pred.log(), cl_logit)
 
                     loss.backward()
                     
