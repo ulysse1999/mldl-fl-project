@@ -66,11 +66,11 @@ class Server:
 
                 with detect_anomaly():
 
-                    cl_logit = cl_logit.softmax(dim=1)
+                    cl_logit = cl_logit.softmax(dim=1).detach()
                     
                     pred = self.model(imgs)
                     
-                    normalized_pred = pred.softmax(dim=1).detach()
+                    normalized_pred = pred.softmax(dim=1)
                     
                     if epoch==self.epochs-1:
                         pred_list.extend(pred)
