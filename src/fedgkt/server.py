@@ -63,7 +63,7 @@ class Server:
                 cl_logit = cl_logit.softmax(dim=1)
                 
                 pred = self.model(imgs)                
-                normalized_pred = pred.softmax(dim=1)
+                normalized_pred = pred.log_softmax(dim=1)
                 
                 if epoch==self.epochs-1:
                     aux_pred = pred.detach()
