@@ -104,7 +104,7 @@ class Client:
                 if kld_flag == 0:
                     loss = crossEntropy(pred,labels)
                 else:
-                    normalized_pred = pred.softmax(dim=1)
+                    normalized_pred = pred.log_softmax(dim=1)
                     s_logit = s_logit.softmax(dim=1)
 
                     loss = crossEntropy(pred, labels) + KLDiv(normalized_pred, s_logit)
